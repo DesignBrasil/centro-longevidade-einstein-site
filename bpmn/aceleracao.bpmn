@@ -88,9 +88,9 @@ protocolo Aceleracao">
       <documentation>Reavaliacoes mais frequentes de biomarcadores.</documentation>
       <incoming>sf_7</incoming><outgoing>sf_9</outgoing>
     </task>
-    <task id="gua6" name="Cadencia
-quinzenal">
-      <documentation>Acompanhamento mais proximo dado o volume de dados de performance.</documentation>
+    <task id="gua6" name="Cadencia de
+contato ativo">
+      <documentation>Contato ativo mais frequente, dado o volume de dados de performance.</documentation>
       <incoming>sf_8</incoming><outgoing>sf_10</outgoing>
     </task>
     <sequenceFlow id="sf_0" sourceRef="s_start" targetRef="com0"/>

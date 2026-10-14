@@ -95,6 +95,15 @@
   .exam-cond{background:transparent;color:var(--muted);border:1px dashed var(--overlay-30);}
   .exam-pend{background:transparent;color:var(--muted-2);border:1px dotted var(--muted-2);}
   @media (max-width:900px){ .exam-grid{grid-template-columns:1fr;} }
+  /* trilha presencial × digital em paralelo (14/10/2026) */
+  .trilha-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px;align-items:stretch;}
+  .trilha-cell{padding:12px 14px;border-radius:12px;font-size:13px;line-height:1.4;}
+  .trilha-tempo{font-family:'Inter',sans-serif;font-size:11px;font-weight:600;letter-spacing:.06em;color:var(--muted-2);padding:0 14px 6px;}
+  .trilha-pres{background:var(--panel);color:var(--paper);}
+  .trilha-dig{background:var(--panel-2);color:var(--muted);border:1px dashed var(--overlay-30);}
+  .trilha-span3{grid-column:span 3;}
+  .trilha-rotulo{font-family:'Inter',sans-serif;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;}
+  @media (max-width:900px){ .trilha-grid{grid-template-columns:1fr 1fr;} .trilha-span3{grid-column:span 2;} }
   @media (max-width:900px){
     .grid-3{grid-template-columns:1fr !important;} .grid-4{grid-template-columns:1fr 1fr !important;}
     .hero-h1{font-size:44px !important;} .hide-mobile{display:none !important;}

@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Centro de Longevidade Einstein — Protótipo do site</title>
 <meta name="description" content="Protótipo do Centro de Longevidade Einstein: níveis de cuidado, jornada do paciente e modelo híbrido, presencial e remoto.">
+<meta name="robots" content="noindex, nofollow">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap">
 <script src="https://unpkg.com/bpmn-js@17.11.1/dist/bpmn-navigated-viewer.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/gsap.min.js"></script>
@@ -14,6 +15,11 @@
 <body>
 <div id="scroll-progress"></div>
 <div class="dotgrid" id="app" style="width:100%;display:flex;flex-direction:column;background:var(--ink);">
+
+  <!-- AVISO DE PROTÓTIPO -->
+  <div style="width:100%;box-sizing:border-box;padding:9px 40px;background:var(--panel);border-bottom:1px solid var(--line);">
+    <div class="mono" style="max-width:1240px;margin:0 auto;font-size:11px;line-height:1.5;letter-spacing:.03em;color:var(--muted);">Protótipo de trabalho, em validação — não é um canal oficial do Hospital Albert Einstein, e o formulário de contato não agenda atendimento.</div>
+  </div>
 
   <!-- NAV -->
   <div style="position:sticky;top:0;z-index:50;width:100%;box-sizing:border-box;padding:14px 40px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;background:var(--nav-bg);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);">
@@ -60,7 +66,7 @@
           <div class="diff-item"><div class="diff-num mono">02</div><div class="diff-title">Profundidade hospitalar</div><div class="diff-desc">Diagnóstico avançado dentro da própria estrutura — sem precisar encaminhar o cliente para fora.</div></div>
           <div class="diff-item"><div class="diff-num mono">03</div><div class="diff-title">Três níveis de entrada</div><div class="diff-desc">Prevenção, Aceleração ou Sob Medida, conforme a triagem inicial do guardião da jornada.</div></div>
           <div class="diff-item"><div class="diff-num mono">04</div><div class="diff-title">Hall de exames transparente</div><div class="diff-desc">Cada exame já mapeado como reembolsável, particular ou condicional junto à ANS — item a item.</div></div>
-          <div class="diff-item"><div class="diff-num mono">05</div><div class="diff-title">Acompanhamento contínuo</div><div class="diff-desc">Check-ins recorrentes com o guardião da jornada — nunca um evento único.</div></div>
+          <div class="diff-item"><div class="diff-num mono">05</div><div class="diff-title">Duas trilhas, o ano inteiro</div><div class="diff-desc">A presencial marca os encontros; a digital acompanha entre eles, com sensores e contato ativo do guardião — nunca um evento único.</div></div>
         </div>
       </div>
     </div>
@@ -122,6 +128,19 @@
         </div>
         <div id="tier-tabs" style="display:flex;gap:10px;flex-wrap:wrap;"></div>
         <div id="product-panel"></div>
+
+        <!-- FAIXAS ETÁRIAS (deck validado, 14/10/2026) -->
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div class="eyebrow" style="color:var(--muted-2);">Por onde cada idade entra</div>
+          <div style="display:flex;flex-wrap:wrap;gap:12px;">
+            <div style="flex:1 1 150px;padding:14px 18px;border-radius:12px;background:var(--panel-2);border:1px solid var(--line);"><div class="mono" style="font-size:11px;color:var(--muted-2);letter-spacing:.06em;margin-bottom:6px;">0–19</div><div style="font-size:14px;color:var(--muted);">fora do protocolo</div></div>
+            <div style="flex:1 1 150px;padding:14px 18px;border-radius:12px;background:var(--panel);border:1px solid var(--line);"><div class="mono" style="font-size:11px;color:var(--muted-2);letter-spacing:.06em;margin-bottom:6px;">20–39</div><div style="font-size:14px;color:var(--paper);font-weight:600;">Prevenção</div></div>
+            <div style="flex:1 1 150px;padding:14px 18px;border-radius:12px;background:var(--panel);border:1px solid var(--line);"><div class="mono" style="font-size:11px;color:var(--muted-2);letter-spacing:.06em;margin-bottom:6px;">40–59</div><div style="font-size:14px;color:var(--paper);font-weight:600;">Prevenção + Aceleração</div></div>
+            <div style="flex:1 1 150px;padding:14px 18px;border-radius:12px;background:var(--panel);border:1px solid var(--line);"><div class="mono" style="font-size:11px;color:var(--muted-2);letter-spacing:.06em;margin-bottom:6px;">60+</div><div style="font-size:14px;color:var(--paper);font-weight:600;">Prevenção + Aceleração</div></div>
+          </div>
+          <div style="font-size:12.5px;color:var(--muted-2);line-height:1.6;">Sob Medida não tem faixa fixa: entra caso a caso, em qualquer idade.</div>
+        </div>
+
         <div style="font-size:12.5px;color:var(--muted-2);line-height:1.6;max-width:80ch;">Nota de precisão: nenhum concorrente pesquisado usa literalmente "Prevenção"/"Aceleração" como nomes de tier (Fountain Life usa CORE/APEX; Fleury segmenta por tipo de check-up). Nomes tratados como hipótese de trabalho, não citação de mercado confirmada.</div>
       </div>
     </div>
@@ -140,6 +159,45 @@
           <button class="tbtn" onclick="stepPrev()">← momento anterior</button>
           <button class="tbtn" onclick="stepNext()">próximo momento →</button>
         </div>
+      </div>
+    </div>
+
+    <!-- 03b AS DUAS TRILHAS -->
+    <div style="width:100%;box-sizing:border-box;padding:120px 40px;display:flex;justify-content:center;border-top:1px solid var(--line);background:var(--panel-2);">
+      <div class="reveal" style="width:100%;max-width:1240px;display:flex;flex-direction:column;gap:40px;">
+        <div style="display:flex;flex-direction:column;gap:24px;">
+          <div style="display:flex;gap:20px;align-items:baseline;"><div class="mono" style="font-size:14px;color:var(--accent-2);">03 ·</div><div class="eyebrow" style="color:var(--muted-2);">Ainda a jornada: o ano inteiro, não o dia da consulta</div></div>
+          <h2 class="serif" style="margin:0;font-size:clamp(30px,4.2vw,52px);line-height:1.08;font-weight:600;color:var(--paper);max-width:26ch;">Duas trilhas rodam em paralelo.</h2>
+          <p style="margin:0;font-size:15px;line-height:1.6;color:var(--muted);max-width:78ch;">A trilha presencial marca os encontros — avaliação, devolutiva, nutrição, treino, reavaliações. A trilha digital não para entre eles: sensores coletam, a equipe acompanha, e o que se mede ao longo do ano é o que alimenta cada reavaliação. O ciclo fecha em doze meses e recomeça.</p>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div class="trilha-grid">
+            <div class="trilha-tempo">Dia 1</div><div class="trilha-tempo">2 semanas</div><div class="trilha-tempo">~1 mês</div><div class="trilha-tempo">3 meses</div><div class="trilha-tempo">6 meses</div><div class="trilha-tempo">8 meses</div><div class="trilha-tempo">12 meses</div>
+          </div>
+
+          <div class="trilha-rotulo" style="color:var(--brand-bright);">Trilha presencial</div>
+          <div class="trilha-grid">
+            <div class="trilha-cell trilha-pres">Avaliação inicial</div>
+            <div class="trilha-cell trilha-pres">Devolutiva médica</div>
+            <div class="trilha-cell trilha-pres">Plano nutricional e treinos em pequeno grupo</div>
+            <div class="trilha-cell trilha-pres">Reavaliação nutricional</div>
+            <div class="trilha-cell trilha-pres">Reavaliação médica e biomarcadores</div>
+            <div class="trilha-cell trilha-pres">Reavaliação nutricional</div>
+            <div class="trilha-cell trilha-pres">Reavaliação completa — o ciclo fecha</div>
+          </div>
+
+          <div class="trilha-rotulo" style="color:var(--muted-2);margin-top:14px;">Trilha digital</div>
+          <div class="trilha-grid">
+            <div class="trilha-cell trilha-dig">Onboarding de wearable e sensores</div>
+            <div class="trilha-cell trilha-dig">Coleta contínua</div>
+            <div class="trilha-cell trilha-dig">Acompanhamento entre os encontros</div>
+            <div class="trilha-cell trilha-dig trilha-span3">Coleta contínua — é ela que alimenta cada reavaliação</div>
+            <div class="trilha-cell trilha-dig">Alertas à equipe clínica, o ano todo</div>
+          </div>
+        </div>
+
+        <div style="font-size:12.5px;color:var(--muted-2);line-height:1.6;max-width:80ch;">A cadência de contato da trilha digital e a plataforma que a sustenta ainda estão em definição — o desenho acima mostra os momentos do ciclo, não uma frequência contratada.</div>
       </div>
     </div>
 
@@ -283,7 +341,7 @@
     <div style="width:100%;box-sizing:border-box;padding:48px 40px;display:flex;justify-content:center;border-top:1px solid var(--line);">
       <div style="width:100%;max-width:1240px;display:flex;flex-direction:column;gap:14px;">
         <div class="serif" style="font-size:16px;color:var(--paper);font-weight:600;">Centro de Longevidade Einstein</div>
-        <div style="font-size:12px;line-height:1.6;color:var(--muted-2);max-width:90ch;">Rascunho de execução visual (v8, 02/10/2026) — mockup de trabalho, não peça de marketing final. Tema único (removido o alternativo escuro, por decisão de feedback) — hero mais compacto, sem animações decorativas que destoavam da referência. Paleta, tipografia (Work Sans + Inter) e forma dos componentes (cards, botões, formulário de contato) replicadas a partir de einstein.br/n/servicos/mudanca-no-estilo-de-vida (cores extraídas via getComputedStyle, não estimadas visualmente) — conteúdo é nosso. Nomes de produto e direção de arte são hipóteses a validar. Posições no espectro competitivo são leitura qualitativa própria, não medição de mercado. Diagrama BPMN cobre os 3 eixos ativos na priorização (Comercial, Guardião da Jornada, Assistencial) — Tecnológica e Regulatória ficam fora por decisão do time. Hall de exames por protocolo cruza o deck estratégico interno (pág. 28) com busca primária no Anexo I oficial do Rol ANS (02/10/2026). Formulário de contato é mockup de interface, não está conectado a sistema real. Fontes: sites oficiais, fetch em 29/09/2026 — ver <i>sondagem_posicionamento_design_comunicacao.md</i> e <i>hall_de_exames_por_produto.md</i> no vault.</div>
+        <div style="font-size:12px;line-height:1.6;color:var(--muted-2);max-width:90ch;"><b>Atualização v9, 14/10/2026:</b> o site foi alinhado ao que a viabilização fechou na rodada 8 e ao deck já lido pela cliente — entraram as faixas etárias de entrada por nível, a trilha presencial e a digital rodando em paralelo (dia 1, 2 semanas, ~1 mês, 3, 6, 8 e 12 meses), o plano nutricional e os treinos orientados em pequeno grupo. Saíram as frequências de check-in (mensal, quinzenal) que eram hipótese de outubro: a cadência de contato ativo é uma decisão em aberto do projeto, e o site passou a dizer isso. <b>Nenhum número financeiro aparece aqui</b> — preço, custo, margem e ponto de equilíbrio ficam no material interno. A página é <i>noindex</i>, não deve ser encontrada em busca.<br><br>Rascunho de execução visual (v8, 02/10/2026) — mockup de trabalho, não peça de marketing final. Tema único (removido o alternativo escuro, por decisão de feedback) — hero mais compacto, sem animações decorativas que destoavam da referência. Paleta, tipografia (Work Sans + Inter) e forma dos componentes (cards, botões, formulário de contato) replicadas a partir de einstein.br/n/servicos/mudanca-no-estilo-de-vida (cores extraídas via getComputedStyle, não estimadas visualmente) — conteúdo é nosso. Nomes de produto e direção de arte são hipóteses a validar. Posições no espectro competitivo são leitura qualitativa própria, não medição de mercado. Diagrama BPMN cobre os 3 eixos ativos na priorização (Comercial, Guardião da Jornada, Assistencial) — Tecnológica e Regulatória ficam fora por decisão do time. Hall de exames por protocolo cruza o deck estratégico interno (pág. 28) com busca primária no Anexo I oficial do Rol ANS (02/10/2026). Formulário de contato é mockup de interface, não está conectado a sistema real. Fontes: sites oficiais, fetch em 29/09/2026 — ver <i>sondagem_posicionamento_design_comunicacao.md</i> e <i>hall_de_exames_por_produto.md</i> no vault.</div>
       </div>
     </div>
 

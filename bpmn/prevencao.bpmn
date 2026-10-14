@@ -88,9 +88,9 @@ protocolo Core">
       <documentation>Consultas e exames de rotina conforme calendario anual.</documentation>
       <incoming>sf_7</incoming><outgoing>sf_9</outgoing>
     </task>
-    <task id="gua6" name="Cadencia
-mensal">
-      <documentation>Check-in de rotina com o guardiao da jornada.</documentation>
+    <task id="gua6" name="Cadencia de
+contato ativo">
+      <documentation>Contato ativo do guardiao da jornada entre os encontros; a frequencia ainda nao foi definida.</documentation>
       <incoming>sf_8</incoming><outgoing>sf_10</outgoing>
     </task>
     <sequenceFlow id="sf_0" sourceRef="s_start" targetRef="com0"/>
