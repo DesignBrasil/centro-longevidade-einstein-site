@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Por dentro do motor — o ciclo do dinheiro · Centro de Longevidade Einstein</title>
+<meta name="description" content="O mapa do ciclo: selecione uma tecnologia do portfólio e veja quem paga quem — as relações entre os atores, uma seta de cada vez.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,560;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- o mesmo fundo do site: a câmera dentro do túnel (geometria via js) -->
+<svg class="passagem-fundo" id="passagem-fundo" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+  <defs>
+    <radialGradient id="pf-luz-grad">
+      <stop offset="0%" stop-color="#1774DE" stop-opacity=".5"/>
+      <stop offset="100%" stop-color="#1774DE" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+</svg>
+
+<nav>
+  <div class="wrap nav-inner">
+    <a class="brand" href="../"><img class="brand-selo" src="../site/img/buraco_minhoca_nav.png" alt=""><span>Longevidade<small>Einstein</small></span></a>
+    <div class="nav-links">
+      <span class="peca">ciclo do dinheiro · peça interna</span>
+      <a href="../">← o posicionamento</a>
+    </div>
+  </div>
+</nav>
+
+<header class="cabeca">
+  <div class="wrap">
+    <p class="eyebrow">A mesma travessia do site, vista pelo negócio</p>
+    <h1 class="serif">Por dentro do motor.</h1>
+    <p class="lead">O túnel é o Centro: a entrada mede, o pescoço canaliza, a saída modula. <strong>Toque numa tecnologia da passagem</strong> — as setas contam quem paga, uma de cada vez.</p>
+  </div>
+</header>
+
+<main class="wrap palco">
+  <div class="cena-rolo">
+    <svg id="cena" viewBox="0 0 900 1300" role="img" aria-label="A passagem, com os atores ao redor e as tecnologias no estágio em que vivem — selecione uma tecnologia para ver os fluxos de dinheiro"></svg>
+  </div>
+  <aside class="leitura" id="leitura" aria-live="polite"></aside>
+</main>
+
+
+
+<footer>
+  Centro de Longevidade Einstein · peça de trabalho · protótipo
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/script.js"></script>
+</body>
+</html>
