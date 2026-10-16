@@ -1,353 +1,285 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Centro de Longevidade Einstein — Protótipo do site</title>
-<meta name="description" content="Protótipo do Centro de Longevidade Einstein: níveis de cuidado, jornada do paciente e modelo híbrido, presencial e remoto.">
-<meta name="robots" content="noindex, nofollow">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap">
-<script src="https://unpkg.com/bpmn-js@17.11.1/dist/bpmn-navigated-viewer.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/ScrollTrigger.min.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Centro de Longevidade Einstein — Viver inteiro, por mais tempo</title>
+<meta name="description" content="Um método contínuo de saúde de precisão: medir, mapear e modular os determinantes dos seus próximos anos.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,560;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css">
 </head>
-<body>
-<div id="scroll-progress"></div>
-<div class="dotgrid" id="app" style="width:100%;display:flex;flex-direction:column;background:var(--ink);">
+<body class="traveling">
 
-  <!-- AVISO DE PROTÓTIPO -->
-  <div style="width:100%;box-sizing:border-box;padding:9px 40px;background:var(--panel);border-bottom:1px solid var(--line);">
-    <div class="mono" style="max-width:1240px;margin:0 auto;font-size:11px;line-height:1.5;letter-spacing:.03em;color:var(--muted);">Protótipo de trabalho, em validação — não é um canal oficial do Hospital Albert Einstein, e o formulário de contato não agenda atendimento.</div>
+<!-- ============ O PORTAL · a travessia de entrada (1x por sessão) ============
+     warp de estrelas + anéis + as palavras do método atravessando o túnel;
+     clique, tecla ou scroll aceleram e desvanecem para o site -->
+<div id="portal-intro" aria-hidden="true">
+  <canvas id="portal-warp"></canvas>
+  <div class="pi-selo">
+    <div class="pi-mapa">
+      <img src="img/buraco_minhoca_claro.png" alt="">
+      <span class="pi-m pi-m1">M¹</span>
+      <span class="pi-m pi-m2">M²</span>
+      <span class="pi-m pi-m3">M³</span>
+    </div>
+    <p class="pi-nome">Centro de Longevidade <strong>Einstein</strong></p>
+    <p class="pi-hint">clique para atravessar</p>
   </div>
-
-  <!-- NAV -->
-  <div style="position:sticky;top:0;z-index:50;width:100%;box-sizing:border-box;padding:14px 40px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;background:var(--nav-bg);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);">
-    <div class="mono" style="font-size:13px;font-weight:700;color:var(--paper);letter-spacing:.06em;text-transform:uppercase;">Einstein <span style="color:var(--accent-2);">/</span> Longevidade</div>
-    <div class="narr-tabs" id="narr-tabs" style="margin:0 auto;"></div>
-    <div class="nav-right" style="display:flex;align-items:center;gap:18px;">
-      <button class="btn-primary" style="padding:10px 22px;font-size:13px;" onclick="jumpToPlanos()">Ver planos →</button>
-    </div>
-  </div>
-
-  <!-- ===================== TAB 1 — INTRODUZIR ===================== -->
-  <div class="page-tab active" id="tab-intro">
-
-    <!-- HERO -->
-    <div style="position:relative;width:100%;min-height:72vh;box-sizing:border-box;padding:72px 40px 80px;display:flex;flex-direction:column;justify-content:center;overflow:hidden;">
-      <div style="position:relative;width:100%;max-width:1240px;margin:0 auto;display:flex;flex-direction:column;gap:28px;">
-        <div class="eyebrow fx-1" style="color:var(--accent-2);">Posicionamento · Híbrido</div>
-        <h1 class="serif hero-h1 fx-2" style="margin:0;font-size:clamp(40px,5.4vw,68px);line-height:1.08;font-weight:600;letter-spacing:-.01em;color:var(--paper);max-width:18ch;">
-          Bem-estar. <span style="color:var(--brand-bright);">Hospital.</span> Ao mesmo tempo.
-        </h1>
-        <p class="fx-3" style="margin:0;font-size:18px;line-height:1.6;color:var(--muted);max-width:46ch;">Rotina de bem-estar no dia a dia, com a profundidade clínica de um hospital sempre que for preciso.</p>
-        <div class="fx-4" style="display:flex;gap:16px;margin-top:12px;flex-wrap:wrap;">
-          <button class="btn-primary" onclick="jumpToPlanos()">Agendar avaliação inicial</button>
-          <button class="btn-ghost" onclick="goTab('detalhe')">Ver a estrutura do produto ↓</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- MARQUEE -->
-    <div class="marquee-wrap" style="width:100%;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:16px 0;">
-      <div class="marquee-track mono" style="font-size:13px;letter-spacing:.1em;color:var(--muted-2);">
-        <span>PREVENÇÃO</span><span>·</span><span>ACELERAÇÃO</span><span>·</span><span>SOB MEDIDA</span><span>·</span><span>PROFUNDIDADE HOSPITALAR</span><span>·</span><span>GUARDIÃO DA JORNADA</span><span>·</span><span>CUIDADO CONTÍNUO</span><span>·</span>
-        <span>PREVENÇÃO</span><span>·</span><span>ACELERAÇÃO</span><span>·</span><span>SOB MEDIDA</span><span>·</span><span>PROFUNDIDADE HOSPITALAR</span><span>·</span><span>GUARDIÃO DA JORNADA</span><span>·</span><span>CUIDADO CONTÍNUO</span><span>·</span>
-      </div>
-    </div>
-
-    <!-- DIFERENCIAIS -->
-    <div style="width:100%;box-sizing:border-box;padding:96px 40px;display:flex;justify-content:center;background:var(--panel-2);">
-      <div class="reveal" style="width:100%;max-width:1240px;display:flex;flex-direction:column;gap:12px;">
-        <div class="eyebrow" style="color:var(--muted-2);">Diferenciais</div>
-        <h2 class="serif" style="margin:0 0 36px;font-size:clamp(26px,3.2vw,38px);line-height:1.15;font-weight:600;color:var(--paper);max-width:28ch;">O que sustenta a promessa, em 5 pontos.</h2>
-        <div class="diff-grid">
-          <div class="diff-item"><div class="diff-num mono">01</div><div class="diff-title">Atendimento multidisciplinar</div><div class="diff-desc">Guardião da jornada, nutrição, preparo físico e corpo clínico hospitalar sob demanda.</div></div>
-          <div class="diff-item"><div class="diff-num mono">02</div><div class="diff-title">Profundidade hospitalar</div><div class="diff-desc">Diagnóstico avançado dentro da própria estrutura — sem precisar encaminhar o cliente para fora.</div></div>
-          <div class="diff-item"><div class="diff-num mono">03</div><div class="diff-title">Três níveis de entrada</div><div class="diff-desc">Prevenção, Aceleração ou Sob Medida, conforme a triagem inicial do guardião da jornada.</div></div>
-          <div class="diff-item"><div class="diff-num mono">04</div><div class="diff-title">Hall de exames transparente</div><div class="diff-desc">Cada exame já mapeado como reembolsável, particular ou condicional junto à ANS — item a item.</div></div>
-          <div class="diff-item"><div class="diff-num mono">05</div><div class="diff-title">Duas trilhas, o ano inteiro</div><div class="diff-desc">A presencial marca os encontros; a digital acompanha entre eles, com sensores e contato ativo do guardião — nunca um evento único.</div></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 01 ESTRUTURA DO PRODUTO -->
-    <div style="width:100%;box-sizing:border-box;padding:120px 40px;display:flex;justify-content:center;">
-      <div class="reveal" style="width:100%;max-width:1240px;display:flex;flex-direction:column;gap:56px;">
-        <div style="display:flex;gap:20px;align-items:baseline;"><div class="mono" style="font-size:14px;color:var(--accent-2);">01</div><div class="eyebrow" style="color:var(--muted-2);">Como isso vira produto</div></div>
-        <div style="display:flex;flex-direction:column;gap:16px;max-width:70ch;">
-          <h2 class="serif" style="margin:0;font-size:clamp(30px,4.2vw,52px);line-height:1.08;font-weight:600;color:var(--paper);">Um produto só, construído em duas frentes.</h2>
-          <p style="margin:0;font-size:14px;line-height:1.6;color:var(--muted-2);">Posicionamento Híbrido já validado pelo time estratégico — o que segue, nas próximas abas, é a tradução dele em estrutura de produto, jornada e comunicação.</p>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:0;">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;padding:28px 0;border-top:1px solid var(--line);align-items:center;">
-            <div><div class="mono" style="font-size:11px;color:var(--muted-2);margin-bottom:8px;letter-spacing:.08em;">FRENTE 1 · BEM-ESTAR COTIDIANO</div><div style="font-size:19px;line-height:1.4;color:var(--muted);">Rotina, prevenção, acompanhamento de perto.</div></div>
-            <div><div class="mono" style="font-size:11px;color:var(--brand-bright);margin-bottom:8px;letter-spacing:.08em;">NA PRÁTICA</div><div style="font-size:19px;line-height:1.4;color:var(--paper);font-weight:600;">Cadência regular com o guardião da jornada e protocolo de prevenção estruturado.</div></div>
-          </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;padding:28px 0;border-top:1px solid var(--line);align-items:center;">
-            <div><div class="mono" style="font-size:11px;color:var(--muted-2);margin-bottom:8px;letter-spacing:.08em;">FRENTE 2 · PROFUNDIDADE HOSPITALAR</div><div style="font-size:19px;line-height:1.4;color:var(--muted);">Diagnóstico avançado, corpo clínico terciário.</div></div>
-            <div><div class="mono" style="font-size:11px;color:var(--brand-bright);margin-bottom:8px;letter-spacing:.08em;">NA PRÁTICA</div><div style="font-size:19px;line-height:1.4;color:var(--paper);font-weight:600;">Resposta imediata se um exame apontar algo além da prevenção — sem precisar encaminhar o cliente para fora.</div></div>
-          </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;padding:28px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);align-items:center;">
-            <div><div class="mono" style="font-size:11px;color:var(--muted-2);margin-bottom:8px;letter-spacing:.08em;">AS DUAS JUNTAS</div><div style="font-size:19px;line-height:1.4;color:var(--muted);">Híbrido — não alternado, não sequencial.</div></div>
-            <div><div class="mono" style="font-size:11px;color:var(--brand-bright);margin-bottom:8px;letter-spacing:.08em;">NA PRÁTICA</div><div style="font-size:19px;line-height:1.4;color:var(--paper);font-weight:600;">Um único guardião da jornada faz a ponte entre rotina e hospital — o cliente não escolhe um lado.</div></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="teaser-block" style="padding-bottom:96px;">
-      <div class="teaser-inner">
-        <div class="eyebrow" style="color:var(--muted-2);">O que vem a seguir</div>
-        <p class="serif" style="margin:0;font-size:24px;line-height:1.4;font-weight:500;color:var(--paper);max-width:38ch;">Isso é a promessa. Uma promessa só vale alguma coisa se você vê como ela vira produto, jornada de compra e operação de verdade.</p>
-        <button class="btn-primary" onclick="goTab('detalhe')">Ver como isso funciona →</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===================== TAB 2 — EXPLICAR E DETALHAR ===================== -->
-  <div class="page-tab" id="tab-detalhe">
-
-    <!-- LIGAÇÃO COM A INTRODUÇÃO -->
-    <div class="thread-band">
-      <div class="thread-band-inner">
-        <div class="thread-mark">"</div>
-        <div>
-          <div class="eyebrow" style="color:var(--brand-bright);margin-bottom:8px;">A história até aqui</div>
-          <p style="margin:0;font-size:15px;line-height:1.6;color:var(--muted);max-width:80ch;">O Híbrido junta bem-estar cotidiano e profundidade hospitalar — uma combinação que nenhum concorrente pesquisado oferece. A partir daqui, isso vira estrutura concreta: o que se compra, como se compra, e quem faz o quê por dentro.</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- 02 PRODUTOS -->
-    <div id="planos" style="width:100%;box-sizing:border-box;padding:96px 40px 120px;display:flex;justify-content:center;">
-      <div class="reveal" style="width:100%;max-width:1240px;display:flex;flex-direction:column;gap:48px;">
-        <div style="display:flex;flex-direction:column;gap:24px;">
-          <div style="display:flex;gap:20px;align-items:baseline;"><div class="mono" style="font-size:14px;color:var(--accent-2);">02</div><div class="eyebrow" style="color:var(--muted-2);">O que você compra</div></div>
-          <h2 class="serif" style="margin:0;font-size:clamp(30px,4.2vw,52px);line-height:1.08;font-weight:600;color:var(--paper);max-width:22ch;">Três níveis. Comece pelo geral, aprofunde quando fizer sentido.</h2>
-        </div>
-        <div id="tier-tabs" style="display:flex;gap:10px;flex-wrap:wrap;"></div>
-        <div id="product-panel"></div>
-
-        <!-- FAIXAS ETÁRIAS (deck validado, 14/10/2026) -->
-        <div style="display:flex;flex-direction:column;gap:12px;">
-          <div class="eyebrow" style="color:var(--muted-2);">Por onde cada idade entra</div>
-          <div style="display:flex;flex-wrap:wrap;gap:12px;">
-            <div style="flex:1 1 150px;padding:14px 18px;border-radius:12px;background:var(--panel-2);border:1px solid var(--line);"><div class="mono" style="font-size:11px;color:var(--muted-2);letter-spacing:.06em;margin-bottom:6px;">0–19</div><div style="font-size:14px;color:var(--muted);">fora do protocolo</div></div>
-            <div style="flex:1 1 150px;padding:14px 18px;border-radius:12px;background:var(--panel);border:1px solid var(--line);"><div class="mono" style="font-size:11px;color:var(--muted-2);letter-spacing:.06em;margin-bottom:6px;">20–39</div><div style="font-size:14px;color:var(--paper);font-weight:600;">Prevenção</div></div>
-            <div style="flex:1 1 150px;padding:14px 18px;border-radius:12px;background:var(--panel);border:1px solid var(--line);"><div class="mono" style="font-size:11px;color:var(--muted-2);letter-spacing:.06em;margin-bottom:6px;">40–59</div><div style="font-size:14px;color:var(--paper);font-weight:600;">Prevenção + Aceleração</div></div>
-            <div style="flex:1 1 150px;padding:14px 18px;border-radius:12px;background:var(--panel);border:1px solid var(--line);"><div class="mono" style="font-size:11px;color:var(--muted-2);letter-spacing:.06em;margin-bottom:6px;">60+</div><div style="font-size:14px;color:var(--paper);font-weight:600;">Prevenção + Aceleração</div></div>
-          </div>
-          <div style="font-size:12.5px;color:var(--muted-2);line-height:1.6;">Sob Medida não tem faixa fixa: entra caso a caso, em qualquer idade.</div>
-        </div>
-
-        <div style="font-size:12.5px;color:var(--muted-2);line-height:1.6;max-width:80ch;">Nota de precisão: nenhum concorrente pesquisado usa literalmente "Prevenção"/"Aceleração" como nomes de tier (Fountain Life usa CORE/APEX; Fleury segmenta por tipo de check-up). Nomes tratados como hipótese de trabalho, não citação de mercado confirmada.</div>
-      </div>
-    </div>
-
-    <!-- 03 JORNADA (cliente) -->
-    <div style="width:100%;box-sizing:border-box;padding:120px 40px;display:flex;justify-content:center;border-top:1px solid var(--line);">
-      <div class="reveal" style="width:100%;max-width:1240px;display:flex;flex-direction:column;gap:48px;">
-        <div style="display:flex;flex-direction:column;gap:24px;">
-          <div style="display:flex;gap:20px;align-items:baseline;"><div class="mono" style="font-size:14px;color:var(--accent-2);">03</div><div class="eyebrow" style="color:var(--muted-2);">Como você compra</div></div>
-          <h2 class="serif" style="margin:0;font-size:clamp(30px,4.2vw,52px);line-height:1.08;font-weight:600;color:var(--paper);max-width:26ch;">Nove momentos, do primeiro contato ao acompanhamento contínuo.</h2>
-          <p style="margin:0;font-size:14px;line-height:1.6;color:var(--muted-2);max-width:75ch;">Cada momento pertence a uma área — a cor da etiqueta mostra quem conduz. Clique em qualquer ponto da linha para pular direto pra ele.</p>
-        </div>
-        <div class="step-track" id="step-nodes"></div>
-        <div class="step-panel" id="step-panel"></div>
-        <div class="step-arrows">
-          <button class="tbtn" onclick="stepPrev()">← momento anterior</button>
-          <button class="tbtn" onclick="stepNext()">próximo momento →</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- 03b AS DUAS TRILHAS -->
-    <div style="width:100%;box-sizing:border-box;padding:120px 40px;display:flex;justify-content:center;border-top:1px solid var(--line);background:var(--panel-2);">
-      <div class="reveal" style="width:100%;max-width:1240px;display:flex;flex-direction:column;gap:40px;">
-        <div style="display:flex;flex-direction:column;gap:24px;">
-          <div style="display:flex;gap:20px;align-items:baseline;"><div class="mono" style="font-size:14px;color:var(--accent-2);">03 ·</div><div class="eyebrow" style="color:var(--muted-2);">Ainda a jornada: o ano inteiro, não o dia da consulta</div></div>
-          <h2 class="serif" style="margin:0;font-size:clamp(30px,4.2vw,52px);line-height:1.08;font-weight:600;color:var(--paper);max-width:26ch;">Duas trilhas rodam em paralelo.</h2>
-          <p style="margin:0;font-size:15px;line-height:1.6;color:var(--muted);max-width:78ch;">A trilha presencial marca os encontros — avaliação, devolutiva, nutrição, treino, reavaliações. A trilha digital não para entre eles: sensores coletam, a equipe acompanha, e o que se mede ao longo do ano é o que alimenta cada reavaliação. O ciclo fecha em doze meses e recomeça.</p>
-        </div>
-
-        <div style="display:flex;flex-direction:column;gap:10px;">
-          <div class="trilha-grid">
-            <div class="trilha-tempo">Dia 1</div><div class="trilha-tempo">2 semanas</div><div class="trilha-tempo">~1 mês</div><div class="trilha-tempo">3 meses</div><div class="trilha-tempo">6 meses</div><div class="trilha-tempo">8 meses</div><div class="trilha-tempo">12 meses</div>
-          </div>
-
-          <div class="trilha-rotulo" style="color:var(--brand-bright);">Trilha presencial</div>
-          <div class="trilha-grid">
-            <div class="trilha-cell trilha-pres">Avaliação inicial</div>
-            <div class="trilha-cell trilha-pres">Devolutiva médica</div>
-            <div class="trilha-cell trilha-pres">Plano nutricional e treinos em pequeno grupo</div>
-            <div class="trilha-cell trilha-pres">Reavaliação nutricional</div>
-            <div class="trilha-cell trilha-pres">Reavaliação médica e biomarcadores</div>
-            <div class="trilha-cell trilha-pres">Reavaliação nutricional</div>
-            <div class="trilha-cell trilha-pres">Reavaliação completa — o ciclo fecha</div>
-          </div>
-
-          <div class="trilha-rotulo" style="color:var(--muted-2);margin-top:14px;">Trilha digital</div>
-          <div class="trilha-grid">
-            <div class="trilha-cell trilha-dig">Onboarding de wearable e sensores</div>
-            <div class="trilha-cell trilha-dig">Coleta contínua</div>
-            <div class="trilha-cell trilha-dig">Acompanhamento entre os encontros</div>
-            <div class="trilha-cell trilha-dig trilha-span3">Coleta contínua — é ela que alimenta cada reavaliação</div>
-            <div class="trilha-cell trilha-dig">Alertas à equipe clínica, o ano todo</div>
-          </div>
-        </div>
-
-        <div style="font-size:12.5px;color:var(--muted-2);line-height:1.6;max-width:80ch;">A cadência de contato da trilha digital e a plataforma que a sustenta ainda estão em definição — o desenho acima mostra os momentos do ciclo, não uma frequência contratada.</div>
-      </div>
-    </div>
-
-    <!-- 04 ÁREAS — BPMN interativo + guia -->
-    <div style="width:100%;box-sizing:border-box;padding:120px 40px;display:flex;justify-content:center;">
-      <div class="reveal" style="width:100%;max-width:1240px;display:flex;flex-direction:column;gap:32px;">
-        <div style="display:flex;flex-direction:column;gap:24px;">
-          <div style="display:flex;gap:20px;align-items:baseline;"><div class="mono" style="font-size:14px;color:var(--accent-2);">04</div><div class="eyebrow" style="color:var(--muted-2);">Como as áreas se conectam</div></div>
-          <h2 class="serif" style="margin:0;font-size:clamp(30px,4.2vw,52px);line-height:1.08;font-weight:600;color:var(--paper);max-width:26ch;">Por dentro, três áreas fazem a mesma jornada acontecer.</h2>
-          <p style="margin:0;font-size:14px;line-height:1.6;color:var(--muted-2);max-width:75ch;">Muda com o nível selecionado acima. Eixos Tecnológica e Regulatória ficam fora da priorização ativa por decisão do time — o item de enquadramento ANS está dentro de Comercial (é questão contratual).</p>
-        </div>
-
-        <div style="background:var(--panel-2);border:1px solid var(--line);border-left:3px solid var(--brand-bright);border-radius:12px;padding:22px 26px;">
-          <div class="mono" style="font-size:10.5px;color:var(--muted-2);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;">Em resumo</div>
-          <p id="journey-story" style="margin:0;font-size:16px;line-height:1.65;color:var(--paper);max-width:85ch;"></p>
-        </div>
-
-        <div class="eyebrow" style="color:var(--muted-2);margin-top:8px;">Diagrama técnico (opcional) — o mesmo fluxo, navegável e exportável</div>
-        <div class="bpmn-toolbar">
-          <button class="tbtn" onclick="zoomIn()">＋ zoom</button>
-          <button class="tbtn" onclick="zoomOut()">－ zoom</button>
-          <button class="tbtn" onclick="fitView()">ajustar</button>
-          <button class="tbtn" onclick="resetZoom()">100%</button>
-          <button class="tbtn" onclick="downloadBpmn()">baixar .bpmn</button>
-          <div class="mono" style="margin-left:auto;font-size:11px;color:var(--muted-2);">arraste para navegar · ctrl/cmd + scroll para zoom · passe o mouse numa etapa</div>
-        </div>
-        <div id="bpmn-canvas"></div>
-        <div class="bpmn-tooltip" id="bpmn-tooltip"></div>
-
-        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;" id="lane-pills"></div>
-        <div style="display:grid;grid-template-columns:1.6fr 1fr;gap:32px;">
-          <div id="guide-main"></div>
-          <div id="guide-sidebar"></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="teaser-block" style="padding-bottom:96px;">
-      <div class="teaser-inner">
-        <div class="eyebrow" style="color:var(--muted-2);">O que vem a seguir</div>
-        <p class="serif" style="margin:0;font-size:24px;line-height:1.4;font-weight:500;color:var(--paper);max-width:42ch;">Você viu o produto por fora — níveis, jornada — e por dentro — as áreas que sustentam cada etapa. Falta uma pergunta: isso já existe em algum lugar do mercado?</p>
-        <button class="btn-primary" onclick="goTab('fechamento')">Ver a comparação e o fechamento →</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===================== TAB 3 — FECHAMENTO CONCLUSIVO / COMPARATIVO ===================== -->
-  <div class="page-tab" id="tab-fechamento">
-
-    <!-- LIGAÇÃO COM OS DETALHES -->
-    <div class="thread-band">
-      <div class="thread-band-inner">
-        <div class="thread-mark">"</div>
-        <div>
-          <div class="eyebrow" style="color:var(--brand-bright);margin-bottom:8px;">A história até aqui</div>
-          <p style="margin:0;font-size:15px;line-height:1.6;color:var(--muted);max-width:80ch;">Um posicionamento Híbrido já traduzido em 3 níveis de produto e 3 áreas de operação. Agora, a pergunta que ficou em aberto — e o fechamento do raciocínio.</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- 05 SONDAGEM / ESPECTRO (comparativo) -->
-    <div style="width:100%;box-sizing:border-box;padding:96px 40px 120px;display:flex;justify-content:center;border-top:1px solid var(--line);">
-      <div class="reveal" style="width:100%;max-width:1240px;display:flex;flex-direction:column;gap:56px;">
-        <div style="display:flex;flex-direction:column;gap:24px;">
-          <div style="display:flex;gap:20px;align-items:baseline;"><div class="mono" style="font-size:14px;color:var(--accent-2);">05</div><div class="eyebrow" style="color:var(--muted-2);">Sondagem de mercado</div></div>
-          <h2 class="serif" style="margin:0;font-size:clamp(30px,4.2vw,52px);line-height:1.08;font-weight:600;color:var(--paper);max-width:26ch;">Como cada marca ocupa esse espectro, hoje.</h2>
-          <p style="margin:0;font-size:15px;line-height:1.6;color:var(--muted);max-width:70ch;">Leitura qualitativa própria a partir de fetch direto nos sites oficiais (29/09/2026) — insumo para a decisão do time estratégico de marca, não uma posição fechada.</p>
-        </div>
-        <div class="spectrum-desktop" style="position:relative;width:100%;padding:90px 0 50px;">
-          <div style="position:absolute;left:0;right:0;top:50%;height:2px;background:linear-gradient(90deg,var(--muted-2),var(--brand-bright));transform:translateY(-50%);"></div>
-          <div style="position:absolute;left:0%;top:calc(50% - 34px);display:flex;flex-direction:column;align-items:center;gap:8px;"><div class="mono" style="font-size:10.5px;color:var(--muted);white-space:nowrap;">Awake</div><div style="width:12px;height:12px;border-radius:999px;background:var(--muted-2);"></div></div>
-          <div style="position:absolute;left:14%;top:calc(50% + 14px);display:flex;flex-direction:column;align-items:center;gap:8px;"><div style="width:12px;height:12px;border-radius:999px;background:var(--muted-2);"></div><div class="mono" style="font-size:10.5px;color:var(--muted);white-space:nowrap;">Cidade Jardim</div></div>
-          <div style="position:absolute;left:26%;top:calc(50% - 34px);display:flex;flex-direction:column;align-items:center;gap:8px;"><div class="mono" style="font-size:10.5px;color:var(--muted);white-space:nowrap;">Kurotel</div><div style="width:12px;height:12px;border-radius:999px;background:var(--muted-2);"></div></div>
-          <div style="position:absolute;left:46%;top:calc(50% + 14px);display:flex;flex-direction:column;align-items:center;gap:8px;"><div style="width:13px;height:13px;border-radius:999px;background:var(--dot-mid);"></div><div class="mono" style="font-size:10.5px;color:var(--muted);white-space:nowrap;">Soul8</div></div>
-          <div style="position:absolute;left:58%;top:calc(50% - 34px);display:flex;flex-direction:column;align-items:center;gap:8px;"><div class="mono" style="font-size:10.5px;color:var(--muted);white-space:nowrap;">Fleury Lifecare</div><div style="width:13px;height:13px;border-radius:999px;background:var(--dot-mid);"></div></div>
-          <div style="position:absolute;left:66%;top:calc(50% + 14px);display:flex;flex-direction:column;align-items:center;gap:8px;"><div style="width:13px;height:13px;border-radius:999px;background:var(--dot-mid);"></div><div class="mono" style="font-size:10.5px;color:var(--muted);white-space:nowrap;">Fountain Life</div></div>
-          <div style="position:absolute;left:94%;top:50%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:10px;"><div class="mono" style="font-size:12px;color:var(--paper);font-weight:700;white-space:nowrap;">Centro Einstein</div><div style="width:26px;height:26px;border-radius:999px;background:var(--brand-bright);box-shadow:0 0 0 6px var(--einstein-glow-1),0 0 30px var(--einstein-glow-2);"></div></div>
-          <div style="position:absolute;left:0;bottom:0;" class="mono"><span style="font-size:11px;color:var(--muted-2);letter-spacing:.08em;">← BEM-ESTAR / LIFESTYLE</span></div>
-          <div style="position:absolute;right:0;bottom:0;text-align:right;" class="mono"><span style="font-size:11px;color:var(--brand-bright);letter-spacing:.08em;">PROFUNDIDADE HOSPITALAR →</span></div>
-        </div>
-        <div class="only-mobile" style="flex-direction:column;gap:14px;">
-          <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--paper);border-bottom:1px solid var(--line);padding-bottom:10px;"><span>Awake</span><span class="mono" style="color:var(--muted-2);">bem-estar</span></div>
-          <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--paper);border-bottom:1px solid var(--line);padding-bottom:10px;"><span>Cidade Jardim</span><span class="mono" style="color:var(--muted-2);">bem-estar</span></div>
-          <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--paper);border-bottom:1px solid var(--line);padding-bottom:10px;"><span>Kurotel</span><span class="mono" style="color:var(--muted-2);">bem-estar</span></div>
-          <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--paper);border-bottom:1px solid var(--line);padding-bottom:10px;"><span>Soul8</span><span class="mono" style="color:var(--dot-mid);">meio-termo</span></div>
-          <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--paper);border-bottom:1px solid var(--line);padding-bottom:10px;"><span>Fleury Lifecare</span><span class="mono" style="color:var(--dot-mid);">meio-termo</span></div>
-          <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--paper);border-bottom:1px solid var(--line);padding-bottom:10px;"><span>Fountain Life</span><span class="mono" style="color:var(--dot-mid);">meio-termo</span></div>
-          <div style="display:flex;justify-content:space-between;font-size:14px;color:var(--paper);font-weight:700;padding-bottom:4px;"><span>Centro Einstein</span><span class="mono" style="color:var(--brand-bright);">hospitalar</span></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 06 CONFIANÇA -->
-    <div style="width:100%;box-sizing:border-box;padding:140px 40px 100px;display:flex;justify-content:center;position:relative;overflow:hidden;">
-      <div style="position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:700px;height:700px;border-radius:999px;background:radial-gradient(circle,var(--brand) 0%,transparent 68%);opacity:.3;"></div>
-      <div class="reveal" style="position:relative;width:100%;max-width:1240px;display:flex;flex-direction:column;gap:24px;align-items:center;text-align:center;">
-        <div style="display:flex;gap:20px;align-items:baseline;"><div class="mono" style="font-size:14px;color:var(--accent-2);">06</div><div class="eyebrow" style="color:var(--muted-2);">Como seguimos em contato</div></div>
-        <div id="stat-1955" class="serif" style="font-size:clamp(90px,16vw,220px);line-height:.9;font-weight:700;color:var(--paper);letter-spacing:-.02em;">1955</div>
-        <p style="margin:0;font-size:18px;line-height:1.6;color:var(--muted);max-width:52ch;">o ano em que este hospital começou a operar. Décadas de estrutura hospitalar sustentam a confiança do produto — não um depoimento.</p>
-        <div class="grid-3" style="width:100%;margin-top:32px;text-align:left;">
-          <div style="background:var(--panel-2);border:1px solid var(--line);border-radius:16px;padding:28px;"><div class="serif" style="font-size:18px;font-weight:600;color:var(--paper);margin-bottom:8px;">Guardião da jornada</div><div style="font-size:13.5px;line-height:1.55;color:var(--muted);">Ponto único de contato — organiza agenda, traduz achados clínicos, faz a ponte com o time médico.</div></div>
-          <div style="background:var(--panel-2);border:1px solid var(--line);border-radius:16px;padding:28px;"><div class="serif" style="font-size:18px;font-weight:600;color:var(--paper);margin-bottom:8px;">Hospital, não clínica avulsa</div><div style="font-size:13.5px;line-height:1.55;color:var(--muted);">Estrutura hospitalar terciária completa por trás de cada exame — nunca "encaminhar para fora".</div></div>
-          <div style="background:var(--panel-2);border:1px solid var(--line);border-radius:16px;padding:28px;"><div class="serif" style="font-size:18px;font-weight:600;color:var(--paper);margin-bottom:8px;">Cadência contínua</div><div style="font-size:13.5px;line-height:1.55;color:var(--muted);">Onboarding, check-ins mensais, revisão trimestral, reavaliação anual — nunca um evento pontual.</div></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- FECHAMENTO — síntese -->
-    <div style="width:100%;box-sizing:border-box;padding:0 40px 100px;display:flex;justify-content:center;">
-      <div class="reveal" style="width:100%;max-width:1240px;display:flex;flex-direction:column;gap:20px;background:var(--panel-2);border:1px solid var(--line);border-radius:20px;padding:48px;">
-        <div class="eyebrow" style="color:var(--accent-2);">Fechamento</div>
-        <h2 class="serif" style="margin:0;font-size:clamp(26px,3.4vw,38px);line-height:1.15;font-weight:600;color:var(--paper);max-width:36ch;">A estrutura está pronta. A decisão de marca continua com vocês.</h2>
-        <p style="margin:0;font-size:15px;line-height:1.65;color:var(--muted);max-width:85ch;">Começamos com uma promessa: bem-estar e hospital, ao mesmo tempo, em um só lugar. Prevenção, Aceleração e Sob Medida traduzem essa promessa em produto. Comercial, Guardião da Jornada e Assistencial traduzem a mesma promessa em operação. O que este material entrega é a tradução, ponta a ponta — a palavra final sobre posicionamento e tom de marca é do time estratégico.</p>
-      </div>
-    </div>
-
-    <!-- ENTRE EM CONTATO -->
-    <div id="contato" style="width:100%;box-sizing:border-box;padding:100px 40px;display:flex;justify-content:center;background:var(--brand);">
-      <div class="reveal" style="width:100%;max-width:680px;display:flex;flex-direction:column;gap:10px;">
-        <h2 class="serif" style="margin:0;font-size:clamp(28px,3.6vw,40px);line-height:1.1;font-weight:600;color:#F4F2EA;">Entre em contato</h2>
-        <p style="margin:0 0 32px;font-size:14px;line-height:1.6;color:rgba(244,242,234,.75);max-width:52ch;">A partir das informações abaixo, o time do Centro de Longevidade retorna por WhatsApp ou ligação telefônica.</p>
-        <form id="contato-form" style="display:flex;flex-direction:column;gap:18px;" onsubmit="return handleContatoSubmit(event)">
-          <div><label class="mono" style="display:block;font-size:11px;color:rgba(244,242,234,.7);margin-bottom:6px;letter-spacing:.04em;">NOME</label><input type="text" required style="width:100%;box-sizing:border-box;padding:13px 16px;border-radius:10px;border:1px solid rgba(244,242,234,.3);background:rgba(0,0,0,.15);color:#F4F2EA;font-size:14px;font-family:inherit;"></div>
-          <div><label class="mono" style="display:block;font-size:11px;color:rgba(244,242,234,.7);margin-bottom:6px;letter-spacing:.04em;">CELULAR (WHATSAPP)</label><input type="tel" required placeholder="(00) 00000-0000" style="width:100%;box-sizing:border-box;padding:13px 16px;border-radius:10px;border:1px solid rgba(244,242,234,.3);background:rgba(0,0,0,.15);color:#F4F2EA;font-size:14px;font-family:inherit;"></div>
-          <div><label class="mono" style="display:block;font-size:11px;color:rgba(244,242,234,.7);margin-bottom:6px;letter-spacing:.04em;">PROTOCOLO DE INTERESSE</label>
-            <select style="width:100%;box-sizing:border-box;padding:13px 16px;border-radius:10px;border:1px solid rgba(244,242,234,.3);background:rgba(0,0,0,.15);color:#F4F2EA;font-size:14px;font-family:inherit;">
-              <option>Ainda não sei — quero uma avaliação inicial</option>
-              <option>Prevenção</option>
-              <option>Aceleração</option>
-              <option>Sob Medida</option>
-            </select>
-          </div>
-          <button type="submit" class="btn-primary" style="margin-top:8px;justify-content:center;">Enviar</button>
-          <div id="contato-msg" style="display:none;font-size:12.5px;line-height:1.6;color:rgba(244,242,234,.75);border-top:1px solid rgba(244,242,234,.2);padding-top:16px;"></div>
-        </form>
-        <div class="mono" style="margin-top:8px;font-size:10.5px;letter-spacing:.03em;color:rgba(244,242,234,.5);">Mockup de interface — este formulário ainda não está conectado a um sistema de agendamento real.</div>
-      </div>
-    </div>
-
-    <!-- FOOTER -->
-    <div style="width:100%;box-sizing:border-box;padding:48px 40px;display:flex;justify-content:center;border-top:1px solid var(--line);">
-      <div style="width:100%;max-width:1240px;display:flex;flex-direction:column;gap:14px;">
-        <div class="serif" style="font-size:16px;color:var(--paper);font-weight:600;">Centro de Longevidade Einstein</div>
-        <div style="font-size:12px;line-height:1.6;color:var(--muted-2);max-width:90ch;"><b>Atualização v9, 14/10/2026:</b> o site foi alinhado ao que a viabilização fechou na rodada 8 e ao deck já lido pela cliente — entraram as faixas etárias de entrada por nível, a trilha presencial e a digital rodando em paralelo (dia 1, 2 semanas, ~1 mês, 3, 6, 8 e 12 meses), o plano nutricional e os treinos orientados em pequeno grupo. Saíram as frequências de check-in (mensal, quinzenal) que eram hipótese de outubro: a cadência de contato ativo é uma decisão em aberto do projeto, e o site passou a dizer isso. <b>Nenhum número financeiro aparece aqui</b> — preço, custo, margem e ponto de equilíbrio ficam no material interno. A página é <i>noindex</i>, não deve ser encontrada em busca.<br><br>Rascunho de execução visual (v8, 02/10/2026) — mockup de trabalho, não peça de marketing final. Tema único (removido o alternativo escuro, por decisão de feedback) — hero mais compacto, sem animações decorativas que destoavam da referência. Paleta, tipografia (Work Sans + Inter) e forma dos componentes (cards, botões, formulário de contato) replicadas a partir de einstein.br/n/servicos/mudanca-no-estilo-de-vida (cores extraídas via getComputedStyle, não estimadas visualmente) — conteúdo é nosso. Nomes de produto e direção de arte são hipóteses a validar. Posições no espectro competitivo são leitura qualitativa própria, não medição de mercado. Diagrama BPMN cobre os 3 eixos ativos na priorização (Comercial, Guardião da Jornada, Assistencial) — Tecnológica e Regulatória ficam fora por decisão do time. Hall de exames por protocolo cruza o deck estratégico interno (pág. 28) com busca primária no Anexo I oficial do Rol ANS (02/10/2026). Formulário de contato é mockup de interface, não está conectado a sistema real. Fontes: sites oficiais, fetch em 29/09/2026 — ver <i>sondagem_posicionamento_design_comunicacao.md</i> e <i>hall_de_exames_por_produto.md</i> no vault.</div>
-      </div>
-    </div>
-
-  </div>
-
 </div>
+
+<!-- a passagem como fundo do site inteiro — a câmera está DENTRO do túnel.
+     A MESMA silhueta governa fundo e conteúdo: bocas largas, garganta no meio
+     (gaussiana em js); o conteúdo afunila e reabre junto. -->
+<svg class="passagem-fundo" id="passagem-fundo" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+  <defs>
+    <radialGradient id="pf-luz-grad">
+      <stop offset="0%" stop-color="#1774DE" stop-opacity=".5"/>
+      <stop offset="100%" stop-color="#1774DE" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+</svg>
+
+<nav>
+  <div class="wrap nav-inner">
+    <a class="brand" href="#topo"><img class="brand-selo" src="img/buraco_minhoca_nav.png" alt=""><span>Longevidade<small>Einstein</small></span></a>
+    <div class="nav-links">
+      <a href="#medir">M¹ Medir</a>
+      <a href="#entender">M² Mapear</a>
+      <a href="#modular">M³ Modular</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ HERO · a boca da passagem (largura cheia) ============ -->
+<header class="hero" id="topo">
+  <div class="wrap">
+    <p class="eyebrow rv">Centro de Longevidade Einstein</p>
+    <h1 class="serif rv">Viver inteiro,<br>por mais tempo.</h1>
+    <p class="lead rv">Longevidade, aqui, não é promessa — é um método contínuo de saúde de precisão: <strong>medir, mapear e modular</strong> os determinantes dos seus próximos anos.</p>
+    <p class="tv-ponta rv">hoje</p>
+  </div>
+</header>
+
+<!-- ============ O PERCURSO · o conteúdo desce DENTRO do túnel ============ -->
+<div id="percurso">
+  <svg class="fio-site" aria-hidden="true"><line id="fio-traj" x1="50%" y1="0" x2="50%" y2="100%" pathLength="100"/></svg>
+
+  <!-- o portal: um bloco flutuando dentro do túnel, não uma faixa -->
+  <section class="manifesto">
+    <div class="wrap">
+      <div class="portal rv">
+        <p class="nots"><em>Não é um check-up.</em><br><em>Não é uma academia.</em><br><em>Não é um spa.</em><br>É um método — <span class="e1">M¹</span> <span class="e2">M²</span> <span class="e3">M³</span>.</p>
+        <p>Contínuo, conduzido por médicos, sob um teto só — cada orientação que você recebe aqui tem uma medida <strong>sua</strong> por trás, e uma evidência publicada por baixo.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ESTAÇÃO 1 · MEDIR — a descida afunila ============ -->
+  <section id="medir">
+    <div class="wrap">
+      <span class="rotulo-vert rv-medir" aria-hidden="true">M¹ · MEDIR</span>
+      <div class="no-fio nf-medir" aria-hidden="true"></div>
+      <div class="sec-head centrada rv">
+        <p class="mov m-medir">M¹ · a Medida</p>
+        <h2 class="serif">Três começos. E um atalho.</h2>
+        <p>Toda jornada abre com uma avaliação profunda — escolhida pela sua fase, não pela idade no documento.</p>
+      </div>
+      <div class="prots">
+        <div class="prot p-1 rv">
+          <div class="foto-slot" aria-hidden="true"><span>Fotografia · avaliação funcional</span><small>material Einstein a definir</small></div>
+          <p class="faixa">Medida Performance · 20+</p>
+          <h3>Construir a curva</h3>
+          <p>Para começar cedo: construir capacidade — não corrigi-la depois.</p>
+          <ul>
+            <li>Força, potência e pisada</li>
+            <li>Composição corporal e capacidade cardiorrespiratória</li>
+            <li>Painel metabólico, lipídico e hematológico</li>
+            <li>Sono (triagem domiciliar) e estilo de vida</li>
+          </ul>
+        </div>
+        <div class="prot p-2 rv">
+          <div class="foto-slot" aria-hidden="true"><span>Fotografia · a conversa com o médico</span><small>material Einstein a definir</small></div>
+          <p class="faixa">Medida Core · 40+</p>
+          <h3>Envelhecimento saudável</h3>
+          <p>A avaliação de referência: o retrato completo da sua década.</p>
+          <ul>
+            <li>Cognição, emoção e sentidos</li>
+            <li>Corpo: força, equilíbrio, composição e VO₂</li>
+            <li>Marcadores inflamatórios, vitaminas e oligoelementos</li>
+            <li>Sono (triagem domiciliar) e estilo de vida</li>
+          </ul>
+        </div>
+        <div class="prot p-3 rv">
+          <div class="foto-slot" aria-hidden="true"><span>Fotografia · imagem e profundidade</span><small>material Einstein a definir</small></div>
+          <p class="faixa">Medida Frontier · 40+</p>
+          <h3>Ver mais longe</h3>
+          <p>A camada mais profunda: o limite do que a ciência consegue medir hoje.</p>
+          <ul>
+            <li>Relógio biológico e metabolômica</li>
+            <li>Coração e vasos: angio-TC, VOP e marcadores</li>
+            <li>Retina, hormônios e aconselhamento genético</li>
+            <li>Tudo do Core, aprofundado</li>
+          </ul>
+        </div>
+      </div>
+      <div class="curadoria rv">
+        <h3>Já se cuida? Traga seus exames.</h3>
+        <p>A curadoria transforma o que você já tem em direção: nossa equipe lê os seus resultados, completa só o que faltar e desenha o seu caminho pelos seis eixos.</p>
+        <a class="btn btn-line" href="#contato">Começar pela curadoria</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ESTAÇÃO 2 · M² MAPEAR — a garganta ============ -->
+  <section id="entender" class="garganta">
+    <div class="wrap">
+      <span class="rotulo-vert rv-entender" aria-hidden="true">M² · MAPEAR</span>
+      <div class="no-fio nf-entender" aria-hidden="true"></div>
+      <div class="garganta-inner rv">
+        <p class="mov m-entender">M² · o Mapa</p>
+        <h2 class="serif">Seus resultados viram um mapa.</h2>
+        <p>O que está bem, o que merece investigação, o que pede modulação — explicado em conversa, não em laudo. É a parte mais estreita da travessia, e você não a atravessa sozinho.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ESTAÇÃO 3 · MODULAR — a saída reabre, par a par ============ -->
+  <section id="modular">
+    <div class="wrap">
+      <span class="rotulo-vert rv-modular" aria-hidden="true">M³ · MODULAR</span>
+      <div class="no-fio nf-modular" aria-hidden="true"></div>
+      <div class="sec-head centrada rv">
+        <p class="mov m-modular">M³ · as Modulações</p>
+        <h2 class="serif">Seis Modulações. Um foco:<br>os seus próximos anos.</h2>
+        <p>É aqui que o método trabalha o ano inteiro — cada Modulação com protocolo próprio, equipe dedicada e evidência.</p>
+      </div>
+      <div class="pares">
+        <div class="par par-1">
+          <div class="eixo rv">
+            <h3>Modulação autonômica</h3>
+            <p>Estresse não se aconselha — regula-se: biofeedback, respiração e, quando indicado, apoio medicamentoso.</p>
+          </div>
+          <div class="eixo rv">
+            <h3>Nutrição de precisão</h3>
+            <p>Não é dieta: é o seu metabolismo, medido, orientando o que vai ao prato.</p>
+          </div>
+        </div>
+        <div class="par par-2">
+          <div class="eixo rv">
+            <h3>Exercício de precisão</h3>
+            <p>Treino prescrito por medida: força, potência e capacidade cardiorrespiratória, com alvos individuais.</p>
+          </div>
+          <div class="eixo rv">
+            <h3>Modulação hormonal</h3>
+            <p>Hormônios acompanhados no tempo, modulados com critério clínico — na dose da sua fisiologia.</p>
+          </div>
+        </div>
+        <div class="par par-3">
+          <div class="eixo rv">
+            <h3>Modulação circadiana</h3>
+            <p>O sono como alavanca: triagem na sua própria casa e um protocolo para o seu relógio biológico.</p>
+          </div>
+          <div class="eixo rv">
+            <h3>Osteometabólica</h3>
+            <p>Ossos e músculos decidem a sua independência futura — tratados agora, antes de virarem limite.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ O PRIMEIRO ANO · o caminho, na prática (marcos no fio) ============ -->
+  <section id="ano">
+    <div class="wrap">
+      <div class="sec-head centrada rv">
+        <div class="selo-mapa" aria-hidden="true">
+          <img class="orbita" src="img/buraco_minhoca.png" alt="">
+          <span class="sm-m sm-1">M¹</span>
+          <span class="sm-m sm-2">M²</span>
+          <span class="sm-m sm-3">M³</span>
+        </div>
+        <p class="mov">O caminho, na prática</p>
+        <h2 class="serif">O seu primeiro ano.</h2>
+        <p>Sem mistério: o que acontece com você, e quando.</p>
+      </div>
+      <ol class="marcos">
+        <li class="marco rv">
+          <span class="m-no" aria-hidden="true"></span>
+          <p class="m-rotulo">Dia 1 · a sua Medida</p>
+          <p>O seu dia de abertura no Centro: o protocolo da sua fase — começando pelo que você já tem, sem repetir nada.</p>
+        </li>
+        <li class="marco rv">
+          <span class="m-no" aria-hidden="true"></span>
+          <p class="m-rotulo">Na sequência · o seu Mapa</p>
+          <p>Seus resultados, explicados em conversa. Você sai sabendo o que está bem, o que merece investigação e o que vem primeiro.</p>
+        </li>
+        <li class="marco rv">
+          <span class="m-no" aria-hidden="true"></span>
+          <p class="m-rotulo">Do primeiro mês em diante · as Modulações em movimento</p>
+          <p>Os eixos entram no seu calendário: treino prescrito, nutrição, sono — com alvos seus, não médias da população.</p>
+        </li>
+        <li class="marco rv">
+          <span class="m-no" aria-hidden="true"></span>
+          <p class="m-rotulo">O ano inteiro · por perto</p>
+          <p>Um contato ativo por semana, um guardião que conhece o seu caso de ponta a ponta — e reavaliações quando os seus dados pedem, não quando o calendário manda.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============ A VOZ · o que a pesquisa nos disse ============ -->
+  <section id="voz">
+    <div class="wrap">
+      <figure class="voz-inner rv">
+        <blockquote class="serif">“Não é viver mais.<br>É viver inteiro.”</blockquote>
+        <figcaption>— o que ouvimos dos pacientes quando perguntamos o que é longevidade</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ============ PERGUNTAS · a conversa direta ============ -->
+  <section id="perguntas">
+    <div class="wrap">
+      <div class="sec-head centrada rv">
+        <h2 class="serif">O que todo mundo pergunta.</h2>
+      </div>
+      <div class="faq rv">
+        <details>
+          <summary>Preciso estar doente para começar?</summary>
+          <p>Não — é o contrário. Tudo aqui começa por uma medida, não por um sintoma.</p>
+        </details>
+        <details>
+          <summary>Já faço check-up. Qual a diferença?</summary>
+          <p>O check-up tira um retrato e para. Aqui o retrato vira o seu Mapa, o Mapa vira as suas Modulações — acompanhadas o ano inteiro.</p>
+        </details>
+        <details>
+          <summary>Vou repetir exames que já fiz?</summary>
+          <p>Não. A curadoria aproveita o que você já tem e completa só o que faltar.</p>
+        </details>
+        <details>
+          <summary>Quanto tempo isso toma da minha vida?</summary>
+          <p>Um dia de abertura, encontros no seu ritmo — e o resto acontece nos bastidores, enquanto você vive.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+</div><!-- /percurso -->
+
+<!-- ============ A CHEGADA · a boca de saída, aberta para a luz ============ -->
+<section id="contato" class="contato">
+  <div class="wrap">
+    <p class="tv-ponta rv">os seus próximos anos</p>
+    <h2 class="serif rv">Comece pela medida.</h2>
+    <p class="rv">Vinte minutos, sem compromisso: entender a sua fase, escolher o seu começo — ou trazer os exames que você já tem.</p>
+    <div class="cta-row rv" style="justify-content:center">
+      <a class="btn btn-solid" href="#">Agendar uma conversa</a>
+      <a class="btn btn-line" href="#medir">Rever a travessia</a>
+    </div>
+    <div class="foto-slot larga rv" aria-hidden="true"><span>Fotografia · vida em luz natural</span><small>material Einstein a definir</small></div>
+  </div>
+</section>
 
 <script src="js/script.js"></script>
 </body>
