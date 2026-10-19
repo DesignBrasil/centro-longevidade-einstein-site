@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Por dentro do motor — as quatro camadas · Centro de Longevidade Einstein</title>
+<meta name="description" content="A travessia em quatro camadas: o ecossistema (quem paga), o sistema (o funil do Centro), os serviços (os pacotes) e as jornadas (o que a pessoa vive).">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,560;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<nav>
+  <div class="wrap nav-inner">
+    <a class="brand" href="index.html"><img class="brand-selo" src="img/selo_sistematica.svg" alt=""><span>Sistemática<small>Longevidade</small></span></a>
+    <div class="nav-links" id="camadas" role="tablist" aria-label="as quatro camadas"></div>
+    <a class="nav-irma" href="../">
+      <img src="../img/buraco_minhoca_nav.png" alt=""><span>Longevidade <b>Einstein</b></span></a>
+  </div>
+</nav>
+
+<main class="wrap palco">
+  <p class="pergunta" id="pergunta"></p>
+
+  <div class="vistas">
+    <section class="vista v-dupla" id="v-ecossistema" role="tabpanel" aria-label="Ecossistema">
+      <div class="cena-rolo">
+        <svg id="eco" viewBox="0 44 845 546" role="img" aria-label="O ecossistema: os atores dentro e fora do sistema do Centro, e as relações de dinheiro entre eles"></svg>
+      </div>
+      <aside class="leitura" id="leitura-eco" aria-live="polite"></aside>
+    </section>
+
+    <section class="vista v-dupla" id="v-sistema" role="tabpanel" aria-label="Sistema">
+      <div class="cena-rolo">
+        <svg id="cena" viewBox="0 0 480 720" role="img" aria-label="O sistema: o funil do Centro, com cada item no seu movimento — M1 medir, M2 mapear, M3 modular"></svg>
+      </div>
+      <aside class="leitura" id="leitura-sis" aria-live="polite"></aside>
+    </section>
+
+    <section class="vista" id="v-servicos" role="tabpanel" aria-label="Serviços">
+      <div class="cartoes" id="cartoes"></div>
+    </section>
+
+    <section class="vista v-jornadas" id="v-jornadas" role="tabpanel" aria-label="Jornadas">
+      <aside class="lista-jor" id="lista-jor"></aside>
+      <div class="jor-palco" id="jor-palco"></div>
+    </section>
+  </div>
+</main>
+
+<script src="js/data.js"></script>
+<script src="js/script.js"></script>
+</body>
+</html>

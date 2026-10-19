@@ -95,9 +95,23 @@ nav{position:sticky;top:0;z-index:50;background:rgba(240,244,249,.86);backdrop-f
 .brand{display:flex;align-items:center;gap:11px;font-family:'Fraunces',serif;font-size:19px;color:var(--ink);text-decoration:none;font-weight:600}
 .brand-selo{width:44px;height:auto;flex:none}
 .brand small{display:block;font-family:'Inter',sans-serif;font-weight:500;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-.nav-links{display:flex;gap:28px}
-.nav-links a{color:var(--text);text-decoration:none;font-size:14.5px;font-weight:500}
-.nav-links a:hover{color:var(--accent)}
+/* mesmo padrão de botão da peça sistêmica: caixa alta, entreletra larga,
+   pílula no hover — os dois cabeçalhos são da mesma família */
+.nav-links{display:flex;gap:4px;align-items:center}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:11px;font-weight:600;
+  letter-spacing:.18em;text-transform:uppercase;padding:6px 14px;border-radius:999px;
+  border:1px solid transparent;transition:color .15s ease,border-color .15s ease}
+.nav-links a:hover{color:var(--ink);border-color:rgba(12,58,111,.25)}
+/* o atalho para a peça irmã — mesma pílula e mesma posição nos dois fronts:
+   marca à esquerda · navegação no meio · irmã no fim */
+.nav-irma{display:inline-flex;align-items:center;gap:9px;padding:5px 14px 5px 7px;
+  border:1px solid var(--hairline);border-radius:999px;background:rgba(255,255,255,.6);
+  font-size:12.5px;line-height:1.2;color:var(--muted);text-decoration:none;white-space:nowrap;
+  transition:border-color .15s ease,color .15s ease}
+.nav-irma img{width:27px;height:23px;object-fit:contain;flex:none}
+.nav-irma b{font-weight:600;color:var(--ink)}
+.nav-irma:hover{border-color:var(--accent);color:var(--ink)}
+@media(max-width:860px){.nav-irma span{display:none}.nav-irma{padding:5px 8px}}
 @media(max-width:860px){.nav-links{display:none}}
 
 /* ---- hero ---- */
