@@ -67,7 +67,7 @@
     if (window.innerWidth <= EMPILHA) { w.style.zoom = "1"; return; }
     if (!cont.clientHeight) return;
     w.style.zoom = "1";
-    var alvo = cont.clientHeight - 28;   // folga: o conteúdo nunca encosta na borda
+    var alvo = cont.clientHeight - 16;   // folga: o conteúdo nunca encosta na borda
     var teto = parseFloat(cont.getAttribute("data-cresce")) || 1;
     if (teto > 1 && w.getBoundingClientRect().height <= alvo) {
       var bom = 1;
@@ -80,8 +80,10 @@
       return;
     }
     // encolhe só o necessário: mede depois de cada passo e para no primeiro
-    // que couber (antes a medida ia um passo atrasada e tirava 3% à toa)
-    for (var z = 1; z > 0.78 && w.getBoundingClientRect().height > alvo;) {
+    // que couber (antes a medida ia um passo atrasada e tirava 3% à toa).
+    // O piso é baixo de propósito: como o texto nasce grande, 0,62 ainda dá
+    // uma letra legível — e cortar conteúdo seria pior do que reduzir mais.
+    for (var z = 1; z > 0.62 && w.getBoundingClientRect().height > alvo;) {
       z -= 0.03;
       w.style.zoom = String(z);
     }
