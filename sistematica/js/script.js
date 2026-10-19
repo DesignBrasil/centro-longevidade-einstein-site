@@ -54,15 +54,35 @@
   /* ---- nada estoura a borda: o painel se encaixa na altura disponível ----
      Escreve o conteúdo dentro de um invólucro e, se ele passar da altura do
      painel, encolhe em passos até caber (piso em 78%). Vale para qualquer
-     janela — é o que garante a promessa de "uma tela, sem rolagem". */
+     janela — é o que garante a promessa de "uma tela, sem rolagem".
+     O caminho inverso também vale: um painel marcado com `data-cresce` (o
+     teto de ampliação) sobe em passos quando sobra altura — é assim que a
+     letra dos serviços fica legível numa tela grande em vez de ficar miúda
+     no alto. Abaixo de 1020px a peça empilha e rola: aí o zoom sai de cena. */
+  var EMPILHA = 1020;
   var painesAjustar = [];
   function encaixa(cont) {
     var w = cont && cont.firstElementChild;
-    if (!w || !cont.clientHeight) return;
+    if (!w) return;
+    if (window.innerWidth <= EMPILHA) { w.style.zoom = "1"; return; }
+    if (!cont.clientHeight) return;
     w.style.zoom = "1";
     var alvo = cont.clientHeight - 28;   // folga: o conteúdo nunca encosta na borda
-    for (var z = 1; z > 0.78; z -= 0.03) {
-      if (w.getBoundingClientRect().height <= alvo) break;
+    var teto = parseFloat(cont.getAttribute("data-cresce")) || 1;
+    if (teto > 1 && w.getBoundingClientRect().height <= alvo) {
+      var bom = 1;
+      for (var g = 1.04; g <= teto + 1e-9; g += 0.04) {
+        w.style.zoom = String(g);
+        if (w.getBoundingClientRect().height > alvo) break;
+        bom = g;
+      }
+      w.style.zoom = String(bom);
+      return;
+    }
+    // encolhe só o necessário: mede depois de cada passo e para no primeiro
+    // que couber (antes a medida ia um passo atrasada e tirava 3% à toa)
+    for (var z = 1; z > 0.78 && w.getBoundingClientRect().height > alvo;) {
+      z -= 0.03;
       w.style.zoom = String(z);
     }
   }
@@ -71,11 +91,26 @@
     if (painesAjustar.indexOf(cont) < 0) painesAjustar.push(cont);
     encaixa(cont);
   }
+  /* a altura do palco é medida, não calculada: em algumas janelas o 100vh do
+     css resolve para mais do que a área visível e o rodapé da peça ficaria
+     cortado. Aqui a conta é feita com o que a janela realmente mostra. */
+  function dimensiona() {
+    var palco = document.querySelector(".palco"), barra = document.querySelector("nav");
+    if (!palco || !barra) return;
+    if (window.innerWidth <= EMPILHA) { palco.style.height = ""; return; }
+    palco.style.height = Math.max(360, document.documentElement.clientHeight - barra.offsetHeight) + "px";
+  }
+  function reencaixaTudo() { dimensiona(); painesAjustar.forEach(encaixa); }
   var reencaixe;
   window.addEventListener("resize", function () {
     clearTimeout(reencaixe);
-    reencaixe = setTimeout(function () { painesAjustar.forEach(encaixa); }, 150);
+    reencaixe = setTimeout(reencaixaTudo, 150);
   });
+  /* as fontes chegam depois do script: medir com a fonte de reserva dá uma
+     caixa mais alta e o painel encolheria à toa (era o que deixava a letra
+     dos serviços miúda). Então mede-se de novo quando a tipografia chega. */
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(reencaixaTudo);
+  window.addEventListener("load", reencaixaTudo);
   function porId(id) { return TECNOLOGIAS.filter(function (t) { return t.id === id; })[0]; }
   function maiuscula(s) { return (s || "").charAt(0).toUpperCase() + (s || "").slice(1); }
   function marcadores(defs) {
@@ -124,7 +159,7 @@
     pergunta.innerHTML = "<b>" + v.rot + "</b> · " + v.perg;
     if (v.id === "jornadas") montaJornada(jornadaAtual);
     // painel oculto tem altura zero: o encaixe só vale quando a camada abre
-    painesAjustar.forEach(encaixa);
+    reencaixaTudo();
   }
   // o elo entre camadas: cada vista termina apontando a próxima
   function elo(idVista, texto) {
@@ -652,8 +687,10 @@
       ["QUEM ATENDE", "a cada contato", function (e) { return celula(e.profissional, e); }],
       ["BASTIDOR", "o que ela não vê", function (e) { return celula(e.bastidor, e); }]
     ];
-    var html = "<div class='bpp' style='grid-template-columns:132px repeat(" + etapas.length +
-      ", minmax(0,1fr))'>" +
+    // --bpp-n: o css do celular usa o número de etapas para dar uma largura
+    // mínima a cada coluna e deixar a faixa deslizar em vez de espremer
+    var html = "<div class='bpp' style='--bpp-n:" + etapas.length +
+      ";grid-template-columns:132px repeat(" + etapas.length + ", minmax(0,1fr))'>" +
       "<div class='bpp-eixo'>A LINHA DO TEMPO</div>" +
       etapas.map(function (e, i) {
         return "<div class='bpp-marco'><b>" + (numerar ? (i + 1) + " · " : "") + e.etapa + "</b>" +

@@ -72,6 +72,13 @@ body{position:relative}
 .pi-m1{top:2%;color:#8FC2FF}
 .pi-m2{top:46%;color:#7FD6BD}
 .pi-m3{bottom:2%;color:#EBB876}
+/* no celular não há margem à direita da passagem: as três palavras do
+   método descem para uma linha sob o selo, em vez de sair da tela */
+@media(max-width:760px){
+  .pi-mapa{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px 18px}
+  .pi-mapa img{flex:0 0 100%;margin:0 auto}
+  .pi-m{position:static;left:auto;top:auto;bottom:auto;font-size:15px}
+}
 /* a travessia: deitar e entrar */
 #portal-intro.cross{cursor:default}
 #portal-intro.cross .pi-selo img{animation:mergulho 1.7s cubic-bezier(.5,.05,.75,.5) forwards}
