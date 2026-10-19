@@ -706,6 +706,30 @@
     return html + "</div>";
   }
 
+  /* a linha do dinheiro da jornada: quem paga AQUELA linha, na cor do
+     enquadramento — a mesma convenção do ecossistema e dos serviços.
+     Vem de `fluxos`, então só existe para a jornada de um item; a
+     travessia inteira não tem um pagador só. A relação não se repete:
+     o par (de,para,enquadramento) vira uma ficha só, com as modalidades
+     juntas, e o paciente vem primeiro. */
+  function faixaQuemPaga(tec) {
+    var junta = {}, ordem = [];
+    (tec.fluxos || []).forEach(function (f) {
+      var k = f.de + "|" + f.para + "|" + f.enq;
+      if (!junta[k]) { junta[k] = { de: f.de, para: f.para, enq: f.enq, oque: [] }; ordem.push(k); }
+      junta[k].oque.push(limpa(f.oque));
+    });
+    if (!ordem.length) return "";
+    ordem.sort(function (a, b) { return (junta[a].de !== "paciente") - (junta[b].de !== "paciente"); });
+    return "<div class='bpp-dinheiro'><p class='l-sub'>Quem paga esta linha</p><div class='bpd-pag'>" +
+      ordem.map(function (k) {
+        var f = junta[k];
+        return "<div class='pag enq-" + f.enq + "'><b>" + ATORES[f.de].nome + " → " +
+          ATORES[f.para].nome + "</b><span>" + ENQ_TXT[f.enq] + " · " +
+          f.oque.join(" · ") + "</span></div>";
+      }).join("") + "</div></div>";
+  }
+
   function montaJornada(tec) {
     tec = tec || jornadaAtual || "pessoa";
     jornadaAtual = tec;
@@ -732,7 +756,7 @@
         "<p class='l-estagio e-" + tec.estagio + "'>" + M_ROTULO[tec.estagio] + "</p>" +
         "<h2 class='serif'>" + limpa(tec.nome) + "</h2>" +
         "<p class='l-entrega'>" + limpa(tec.entrega) + "</p></div>" +
-        desenhaBlueprint(tec.jornada || [], true) + rodape +
+        desenhaBlueprint(tec.jornada || [], true) + faixaQuemPaga(tec) + rodape +
         "<p class='l-proxima'>Esta é uma linha dentro do ano. " +
         "<button class='l-elo' data-vista='jornadas' data-pessoa='1'>Ver a travessia inteira →</button> " +
         elo("ecossistema", "E quem paga por isso?") + "</p>";

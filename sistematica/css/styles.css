@@ -276,6 +276,16 @@ body{overflow:hidden}
 .bpd-cel b{display:block;font-size:11px;color:var(--ink);line-height:1.3}
 .bpd-cel span{display:block;font-size:10.5px;color:var(--text);line-height:1.3;margin:1px 0}
 .bpd-cel small{display:block;font-size:9.5px;color:var(--muted);line-height:1.25}
+/* a linha do dinheiro da jornada: abaixo do blueprint, quem paga aquela
+   linha. As fichas usam a cor do enquadramento (.enq-*, gerada em runtime),
+   a mesma do ecossistema e das barras dos serviços */
+.bpp-dinheiro{margin:10px 0 0;padding:9px 11px 10px;border-radius:9px;
+  background:rgba(201,132,46,.06);border-top:3px solid var(--confirmar)}
+.bpp-dinheiro .l-sub{margin:0 0 7px;color:var(--dinheiro)}
+.bpd-pag{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:8px}
+.pag{border-radius:8px;padding:6px 10px;font-size:11px;line-height:1.35}
+.pag b{display:block;font-size:11px;letter-spacing:.01em;margin-bottom:1px}
+.pag span{display:block;font-size:10.5px;opacity:.9;margin-top:2px}
 .l-achados{list-style:none;margin:0 0 6px;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:3px 18px}
 .l-achados li{position:relative;padding-left:14px;font-size:11px;line-height:1.38;color:var(--text)}
 /* nos painéis estreitos o achado ocupa a largura toda */
