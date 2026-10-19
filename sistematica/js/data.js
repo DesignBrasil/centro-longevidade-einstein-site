@@ -14,6 +14,13 @@ var ATORES = {
     "x": 720,
     "y": 160
   },
+  "medico": {
+    "nome": "MÉDICO",
+    "papel": "indica e autoriza · porta de entrada e saída",
+    "lado": "dentro",
+    "x": 720,
+    "y": 200
+  },
   "centro": {
     "nome": "CENTRO DE LONGEVIDADE",
     "papel": "provedor · entrada e saída",
@@ -35,9 +42,9 @@ var ATORES = {
     "x": 720,
     "y": 476
   },
-  "farmacia": {
-    "nome": "FARMÁCIA",
-    "papel": "recebe a prescrição",
+  "empresa": {
+    "nome": "EMPRESA",
+    "papel": "contrata para os colaboradores",
     "lado": "fora",
     "x": 720,
     "y": 562
@@ -94,6 +101,12 @@ var ENQUADRAMENTOS = {
     "curto": "a definir",
     "cor": "#7c8697",
     "fundo": "#f0f2f5"
+  },
+  "indicacao": {
+    "rotulo": "indicação clínica",
+    "curto": "indica",
+    "cor": "#6b4fbb",
+    "fundo": "#efeafa"
   }
 };
 
@@ -111,37 +124,264 @@ var RELACOES = [
     "tipo": "beneficio",
     "enquadramento": "beneficio",
     "oque": "o wearable e o app ficam com a pessoa — ela usa sem pagar ao parceiro"
+  },
+  {
+    "de": "empresa",
+    "para": "operadora",
+    "tipo": "pagamento",
+    "enquadramento": "contrato",
+    "oque": "plano coletivo empresarial — a empresa paga o plano dos colaboradores"
+  },
+  {
+    "de": "empresa",
+    "para": "centro",
+    "tipo": "confirmar",
+    "enquadramento": "contrato",
+    "oque": "o Centro como benefício corporativo — modelo de contratação a definir"
+  },
+  {
+    "de": "medico",
+    "para": "paciente",
+    "tipo": "indicacao",
+    "enquadramento": "indicacao",
+    "oque": "porta de entrada — indica o pacote certo para cada perfil"
+  },
+  {
+    "de": "medico",
+    "para": "operadora",
+    "tipo": "indicacao",
+    "enquadramento": "indicacao",
+    "oque": "porta de saída — a indicação clínica documentada destrava o reembolso no M³"
+  },
+  {
+    "de": "medico",
+    "para": "diagnostico",
+    "tipo": "indicacao",
+    "enquadramento": "indicacao",
+    "oque": "porta de saída — pede os exames dos eixos com indicação"
+  },
+  {
+    "de": "empresa",
+    "para": "paciente",
+    "tipo": "beneficio",
+    "enquadramento": "beneficio",
+    "oque": "o colaborador usa o Centro como benefício — sem pagar do bolso"
   }
 ];
 
 var CLUSTERS = [
   {
-    "nome": "corpo e função",
-    "descricao": "Força, potência, equilíbrio e composição corporal — a régua da autonomia: o que o corpo sustenta hoje e sustentará daqui a dez anos."
+    "nome": "mobilidade",
+    "familia": "capacidade intrínseca",
+    "descricao": "Força, marcha, equilíbrio e composição corporal — o que sustenta a independência hoje e daqui a dez anos."
   },
   {
-    "nome": "coração e vasos",
-    "descricao": "Capacidade cardiorrespiratória medida no esforço e o estado das artérias — o risco cardiovascular visto, não estimado."
+    "nome": "cognição",
+    "familia": "capacidade intrínseca",
+    "descricao": "Memória, atenção e raciocínio — testes cognitivos e o rastreio pelo olhar (Viewmind), que pegam mudanças sutis cedo."
   },
   {
-    "nome": "mente e sentidos",
-    "descricao": "Cognição, humor, visão e audição — o que mantém a pessoa presente, independente e conectada."
+    "nome": "emocional",
+    "familia": "capacidade intrínseca",
+    "descricao": "Humor e saúde mental — o rastreio que lembra que bem-estar também é longevidade."
   },
   {
-    "nome": "sangue e marcadores",
-    "descricao": "Metabolismo, inflamação e nutrientes no sangue — os sinais silenciosos que aparecem antes de qualquer sintoma."
+    "nome": "sensorial",
+    "familia": "capacidade intrínseca",
+    "descricao": "Audição e visão, investigadas por perguntas direcionadas — o que isola quando passa despercebido."
   },
   {
-    "nome": "hormônios",
-    "descricao": "O eixo hormonal acompanhado no tempo — o que explica energia, massa muscular e disposição."
+    "nome": "vitalidade",
+    "familia": "capacidade intrínseca",
+    "descricao": "A energia de base: fôlego no esforço, inflamação, metabolismo, vitamina D e fadiga — a reserva fisiológica por trás dos outros domínios."
   },
   {
-    "nome": "biologia profunda",
-    "descricao": "Idade biológica, genética e metabolômica — a fronteira: mede o ritmo do envelhecimento, não só o seu efeito."
+    "nome": "sono",
+    "familia": "estilo de vida",
+    "descricao": "Quanto e como se dorme — a triagem feita em casa que, se alterada, abre a investigação."
   },
   {
-    "nome": "sono e estilo de vida",
-    "descricao": "Sono, movimento, alimentação e hábitos — o terreno do dia a dia, onde a modulação de fato pega."
+    "nome": "nutrição",
+    "familia": "estilo de vida",
+    "descricao": "O que se come, e como — os nutrientes, as gorduras e o ferro no sangue, e o pilar que se trabalha na rotina."
+  },
+  {
+    "nome": "atividade física",
+    "familia": "estilo de vida",
+    "descricao": "Quanto e como a pessoa se move no dia a dia — o pilar que transforma medida em hábito."
+  },
+  {
+    "nome": "conexão social",
+    "familia": "estilo de vida",
+    "descricao": "Vínculos e pertencimento — o pilar mais esquecido, e um dos que mais pesam no envelhecimento."
+  }
+];
+
+var EIXOS = [
+  {
+    "id": "circadiana",
+    "nome": "circadiana",
+    "descricao": "O sono investigado a fundo e tratado — da noite de exame ao CPAP.",
+    "itens": [
+      {
+        "curto": "Polissonografia",
+        "item": "Polissonografia",
+        "canal": "presencial",
+        "descricao": "o exame de referência do sono, uma noite no Einstein",
+        "enq": "rol",
+        "condicao": "a versão com EEG de noite inteira está no Anexo I; cobertura condicionada à indicação",
+        "confianca": "confirmado"
+      }
+    ]
+  },
+  {
+    "id": "autonomica",
+    "nome": "autonômica",
+    "descricao": "A regulação do estresse — o sistema nervoso que acelera e freia o corpo.",
+    "itens": []
+  },
+  {
+    "id": "cognitiva",
+    "nome": "cognitiva",
+    "descricao": "O cérebro visto por dentro e o risco que se herda — para agir antes do sintoma.",
+    "itens": [
+      {
+        "curto": "RNM volume cerebral",
+        "item": "Ressonância de crânio com volume cerebral",
+        "canal": "presencial",
+        "descricao": "mede o volume das regiões do cérebro — a reserva cognitiva por imagem",
+        "enq": "rol",
+        "condicao": "a RM de crânio está no Rol; a volumetria em si não tem código próprio",
+        "confianca": "provavel"
+      },
+      {
+        "curto": "ApoE",
+        "item": "ApoE",
+        "canal": "presencial",
+        "descricao": "variante genética de risco cardiovascular e cognitivo",
+        "enq": "particular",
+        "condicao": "",
+        "confianca": "confirmado"
+      }
+    ]
+  },
+  {
+    "id": "oncologica",
+    "nome": "oncológica",
+    "descricao": "A busca precoce de sinais de câncer no sangue — antes de qualquer sintoma.",
+    "itens": [
+      {
+        "curto": "Galleri",
+        "item": "Galleri (detecção multicâncer)",
+        "canal": "presencial",
+        "descricao": "um exame de sangue que procura sinais de dezenas de tipos de câncer de uma vez",
+        "enq": "particular",
+        "condicao": "sem código no Rol",
+        "confianca": "confirmado"
+      }
+    ]
+  },
+  {
+    "id": "hormonal",
+    "nome": "hormonal",
+    "descricao": "Os hormônios acompanhados no tempo e modulados com critério clínico — energia, massa muscular, osso e humor passam por eles.",
+    "itens": [
+      {
+        "curto": "Estradiol",
+        "item": "Estradiol",
+        "canal": "presencial",
+        "descricao": "principal estrogênio — osso, humor e sono passam por ele",
+        "enq": "rol",
+        "condicao": "",
+        "confianca": "confirmado"
+      },
+      {
+        "curto": "FSH",
+        "item": "FSH",
+        "canal": "presencial",
+        "descricao": "sinaliza a transição hormonal — situa a pessoa no tempo",
+        "enq": "rol",
+        "condicao": "",
+        "confianca": "confirmado"
+      },
+      {
+        "curto": "Testosterona",
+        "item": "Testosterona",
+        "canal": "presencial",
+        "descricao": "força, vitalidade e metabolismo — no homem e, menos, na mulher",
+        "enq": "rol",
+        "condicao": "",
+        "confianca": "confirmado"
+      }
+    ]
+  },
+  {
+    "id": "cardiometabolica",
+    "nome": "cardiometabólica",
+    "descricao": "Coração, vasos, fígado e metabolismo investigados com imagem e marcadores — e modulados.",
+    "itens": [
+      {
+        "curto": "Angio-TC",
+        "item": "Angio-TC com score de cálcio",
+        "canal": "presencial",
+        "descricao": "as coronárias por imagem — o risco visto, não estimado",
+        "enq": "rol",
+        "condicao": "com DUT nº 3 — e o score de cálcio isolado não tem item próprio",
+        "confianca": "confirmado"
+      },
+      {
+        "curto": "Densitometria M³",
+        "item": "Densitometria de corpo total (com indicação)",
+        "canal": "presencial",
+        "descricao": "a mesma máquina do M¹, agora com pergunta clínica — osso e composição corporal",
+        "enq": "rol",
+        "condicao": "densitometria óssea está no Rol com indicação diagnóstica; o rastreio do M¹ segue particular",
+        "confianca": "provavel"
+      },
+      {
+        "curto": "ELF",
+        "item": "ELF (painel de fibrose hepática)",
+        "canal": "presencial",
+        "descricao": "estima fibrose do fígado sem biópsia — o órgão que adoece calado",
+        "enq": "particular",
+        "condicao": "o Rol cobre fibrose por elastografia, que é outro método",
+        "confianca": "confirmado"
+      },
+      {
+        "curto": "NT-proBNP",
+        "item": "NT-proBNP",
+        "canal": "presencial",
+        "descricao": "marcador de sobrecarga do coração — pedido se há sinal clínico",
+        "enq": "rol",
+        "condicao": "",
+        "confianca": "confirmado"
+      },
+      {
+        "curto": "Troponina",
+        "item": "Troponina",
+        "canal": "presencial",
+        "descricao": "marcador de lesão do músculo cardíaco — pedido se há sinal clínico",
+        "enq": "rol",
+        "condicao": "",
+        "confianca": "confirmado"
+      }
+    ]
+  },
+  {
+    "id": "osteometabolica",
+    "nome": "osteometabólica",
+    "descricao": "Osso e músculo: a densidade, a massa e o treino que as sustenta.",
+    "itens": [
+      {
+        "curto": "Densitometria M³",
+        "item": "Densitometria de corpo total (com indicação)",
+        "canal": "presencial",
+        "descricao": "a mesma máquina do M¹, agora com pergunta clínica — osso e composição corporal",
+        "enq": "rol",
+        "condicao": "densitometria óssea está no Rol com indicação diagnóstica; o rastreio do M¹ segue particular",
+        "confianca": "provavel"
+      }
+    ]
   }
 ];
 
@@ -294,9 +534,19 @@ var JORNADA_PESSOA = [
 var COMPONENTES = {
   "Core 40+": [
     {
+      "curto": "Cognitiva",
+      "item": "Avaliação cognitiva (MoCA + Viewmind)",
+      "cluster": "cognição",
+      "canal": "presencial",
+      "descricao": "memória, atenção e cognição — detecta mudanças sutis cedo",
+      "enq": "particular",
+      "condicao": "",
+      "confianca": "confirmado"
+    },
+    {
       "curto": "Física/funcional",
       "item": "Avaliação física e funcional",
-      "cluster": "corpo e função",
+      "cluster": "mobilidade",
       "canal": "presencial",
       "descricao": "testes de força, marcha e mobilidade — o retrato funcional de hoje",
       "enq": "particular",
@@ -304,9 +554,29 @@ var COMPONENTES = {
       "confianca": "confirmado"
     },
     {
+      "curto": "Sensorial",
+      "item": "Avaliação sensorial (perguntas direcionadas + audiometria)",
+      "cluster": "sensorial",
+      "canal": "presencial",
+      "descricao": "audição e demais sentidos — o que isola quando passa despercebido",
+      "enq": "rol",
+      "condicao": "só a audiometria tonal; o resto do bloco não tem código",
+      "confianca": "confirmado"
+    },
+    {
+      "curto": "Emocional",
+      "item": "Avaliação emocional (GDS)",
+      "cluster": "emocional",
+      "canal": "digital",
+      "descricao": "rastreio de sintomas depressivos — humor também é longevidade",
+      "enq": "particular",
+      "condicao": "",
+      "confianca": "confirmado"
+    },
+    {
       "curto": "Equilíbrio",
       "item": "Avaliação de equilíbrio (ABCPB)",
-      "cluster": "corpo e função",
+      "cluster": "mobilidade",
       "canal": "presencial",
       "descricao": "confiança no equilíbrio — mede o risco de queda antes da queda",
       "enq": "particular",
@@ -316,7 +586,7 @@ var COMPONENTES = {
     {
       "curto": "Fadiga",
       "item": "Percepção de fadiga",
-      "cluster": "corpo e função",
+      "cluster": "vitalidade",
       "canal": "digital",
       "descricao": "quanta energia a pessoa sente ter — o cansaço que não cai em exame",
       "enq": "sem_codigo",
@@ -326,7 +596,7 @@ var COMPONENTES = {
     {
       "curto": "Densitometria",
       "item": "Densitometria de corpo total",
-      "cluster": "corpo e função",
+      "cluster": "mobilidade",
       "canal": "presencial",
       "descricao": "composição corporal e densidade óssea de corpo inteiro",
       "enq": "particular",
@@ -336,7 +606,7 @@ var COMPONENTES = {
     {
       "curto": "VO₂",
       "item": "Ergoespirometria (VO₂)",
-      "cluster": "coração e vasos",
+      "cluster": "vitalidade",
       "canal": "presencial",
       "descricao": "capacidade cardiorrespiratória medida no esforço — o alvo do treino",
       "enq": "rol",
@@ -344,41 +614,11 @@ var COMPONENTES = {
       "confianca": "confirmado"
     },
     {
-      "curto": "Cognitiva",
-      "item": "Avaliação cognitiva (MoCA + Viewmind)",
-      "cluster": "mente e sentidos",
-      "canal": "presencial",
-      "descricao": "memória, atenção e cognição — detecta mudanças sutis cedo",
-      "enq": "particular",
-      "condicao": "",
-      "confianca": "confirmado"
-    },
-    {
-      "curto": "Emocional",
-      "item": "Avaliação emocional (GDS)",
-      "cluster": "mente e sentidos",
-      "canal": "digital",
-      "descricao": "rastreio de sintomas depressivos — humor também é longevidade",
-      "enq": "particular",
-      "condicao": "",
-      "confianca": "confirmado"
-    },
-    {
-      "curto": "Sensorial",
-      "item": "Avaliação sensorial, incluindo audiometria",
-      "cluster": "mente e sentidos",
-      "canal": "presencial",
-      "descricao": "audição e demais sentidos — o que isola quando passa despercebido",
-      "enq": "rol",
-      "condicao": "só a audiometria tonal; o resto do bloco não tem código",
-      "confianca": "confirmado"
-    },
-    {
       "curto": "Inflamatórios",
       "item": "Biomarcadores inflamatórios",
-      "cluster": "sangue e marcadores",
+      "cluster": "vitalidade",
       "canal": "presencial",
-      "descricao": "inflamação crônica de baixo grau — o fundo de muitas doenças",
+      "descricao": "interleucinas 6 e 10 — a inflamação crônica de baixo grau, fundo de muitas doenças",
       "enq": "rol",
       "condicao": "a redação do Rol não é idêntica ao bloco",
       "confianca": "provavel"
@@ -386,7 +626,7 @@ var COMPONENTES = {
     {
       "curto": "Vitamina D e B12",
       "item": "Vitamina D e B12",
-      "cluster": "sangue e marcadores",
+      "cluster": "vitalidade",
       "canal": "presencial",
       "descricao": "duas carências comuns e corrigíveis — osso, músculo e nervo",
       "enq": "rol",
@@ -396,7 +636,7 @@ var COMPONENTES = {
     {
       "curto": "Oligoelementos",
       "item": "Oligoelementos",
-      "cluster": "sangue e marcadores",
+      "cluster": "nutrição",
       "canal": "presencial",
       "descricao": "minerais-traço como zinco e selênio — faltas pequenas, efeito grande",
       "enq": "rol",
@@ -404,9 +644,151 @@ var COMPONENTES = {
       "confianca": "confirmado"
     },
     {
+      "curto": "Estilo de vida",
+      "item": "Entrevista de estilo de vida",
+      "cluster": "nutrição|atividade física|conexão social",
+      "canal": "digital",
+      "descricao": "conversa sobre rotina, alimentação, movimento e hábitos",
+      "enq": "sem_codigo",
+      "condicao": "anamnese estruturada",
+      "confianca": "confirmado"
+    },
+    {
       "curto": "Biologix",
       "item": "Biologix",
-      "cluster": "sono e estilo de vida",
+      "cluster": "sono",
+      "canal": "digital",
+      "descricao": "triagem do sono em casa, dormindo como sempre",
+      "enq": "particular",
+      "condicao": "o Rol só lista poligrafia de recém-nascido",
+      "confianca": "provavel"
+    }
+  ],
+  "Frontier 40+": [
+    {
+      "curto": "Cognitiva",
+      "item": "Avaliação cognitiva (MoCA + Viewmind)",
+      "cluster": "cognição",
+      "canal": "presencial",
+      "descricao": "memória, atenção e cognição — detecta mudanças sutis cedo",
+      "enq": "particular",
+      "condicao": "",
+      "confianca": "confirmado"
+    },
+    {
+      "curto": "Física/funcional",
+      "item": "Avaliação física e funcional",
+      "cluster": "mobilidade",
+      "canal": "presencial",
+      "descricao": "testes de força, marcha e mobilidade — o retrato funcional de hoje",
+      "enq": "particular",
+      "condicao": "",
+      "confianca": "confirmado"
+    },
+    {
+      "curto": "Sensorial",
+      "item": "Avaliação sensorial (perguntas direcionadas + audiometria)",
+      "cluster": "sensorial",
+      "canal": "presencial",
+      "descricao": "audição e demais sentidos — o que isola quando passa despercebido",
+      "enq": "rol",
+      "condicao": "só a audiometria tonal; o resto do bloco não tem código",
+      "confianca": "confirmado"
+    },
+    {
+      "curto": "Emocional",
+      "item": "Avaliação emocional (GDS)",
+      "cluster": "emocional",
+      "canal": "digital",
+      "descricao": "rastreio de sintomas depressivos — humor também é longevidade",
+      "enq": "particular",
+      "condicao": "",
+      "confianca": "confirmado"
+    },
+    {
+      "curto": "Equilíbrio",
+      "item": "Avaliação de equilíbrio (ABCPB)",
+      "cluster": "mobilidade",
+      "canal": "presencial",
+      "descricao": "confiança no equilíbrio — mede o risco de queda antes da queda",
+      "enq": "particular",
+      "condicao": "",
+      "confianca": "confirmado"
+    },
+    {
+      "curto": "Fadiga",
+      "item": "Percepção de fadiga",
+      "cluster": "vitalidade",
+      "canal": "digital",
+      "descricao": "quanta energia a pessoa sente ter — o cansaço que não cai em exame",
+      "enq": "sem_codigo",
+      "condicao": "escala de entrevista",
+      "confianca": "confirmado"
+    },
+    {
+      "curto": "Densitometria",
+      "item": "Densitometria de corpo total",
+      "cluster": "mobilidade",
+      "canal": "presencial",
+      "descricao": "composição corporal e densidade óssea de corpo inteiro",
+      "enq": "particular",
+      "condicao": "rastreio assintomático; a densitometria diagnóstica é outro uso",
+      "confianca": "confirmado"
+    },
+    {
+      "curto": "VO₂",
+      "item": "Ergoespirometria (VO₂)",
+      "cluster": "vitalidade",
+      "canal": "presencial",
+      "descricao": "capacidade cardiorrespiratória medida no esforço — o alvo do treino",
+      "enq": "rol",
+      "condicao": "sem DUT — revisado em 15/10",
+      "confianca": "confirmado"
+    },
+    {
+      "curto": "Inflamatórios",
+      "item": "Biomarcadores inflamatórios",
+      "cluster": "vitalidade",
+      "canal": "presencial",
+      "descricao": "interleucinas 6 e 10 — a inflamação crônica de baixo grau, fundo de muitas doenças",
+      "enq": "rol",
+      "condicao": "a redação do Rol não é idêntica ao bloco",
+      "confianca": "provavel"
+    },
+    {
+      "curto": "Vitamina D e B12",
+      "item": "Vitamina D e B12",
+      "cluster": "vitalidade",
+      "canal": "presencial",
+      "descricao": "duas carências comuns e corrigíveis — osso, músculo e nervo",
+      "enq": "rol",
+      "condicao": "",
+      "confianca": "confirmado"
+    },
+    {
+      "curto": "Oligoelementos",
+      "item": "Oligoelementos",
+      "cluster": "nutrição",
+      "canal": "presencial",
+      "descricao": "minerais-traço como zinco e selênio — faltas pequenas, efeito grande",
+      "enq": "rol",
+      "condicao": "zinco e cobre sim; selênio não",
+      "confianca": "confirmado"
+    },
+    {
+      "curto": "Estilo de vida",
+      "item": "Entrevista de estilo de vida",
+      "cluster": "nutrição|atividade física|conexão social",
+      "canal": "digital",
+      "descricao": "conversa sobre rotina, alimentação, movimento e hábitos",
+      "enq": "sem_codigo",
+      "condicao": "anamnese estruturada",
+      "confianca": "confirmado"
+    },
+    {
+      "curto": "Biologix",
+      "item": "Biologix",
+      "cluster": "sono",
       "canal": "digital",
       "descricao": "triagem do sono em casa, dormindo como sempre",
       "enq": "particular",
@@ -414,61 +796,9 @@ var COMPONENTES = {
       "confianca": "provavel"
     },
     {
-      "curto": "Estilo de vida",
-      "item": "Entrevista de estilo de vida",
-      "cluster": "sono e estilo de vida",
-      "canal": "digital",
-      "descricao": "conversa sobre rotina, alimentação, movimento e hábitos",
-      "enq": "sem_codigo",
-      "condicao": "anamnese estruturada",
-      "confianca": "confirmado"
-    }
-  ],
-  "Frontier 40+": [
-    {
-      "curto": "Angio-TC",
-      "item": "Angio-TC com score de cálcio",
-      "cluster": "coração e vasos",
-      "canal": "presencial",
-      "descricao": "as coronárias por imagem — o risco visto, não estimado",
-      "enq": "rol",
-      "condicao": "com DUT nº 3 — e o score de cálcio isolado não tem item próprio",
-      "confianca": "confirmado"
-    },
-    {
-      "curto": "NT-proBNP",
-      "item": "NT-proBNP / troponina",
-      "cluster": "coração e vasos",
-      "canal": "presencial",
-      "descricao": "marcadores de sobrecarga do coração — pedidos se há sinal clínico",
-      "enq": "rol",
-      "condicao": "",
-      "confianca": "confirmado"
-    },
-    {
-      "curto": "VOP",
-      "item": "Velocidade de onda de pulso (VOP)",
-      "cluster": "coração e vasos",
-      "canal": "presencial",
-      "descricao": "a rigidez das artérias — a idade do sistema vascular",
-      "enq": "particular",
-      "condicao": "",
-      "confianca": "confirmado"
-    },
-    {
-      "curto": "Omega-index",
-      "item": "Omega-index",
-      "cluster": "sangue e marcadores",
-      "canal": "presencial",
-      "descricao": "ômega-3 nas células — marcador de proteção cardiovascular",
-      "enq": "particular",
-      "condicao": "",
-      "confianca": "confirmado"
-    },
-    {
       "curto": "Metabolômica",
       "item": "Metabolômica / proteômica",
-      "cluster": "biologia profunda",
+      "cluster": "nutrição",
       "canal": "presencial",
       "descricao": "a assinatura das moléculas do metabolismo, num retrato só",
       "enq": "particular",
@@ -478,7 +808,7 @@ var COMPONENTES = {
     {
       "curto": "Trü",
       "item": "Relógio biológico (Trü)",
-      "cluster": "biologia profunda",
+      "cluster": "vitalidade",
       "canal": "presencial",
       "descricao": "idade biológica por metilação — o número-símbolo do progresso",
       "enq": "particular",
@@ -486,79 +816,9 @@ var COMPONENTES = {
       "confianca": "confirmado"
     },
     {
-      "curto": "ApoE",
-      "item": "ApoE",
-      "cluster": "biologia profunda",
-      "canal": "presencial",
-      "descricao": "variante genética de risco cardiovascular e cognitivo",
-      "enq": "particular",
-      "condicao": "",
-      "confianca": "confirmado"
-    },
-    {
-      "curto": "Genético",
-      "item": "Aconselhamento genético",
-      "cluster": "biologia profunda",
-      "canal": "presencial",
-      "descricao": "traduz o resultado genético em decisão — evita susto sem contexto",
-      "enq": "rol",
-      "condicao": "a consulta sim; os testes que ela origina têm DUT própria",
-      "confianca": "confirmado"
-    },
-    {
-      "curto": "ELF",
-      "item": "ELF (painel de fibrose hepática)",
-      "cluster": "sangue e marcadores",
-      "canal": "presencial",
-      "descricao": "estima fibrose do fígado sem biópsia — o órgão que adoece calado",
-      "enq": "particular",
-      "condicao": "o Rol cobre fibrose por elastografia, que é outro método",
-      "confianca": "confirmado"
-    },
-    {
-      "curto": "Estradiol",
-      "item": "Estradiol",
-      "cluster": "hormônios",
-      "canal": "presencial",
-      "descricao": "principal estrogênio — osso, humor e sono passam por ele",
-      "enq": "rol",
-      "condicao": "",
-      "confianca": "confirmado"
-    },
-    {
-      "curto": "FSH",
-      "item": "FSH",
-      "cluster": "hormônios",
-      "canal": "presencial",
-      "descricao": "sinaliza a transição hormonal — situa a pessoa no tempo",
-      "enq": "rol",
-      "condicao": "",
-      "confianca": "confirmado"
-    },
-    {
-      "curto": "Testosterona",
-      "item": "Testosterona",
-      "cluster": "hormônios",
-      "canal": "presencial",
-      "descricao": "força, vitalidade e metabolismo — no homem e, menos, na mulher",
-      "enq": "rol",
-      "condicao": "",
-      "confianca": "confirmado"
-    },
-    {
-      "curto": "Determinantes",
-      "item": "Determinantes do envelhecimento saudável",
-      "cluster": "sono e estilo de vida",
-      "canal": "digital",
-      "descricao": "o contexto de vida que pesa tanto quanto o exame",
-      "enq": "aberto",
-      "condicao": "a confirmar se é bloco do Core ou instrumento próprio",
-      "confianca": "aberto"
-    },
-    {
       "curto": "Retina scan",
       "item": "Retina scan",
-      "cluster": "mente e sentidos",
+      "cluster": "sensorial",
       "canal": "presencial",
       "descricao": "os únicos vasos que se veem sem cortar — espelho da circulação",
       "enq": "rol",
@@ -566,21 +826,51 @@ var COMPONENTES = {
       "confianca": "confirmado"
     },
     {
+      "curto": "Genético",
+      "item": "Aconselhamento genético",
+      "cluster": "vitalidade",
+      "canal": "presencial",
+      "descricao": "traduz o resultado genético em decisão — evita susto sem contexto",
+      "enq": "rol",
+      "condicao": "a consulta sim; os testes que ela origina têm DUT própria",
+      "confianca": "confirmado"
+    },
+    {
+      "curto": "Omega-index",
+      "item": "Omega-index",
+      "cluster": "nutrição",
+      "canal": "presencial",
+      "descricao": "ômega-3 nas células — marcador de proteção cardiovascular",
+      "enq": "particular",
+      "condicao": "",
+      "confianca": "confirmado"
+    },
+    {
+      "curto": "VOP",
+      "item": "Velocidade de onda de pulso (VOP)",
+      "cluster": "vitalidade",
+      "canal": "presencial",
+      "descricao": "a rigidez das artérias — a idade do sistema vascular",
+      "enq": "particular",
+      "condicao": "",
+      "confianca": "confirmado"
+    }
+  ],
+  "Performance 20+": [
+    {
       "curto": "Biologix",
       "item": "Biologix",
-      "cluster": "sono e estilo de vida",
+      "cluster": "sono",
       "canal": "digital",
       "descricao": "triagem do sono em casa, dormindo como sempre",
       "enq": "particular",
       "condicao": "o Rol só lista poligrafia de recém-nascido",
       "confianca": "provavel"
-    }
-  ],
-  "Performance 20+": [
+    },
     {
       "curto": "Força e potência",
       "item": "Avaliação de força e potência",
-      "cluster": "corpo e função",
+      "cluster": "mobilidade",
       "canal": "presencial",
       "descricao": "força máxima e explosão — a reserva que sustenta a independência",
       "enq": "particular",
@@ -590,7 +880,7 @@ var COMPONENTES = {
     {
       "curto": "Pisada",
       "item": "Avaliação da pisada",
-      "cluster": "corpo e função",
+      "cluster": "mobilidade",
       "canal": "presencial",
       "descricao": "como o pé distribui a carga ao andar — origem silenciosa de lesões",
       "enq": "particular",
@@ -600,7 +890,7 @@ var COMPONENTES = {
     {
       "curto": "Bioimpedância",
       "item": "Bioimpedância",
-      "cluster": "corpo e função",
+      "cluster": "mobilidade",
       "canal": "presencial",
       "descricao": "massa magra, gordura e água — acompanha a evolução entre exames",
       "enq": "rol",
@@ -610,7 +900,7 @@ var COMPONENTES = {
     {
       "curto": "VO₂",
       "item": "Ergoespirometria (VO₂)",
-      "cluster": "coração e vasos",
+      "cluster": "vitalidade",
       "canal": "presencial",
       "descricao": "capacidade cardiorrespiratória medida no esforço — o alvo do treino",
       "enq": "rol",
@@ -620,9 +910,9 @@ var COMPONENTES = {
     {
       "curto": "Painel metabólico",
       "item": "Painel metabólico",
-      "cluster": "sangue e marcadores",
+      "cluster": "vitalidade",
       "canal": "presencial",
-      "descricao": "glicemia, insulina, rim e fígado — como o corpo usa energia",
+      "descricao": "glicemia, insulina (HOMA), rim e fígado — como o corpo usa energia",
       "enq": "rol",
       "condicao": "",
       "confianca": "confirmado"
@@ -630,7 +920,7 @@ var COMPONENTES = {
     {
       "curto": "Perfil lipídico",
       "item": "Perfil lipídico",
-      "cluster": "sangue e marcadores",
+      "cluster": "nutrição",
       "canal": "presencial",
       "descricao": "colesterol e frações — o que se deposita na parede da artéria",
       "enq": "rol",
@@ -640,7 +930,7 @@ var COMPONENTES = {
     {
       "curto": "Hemograma",
       "item": "Hemograma",
-      "cluster": "sangue e marcadores",
+      "cluster": "nutrição",
       "canal": "presencial",
       "descricao": "o retrato básico do sangue — anemia, defesa e coagulação",
       "enq": "rol",
@@ -650,7 +940,7 @@ var COMPONENTES = {
     {
       "curto": "Ferro/ferritina",
       "item": "Ferro e ferritina",
-      "cluster": "sangue e marcadores",
+      "cluster": "nutrição",
       "canal": "presencial",
       "descricao": "o estoque de ferro — causa frequente de cansaço inexplicado",
       "enq": "rol",
@@ -660,7 +950,7 @@ var COMPONENTES = {
     {
       "curto": "Vitamina D",
       "item": "Vitamina D",
-      "cluster": "sangue e marcadores",
+      "cluster": "vitalidade",
       "canal": "presencial",
       "descricao": "status de vitamina D — osso, músculo e imunidade",
       "enq": "rol",
@@ -668,19 +958,9 @@ var COMPONENTES = {
       "confianca": "confirmado"
     },
     {
-      "curto": "Perfil hormonal",
-      "item": "Perfil hormonal",
-      "cluster": "hormônios",
-      "canal": "presencial",
-      "descricao": "panorama hormonal a partir dos 40 — base para decidir modulação",
-      "enq": "rol",
-      "condicao": "estradiol, FSH e testosterona, já confirmados",
-      "confianca": "confirmado"
-    },
-    {
       "curto": "Saúde mental",
       "item": "Saúde mental",
-      "cluster": "mente e sentidos",
+      "cluster": "emocional",
       "canal": "digital",
       "descricao": "como a pessoa avalia o próprio bem-estar — a linha de base",
       "enq": "aberto",
@@ -690,22 +970,12 @@ var COMPONENTES = {
     {
       "curto": "Estilo de vida",
       "item": "Entrevista de estilo de vida",
-      "cluster": "sono e estilo de vida",
+      "cluster": "nutrição|atividade física|conexão social",
       "canal": "digital",
       "descricao": "conversa sobre rotina, alimentação, movimento e hábitos",
       "enq": "sem_codigo",
       "condicao": "anamnese estruturada",
       "confianca": "confirmado"
-    },
-    {
-      "curto": "Biologix",
-      "item": "Biologix",
-      "cluster": "sono e estilo de vida",
-      "canal": "digital",
-      "descricao": "triagem do sono em casa, dormindo como sempre",
-      "enq": "particular",
-      "condicao": "o Rol só lista poligrafia de recém-nascido",
-      "confianca": "provavel"
     }
   ]
 };
@@ -724,7 +994,9 @@ var TECNOLOGIAS = [
       "Frontier 40+"
     ],
     "cluster": "",
+    "eixo": "",
     "alimenta": [
+      "dossie",
       "alwayscare"
     ],
     "fluxos": [
@@ -800,7 +1072,8 @@ var TECNOLOGIAS = [
       "Frontier 40+",
       "Performance 20+"
     ],
-    "cluster": "sono e estilo de vida",
+    "cluster": "sono",
+    "eixo": "",
     "alimenta": [
       "polissono",
       "alwayscare"
@@ -881,9 +1154,11 @@ var TECNOLOGIAS = [
     "entrega": "Composição corporal e densidade óssea de corpo inteiro — a régua dos eixos físico e osteometabólico.",
     "estagio": "entrada",
     "tags": [
-      "Core 40+"
+      "Core 40+",
+      "Frontier 40+"
     ],
-    "cluster": "corpo e função",
+    "cluster": "mobilidade",
+    "eixo": "",
     "alimenta": [
       "treino",
       "glp1"
@@ -948,9 +1223,11 @@ var TECNOLOGIAS = [
     "estagio": "entrada",
     "tags": [
       "Core 40+",
+      "Frontier 40+",
       "Performance 20+"
     ],
-    "cluster": "coração e vasos",
+    "cluster": "vitalidade",
+    "eixo": "",
     "alimenta": [
       "treino"
     ],
@@ -1008,11 +1285,10 @@ var TECNOLOGIAS = [
     "nome": "Angio-TC com score de cálcio",
     "apelido": "Angio-TC",
     "entrega": "Imagem das coronárias com score de cálcio — risco cardiovascular visto, não estimado.",
-    "estagio": "entrada",
-    "tags": [
-      "Frontier 40+"
-    ],
-    "cluster": "coração e vasos",
+    "estagio": "saida",
+    "tags": [],
+    "cluster": "",
+    "eixo": "cardiometabolica",
     "alimenta": [
       "treino"
     ],
@@ -1091,7 +1367,8 @@ var TECNOLOGIAS = [
     "tags": [
       "Frontier 40+"
     ],
-    "cluster": "biologia profunda",
+    "cluster": "vitalidade",
+    "eixo": "",
     "alimenta": [
       "alwayscare"
     ],
@@ -1164,7 +1441,9 @@ var TECNOLOGIAS = [
       "Individualizado"
     ],
     "cluster": "",
+    "eixo": "",
     "alimenta": [
+      "dossie",
       "glp1",
       "hormonal",
       "treino",
@@ -1225,13 +1504,76 @@ var TECNOLOGIAS = [
     ]
   },
   {
+    "id": "dossie",
+    "nome": "Dossiê de Longevidade Funcional",
+    "apelido": "Dossiê",
+    "entrega": "Tudo o que foi medido integrado num mapa só: cada domínio classificado em favorável, aprimorar ou priorizar — e o cuidado direcionado aos eixos.",
+    "estagio": "pescoco",
+    "tags": [],
+    "cluster": "",
+    "eixo": "",
+    "alimenta": [],
+    "fluxos": [
+      {
+        "de": "paciente",
+        "para": "centro",
+        "oque": "o dossiê vem dentro do pacote de entrada",
+        "tipo": "pagamento",
+        "enq": "particular"
+      }
+    ],
+    "jornada": [
+      {
+        "ordem": 1,
+        "etapa": "Integração",
+        "quando": "até 2 semanas",
+        "pessoa": "",
+        "profissional": "Médico especializado em gerociência",
+        "espaco": "fisico",
+        "bastidor": "Testes físicos, cognitivos, biomarcadores e estilo de vida lidos juntos",
+        "fonte": "primaria"
+      },
+      {
+        "ordem": 2,
+        "etapa": "O Mapa",
+        "quando": "2 semanas",
+        "pessoa": "Vê os seis domínios classificados: favorável, aprimorar, priorizar",
+        "profissional": "Médico responsável",
+        "espaco": "misto",
+        "bastidor": "Laudo completo no app Meu Einstein",
+        "fonte": "primaria"
+      },
+      {
+        "ordem": 3,
+        "etapa": "As prioridades",
+        "quando": "2 semanas",
+        "pessoa": "Sai com o que fazer primeiro, em linguagem dele",
+        "profissional": "Médico responsável",
+        "espaco": "misto",
+        "bastidor": "Encaminhamento para os eixos de modulação",
+        "fonte": "primaria"
+      },
+      {
+        "ordem": 4,
+        "etapa": "Reavaliação",
+        "quando": "6 meses",
+        "pessoa": "Refaz as medidas e compara",
+        "profissional": "Equipe de avaliação",
+        "espaco": "fisico",
+        "bastidor": "O dossiê é reescrito com a evolução",
+        "fonte": "primaria"
+      }
+    ]
+  },
+  {
     "id": "polissono",
     "nome": "Polissonografia",
     "apelido": "Polissonografia",
     "entrega": "O exame de referência do sono, feito no Einstein quando a triagem indica.",
-    "estagio": "pescoco",
+    "estagio": "saida",
     "tags": [],
     "cluster": "",
+    "eixo": "circadiana",
     "alimenta": [
       "cpap"
     ],
@@ -1295,6 +1637,127 @@ var TECNOLOGIAS = [
     ]
   },
   {
+    "id": "neuroimagem",
+    "nome": "Investigação cognitiva (RNM de volume cerebral + ApoE)",
+    "apelido": "RNM + ApoE",
+    "entrega": "O cérebro visto por dentro e o risco herdado — pedidos quando o dossiê aponta a cognição.",
+    "estagio": "saida",
+    "tags": [],
+    "cluster": "",
+    "eixo": "cognitiva",
+    "alimenta": [],
+    "fluxos": [
+      {
+        "de": "operadora",
+        "para": "diagnostico",
+        "oque": "RM de crânio com indicação clínica",
+        "tipo": "confirmar",
+        "enq": "rol"
+      },
+      {
+        "de": "paciente",
+        "para": "centro",
+        "oque": "ApoE e aconselhamento",
+        "tipo": "pagamento",
+        "enq": "particular"
+      }
+    ],
+    "jornada": [
+      {
+        "ordem": 1,
+        "etapa": "A indicação",
+        "quando": "2 semanas",
+        "pessoa": "Entende por que olhar o cérebro por dentro",
+        "profissional": "Médico responsável",
+        "espaco": "misto",
+        "bastidor": "Indicação a partir do dossiê (cognição)",
+        "fonte": "inferencia"
+      },
+      {
+        "ordem": 2,
+        "etapa": "Os exames",
+        "quando": "1 mês",
+        "pessoa": "Faz a ressonância e a coleta do ApoE",
+        "profissional": "Equipe de imagem e laboratório",
+        "espaco": "fisico",
+        "bastidor": "RM pelo plano com indicação; ApoE particular",
+        "fonte": "inferencia"
+      },
+      {
+        "ordem": 3,
+        "etapa": "Aconselhamento",
+        "quando": "6 semanas",
+        "pessoa": "Entende o que o risco herdado significa — e o que não significa",
+        "profissional": "Aconselhamento genético",
+        "espaco": "misto",
+        "bastidor": "Laudo integrado ao dossiê",
+        "fonte": "inferencia"
+      },
+      {
+        "ordem": 4,
+        "etapa": "O plano",
+        "quando": "2 meses",
+        "pessoa": "Sai com estímulo cognitivo e data de reavaliação",
+        "profissional": "Médico responsável",
+        "espaco": "misto",
+        "bastidor": "Reavaliação no próximo ciclo",
+        "fonte": "inferencia"
+      }
+    ]
+  },
+  {
+    "id": "galleri",
+    "nome": "Detecção multicâncer (Galleri)",
+    "apelido": "Galleri",
+    "entrega": "Um exame de sangue que procura sinais de dezenas de cânceres de uma vez — achado abre investigação dirigida.",
+    "estagio": "saida",
+    "tags": [],
+    "cluster": "",
+    "eixo": "oncologica",
+    "alimenta": [],
+    "fluxos": [
+      {
+        "de": "paciente",
+        "para": "centro",
+        "oque": "exame de detecção multicâncer",
+        "tipo": "pagamento",
+        "enq": "particular"
+      }
+    ],
+    "jornada": [
+      {
+        "ordem": 1,
+        "etapa": "A indicação",
+        "quando": "2 semanas",
+        "pessoa": "Escolhe fazer, sabendo o que o exame pode e não pode dizer",
+        "profissional": "Médico responsável",
+        "espaco": "misto",
+        "bastidor": "Consentimento informado",
+        "fonte": "inferencia"
+      },
+      {
+        "ordem": 2,
+        "etapa": "A coleta",
+        "quando": "1 mês",
+        "pessoa": "Uma coleta de sangue",
+        "profissional": "Laboratório",
+        "espaco": "fisico",
+        "bastidor": "Amostra enviada ao parceiro",
+        "fonte": "inferencia"
+      },
+      {
+        "ordem": 3,
+        "etapa": "O resultado",
+        "quando": "2 meses",
+        "pessoa": "Recebe o resultado explicado",
+        "profissional": "Médico responsável",
+        "espaco": "misto",
+        "bastidor": "Sinal detectado abre investigação dirigida no Einstein",
+        "fonte": "inferencia"
+      }
+    ]
+  },
+  {
     "id": "glp1",
     "nome": "Modulação metabólica (GLP-1)",
     "apelido": "Metabólica",
@@ -1302,6 +1765,7 @@ var TECNOLOGIAS = [
     "estagio": "saida",
     "tags": [],
     "cluster": "",
+    "eixo": "cardiometabolica",
     "alimenta": [],
     "fluxos": [
       {
@@ -1309,13 +1773,6 @@ var TECNOLOGIAS = [
         "para": "centro",
         "oque": "assinatura da saída — consultas e acompanhamento",
         "tipo": "pagamento",
-        "enq": "particular"
-      },
-      {
-        "de": "paciente",
-        "para": "farmacia",
-        "oque": "medicação prescrita — a receita sai do Centro para a farmácia",
-        "tipo": "confirmar",
         "enq": "particular"
       },
       {
@@ -1377,6 +1834,7 @@ var TECNOLOGIAS = [
     "estagio": "saida",
     "tags": [],
     "cluster": "",
+    "eixo": "hormonal",
     "alimenta": [],
     "fluxos": [
       {
@@ -1392,13 +1850,6 @@ var TECNOLOGIAS = [
         "oque": "estradiol, FSH, testosterona e consulta, com indicação",
         "tipo": "pagamento",
         "enq": "rol"
-      },
-      {
-        "de": "paciente",
-        "para": "farmacia",
-        "oque": "medicação hormonal prescrita",
-        "tipo": "confirmar",
-        "enq": "particular"
       }
     ],
     "jornada": [
@@ -1452,6 +1903,7 @@ var TECNOLOGIAS = [
     "estagio": "saida",
     "tags": [],
     "cluster": "",
+    "eixo": "osteometabolica",
     "alimenta": [],
     "fluxos": [
       {
@@ -1520,6 +1972,7 @@ var TECNOLOGIAS = [
     "estagio": "saida",
     "tags": [],
     "cluster": "",
+    "eixo": "autonomica",
     "alimenta": [],
     "fluxos": [
       {
@@ -1566,11 +2019,12 @@ var TECNOLOGIAS = [
   {
     "id": "cpap",
     "nome": "Modulação circadiana (CPAP · medicações)",
-    "apelido": "Circadiana",
+    "apelido": "CPAP",
     "entrega": "Tratamento do sono (CPAP e medicação) com acompanhamento do Centro.",
     "estagio": "saida",
     "tags": [],
     "cluster": "",
+    "eixo": "circadiana",
     "alimenta": [],
     "fluxos": [
       {
@@ -1578,13 +2032,6 @@ var TECNOLOGIAS = [
         "para": "centro",
         "oque": "assinatura da saída — medicina do sono e acompanhamento",
         "tipo": "pagamento",
-        "enq": "particular"
-      },
-      {
-        "de": "paciente",
-        "para": "farmacia",
-        "oque": "CPAP e medicações ao paciente, via fornecedor",
-        "tipo": "confirmar",
         "enq": "particular"
       },
       {
@@ -1646,6 +2093,7 @@ var TECNOLOGIAS = [
     "estagio": "saida",
     "tags": [],
     "cluster": "",
+    "eixo": "",
     "alimenta": [],
     "fluxos": [
       {

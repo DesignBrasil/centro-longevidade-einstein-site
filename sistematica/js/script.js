@@ -28,6 +28,9 @@
       regras.push(
         ".enq-" + k + "{background:" + e.fundo + ";color:" + e.cor + ";border:1px solid " + e.cor + "40}",
         ".c-lista li.enqp-" + k + "{border-left-color:" + e.cor + "}",
+        ".l-aval li.enqp-" + k + "{border-left:10px solid " + e.cor + ";padding-left:14px}",
+        // "a confirmar": listras na cor do enquadramento (o tracejado some numa barra grossa)
+        "li.enqp-" + k + ".c-duvida{border-image:repeating-linear-gradient(to bottom," + e.cor + " 0 4px,transparent 4px 7px) 0 0 0 1}",
         ".c-leg.enqp-" + k + "{color:" + e.cor + "}",
         ".f-enq-" + k + "{stroke:" + e.cor + "}",
         ".rf-enq-" + k + "{fill:" + e.cor + "}",
@@ -172,7 +175,7 @@
       b.addEventListener("click", function () {
         if (b.dataset.item) {
           var alvo = porId(b.dataset.item);
-          if (alvo && b.dataset.vista === "jornadas") jornadaAtual = alvo;
+          if (b.dataset.vista === "jornadas") jornadaAtual = alvoJornada(b.dataset.item) || jornadaAtual;
           if (alvo && b.dataset.vista === "sistema") selecionaItem(alvo);
         }
         abre(b.dataset.vista);
@@ -197,11 +200,12 @@
     fora.sort(function (a, b) { return ATORES[a].y - ATORES[b].y; });
 
     var pos = {};
-    txt(eco, 250, 62, "NO SISTEMA DO CENTRO", "grupo-rotulo", "middle");
-    txt(eco, 690, 62, "MUNDO EXTERNO", "grupo-rotulo", "middle");
+    txt(eco, 250, 62, "ATORES INTERNOS", "grupo-rotulo", "middle");
+    txt(eco, 690, 62, "ATORES EXTERNOS", "grupo-rotulo", "middle");
     [[dentro, 250, "e"], [fora, 690, "d"]].forEach(function (col) {
       col[0].forEach(function (id, i) {
-        var y = 130 + i * 180;
+        // cada coluna se espalha pela mesma altura: 4 atores dentro, 3 fora
+        var y = 130 + (col[0].length > 1 ? i * 420 / (col[0].length - 1) : 0);
         pos[id] = { x: col[1], y: y, col: col[2] };
         var a = ATORES[id];
         var g = el("g", { "class": "estacao e-" + a.lado + (id === "centro" ? " e-centro" : ""), transform: "translate(" + col[1] + "," + y + ")" }, eco);
@@ -228,7 +232,7 @@
       .sort(function (a, b) { return b.itens.length - a.itens.length; });
     // a ordem de prioridade da lista: quem origina a relação, começando por
     // quem sustenta o sistema — o paciente
-    var PRIORIDADE = ["paciente", "centro", "operadora", "parceiro", "diagnostico", "farmacia"];
+    var PRIORIDADE = ["paciente", "medico", "centro", "operadora", "parceiro", "diagnostico", "empresa"];
     // + as relações estruturais (relacoes.csv): existem fora do portfólio
     if (typeof RELACOES !== "undefined") {
       RELACOES.forEach(function (r) {
@@ -270,7 +274,8 @@
     geo.forEach(function (c) {
       var r = c.rel;
       // cor = enquadramento; tracejado = ainda a confirmar
-      var aConfirmar = r.itens.length > 0 && r.confirmar === r.itens.length;
+      var aConfirmar = (r.itens.length > 0 && r.confirmar === r.itens.length) ||
+        (r.estrutural && r.tipo === "confirmar");
       var p = el("path", { d: c.d, "class": "fluxo f-enq-" + r.enq + (aConfirmar ? " a-confirmar" : ""),
                            "marker-end": "url(#m-enq-" + r.enq + ")" }, gArcos);
       p.style.strokeWidth = (1.6 + Math.min(3, r.itens.length * 0.22)) + "px";
@@ -283,12 +288,12 @@
     // o desenho mostra só o que está selecionado (uma relação, ou todas as de
     // um ator, ao clicar na caixa dele).
     escreve(leituraEco,
-      "<p class='l-coluna'>AS RELAÇÕES DE DINHEIRO</p>" +
+      "<p class='l-coluna'>QUEM PAGA E QUEM INDICA</p>" +
       "<ul class='l-rels'>" + rels.map(function (r, i) {
         return "<li data-i='" + i + "' tabindex='0'>" +
           "<span class='r-par'><b>" + ATORES[r.de].nome + "</b><span class='seta'>→</span><b>" + ATORES[r.para].nome + "</b></span>" +
           "<span class='enq enq-" + r.enq + "'>" + ENQ_TXT[r.enq] + "</span>" +
-          "<span class='r-itens'>" + (r.estrutural ? "fora do portfólio"
+          "<span class='r-itens'>" + (r.estrutural ? (r.tipo === "indicacao" ? "abre a porta" : "fora do portfólio")
             : r.itens.length + (r.itens.length > 1 ? " itens" : " item")) + "</span></li>";
       }).join("") + "</ul>" +
       "<p class='l-nota' id='eco-nota'></p>" +
@@ -392,6 +397,8 @@
       linha = Math.floor(i / 2);
       lado = i % 2 === 0 ? -1 : 1;
       prog = linhas > 1 ? linha / (linhas - 1) : 0;
+      // o último, sozinho na linha, fica no eixo da travessia
+      if (i === n - 1 && n % 2 === 1) lado = 0;
       out.push([250 + lado * (53 + 57 * prog), y0 + linha * passo]);
     }
     return out;
@@ -399,11 +406,20 @@
 
   var pontos = {}, itemAtual = null;
   var porEstagio = { entrada: [], pescoco: [], saida: [] };
+  // o M³ é feito dos EIXOS (eixos.csv): cada um reúne o que investiga
+  // (eixo_itens.csv) e o que trata (tecnologias com a coluna `eixo`).
+  // O que é de saída sem eixo (Always Care, a trilha contínua) segue ponto.
+  var EIXOS_M3 = (typeof EIXOS !== "undefined" ? EIXOS : []).map(function (e) {
+    return { eixo: true, id: "eixo-" + e.id, chave: e.id, nome: e.nome, apelido: maiuscula(e.nome),
+             descricao: e.descricao, itens: e.itens,
+             tecs: TECNOLOGIAS.filter(function (t) { return t.eixo === e.id; }) };
+  });
+  porEstagio.saida = EIXOS_M3.slice();
   TECNOLOGIAS.forEach(function (t) {
     // o M¹ é feito só dos GRUPOS: os exames moram dentro deles, e as portas
     // (dia de abertura, curadoria) são jornada, não portfólio — vivem na
     // camada JORNADAS. Ponto no funil, aqui, só M² e M³.
-    if (t.estagio !== "entrada") porEstagio[t.estagio].push(t);
+    if (t.estagio !== "entrada" && !t.eixo) porEstagio[t.estagio].push(t);
   });
   Object.keys(porEstagio).forEach(function (est) {
     var lista = porEstagio[est], slots = slotsDe(est, lista.length);
@@ -413,8 +429,9 @@
       el("circle", { r: 17, "class": "alvo" }, g);
       el("circle", { r: 7.5, "class": "v" }, g);
       txt(g, 0, 23, tec.apelido || tec.nome, "p-label", "middle");
-      g.addEventListener("click", function () { selecionaItem(tec); });
-      g.addEventListener("keydown", function (ev) { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); selecionaItem(tec); } });
+      var abre = function () { if (tec.eixo === true) selecionaEixo(tec); else selecionaItem(tec); };
+      g.addEventListener("click", abre);
+      g.addEventListener("keydown", function (ev) { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); abre(); } });
       pontos[tec.id] = { g: g, x: x, y: y };
     });
   });
@@ -422,20 +439,25 @@
   /* ---- os grupos do portfólio, nas calhas da boca ----
      Cada grupo reúne as avaliações dos pacotes (componentes.csv) e os itens
      que têm dinâmica própria (coluna `cluster` de tecnologias.csv). É o que
-     tira o viés de ver só os itens com seta: o M¹ mede sete dimensões. */
+     tira o viés de ver só os itens com seta. O M¹ mede em duas famílias:
+     a capacidade intrínseca (OMS) e os pilares do estilo de vida. */
   var GRUPOS = (function () {
     var mapa = {}, ordem = [];
     CLUSTERS.forEach(function (c) {                 // a ordem e o texto vêm do back
-      mapa[c.nome] = { nome: c.nome, descricao: c.descricao, aval: [], chaves: {}, pacotes: {}, itens: [] };
+      mapa[c.nome] = { nome: c.nome, familia: c.familia, descricao: c.descricao,
+                       aval: [], chaves: {}, pacotes: {}, itens: [] };
       ordem.push(c.nome);
     });
     if (typeof COMPONENTES !== "undefined") {
       Object.keys(COMPONENTES).forEach(function (p) {
         COMPONENTES[p].forEach(function (c) {
-          if (!mapa[c.cluster]) return;
-          var g = mapa[c.cluster], chave = c.curto || c.item;
-          g.pacotes[p] = true;
-          if (!g.chaves[chave]) { g.chaves[chave] = true; g.aval.push(c); }
+          // um exame pode morar em mais de um grupo (cluster "a|b|c")
+          c.cluster.split("|").forEach(function (cl) {
+            if (!mapa[cl]) return;
+            var g = mapa[cl], chave = c.curto || c.item;
+            g.pacotes[p] = true;
+            if (!g.chaves[chave]) { g.chaves[chave] = true; g.aval.push(c); }
+          });
         });
       });
     }
@@ -454,28 +476,62 @@
   })();
 
   // os grupos são pontos do funil, idênticos aos de M³: mesmo círculo,
-  // mesmo rótulo embaixo, mesma seleção — muda só o que eles representam
+  // mesmo rótulo embaixo, mesma seleção — muda só o que eles representam.
+  // Cada família ganha o seu bloco na boca, com o nome em cima.
   var rotulosGrupo = {};
   (function () {
-    var n = GRUPOS.length, linhas = Math.ceil(n / 2);
-    var y0 = 140, y1 = 320, passo = linhas > 1 ? (y1 - y0) / (linhas - 1) : 0;
-    GRUPOS.forEach(function (g, i) {
-      var linha = Math.floor(i / 2);
-      var sozinho = i === n - 1 && n % 2 === 1;
-      var prog = linhas > 1 ? linha / (linhas - 1) : 0;
-      var dx = 88 - 42 * prog;                    // acompanha o aperto da boca
-      var x = sozinho ? 250 : 250 + (i % 2 === 0 ? -dx : dx);
-      var y = y0 + linha * passo;
-      var grupo = el("g", { "class": "ponto g-cluster", transform: "translate(" + x + "," + y + ")",
-                            role: "button", tabindex: 0, "aria-label": "grupo " + g.nome }, cena);
-      el("circle", { r: 17, "class": "alvo" }, grupo);
-      el("circle", { r: 7.5, "class": "v" }, grupo);
-      txt(grupo, 0, 23, maiuscula(g.nome.split(" ")[0]), "p-label", "middle");
-      grupo.addEventListener("click", function () { selecionaGrupo(g); });
-      grupo.addEventListener("keydown", function (ev) { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); selecionaGrupo(g); } });
-      rotulosGrupo[g.nome] = grupo;
+    // meia largura útil da boca numa altura y: lida da parede fina interna
+    function meiaLargura(y) {
+      var melhor = 0, dist = 1e9;
+      for (var t = 0; t <= 1.0001; t += 0.01) {
+        var u = 1 - t, a = u * u * u, b = 3 * u * u * t, c = 3 * u * t * t, d = t * t * t;
+        var py = a * 70 + b * 255 + c * 315 + d * 378, px = a * 102 + b * 102 + c * 208 + d * 208;
+        if (Math.abs(py - y) < dist) { dist = Math.abs(py - y); melhor = 250 - px; }
+      }
+      return melhor;
+    }
+    var familias = [], porFamilia = {};
+    GRUPOS.forEach(function (g) {
+      var f = g.familia || "";
+      if (!porFamilia[f]) { porFamilia[f] = []; familias.push(f); }
+      porFamilia[f].push(g);
+    });
+    var y = 92;
+    familias.forEach(function (f, k) {
+      if (k > 0) y += 2;
+      if (f) txt(cena, 250, y, f.toUpperCase(), "familia-rotulo", "middle");
+      y += 27;
+      var lista = porFamilia[f];
+      // número ímpar maior que três: a primeira linha leva três (a boca é larga em cima)
+      var porLinha = lista.length % 2 === 1 && lista.length > 3 ? 3 : 2;
+      var linhas = [lista.slice(0, porLinha)];
+      for (var i = porLinha; i < lista.length; i += 2) linhas.push(lista.slice(i, i + 2));
+      // a boca afunila: a linha de rótulos mais longos vai mais acima, onde há largura
+      var maior = function (l) { return Math.max.apply(null, l.map(function (g) { return g.nome.length; })); };
+      var fixa = porLinha === 3 ? 1 : 0;           // a linha de três fica no topo, larga
+      linhas = linhas.slice(0, fixa).concat(linhas.slice(fixa).sort(function (a, b) { return maior(b) - maior(a); }));
+      linhas.forEach(function (linha) {
+        var q = linha.length;
+        var passo = q > 1 ? Math.min(92, 2 * (meiaLargura(y + 23) - 30) / (q - 1)) : 0;
+        linha.forEach(function (g, j) { posiciona(g, 250 + (j - (q - 1) / 2) * passo, y); });
+        // rótulo em duas linhas pede mais chão antes da linha seguinte
+        y += linha.some(function (g) { return g.nome.indexOf(" ") > 0; }) ? 54 : 44;
+      });
     });
   })();
+  function posiciona(g, x, y) {
+    var grupo = el("g", { "class": "ponto g-cluster", transform: "translate(" + x + "," + y + ")",
+                          role: "button", tabindex: 0, "aria-label": "grupo " + g.nome }, cena);
+    el("circle", { r: 17, "class": "alvo" }, grupo);
+    el("circle", { r: 7.5, "class": "v" }, grupo);
+    // nome de duas palavras ("atividade física") quebra em duas linhas
+    g.nome.split(" ").forEach(function (p, l) {
+      txt(grupo, 0, 23 + l * 15, l ? p : maiuscula(p), "p-label", "middle");
+    });
+    grupo.addEventListener("click", function () { selecionaGrupo(g); });
+    grupo.addEventListener("keydown", function (ev) { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); selecionaGrupo(g); } });
+    rotulosGrupo[g.nome] = grupo;
+  }
 
   function limpaSelecao() {
     var todos = Object.keys(pontos).map(function (id) { return pontos[id].g; })
@@ -487,20 +543,9 @@
     });
   }
 
-  /* "Quem paga" — igual nas três escalas: grupo de M¹, exame de M² e
-     modulação de M³. Uma linha por relação (de, para, enquadramento). */
-  // os fluxos de um grupo: os dos seus itens com dinâmica própria; se não
-  // houver, vale o do pacote (o grupo é comprado dentro do dia de abertura)
-  function fluxosDoGrupo(g) {
-    var fs = [];
-    g.itens.forEach(function (t) { fs = fs.concat(t.fluxos || []); });
-    if (!fs.length) {
-      var abertura = porId("abertura");
-      fs = (abertura && abertura.fluxos) || [];
-    }
-    return fs;
-  }
-
+  /* "Quem paga" — na ficha de um item avulso (porta, tratamento). Nas
+     fichas de domínio, dossiê e eixo, quem diz é a cor de cada item (listaEnq).
+     Uma linha por relação (de, para, enquadramento). */
   function quemPaga(fluxos, nota) {
     var linhas = [], porPar = {};
     fluxos.forEach(function (f) {
@@ -522,31 +567,71 @@
     }).join("") + "</ul>" + (nota ? "<p class='l-legenda'>" + nota + "</p>" : "");
   }
 
+  /* O bloco que se repete nas três escalas do funil: um título com a
+     contagem por enquadramento (1 reembolsável · 2 particular…) e a lista,
+     cada item com a barra na cor de quem paga. Substitui o "quem paga". */
+  function listaEnq(titulo, itens, um, varios) {
+    var conta = {}, ordemEnq = [];
+    itens.forEach(function (c) {
+      if (!conta[c.enq]) { conta[c.enq] = 0; ordemEnq.push(c.enq); }
+      conta[c.enq]++;
+    });
+    var mistura = ordemEnq.map(function (k) {
+      return "<span class='c-leg enqp-" + k + "'>" + conta[k] + " " + ENQ_CURTO[k] + "</span>";
+    }).join(" ");
+    return "<p class='l-sub'>" + titulo + " · " + itens.length + " " + (itens.length === 1 ? um : varios) +
+      " <span class='c-legendas'>" + mistura + "</span></p>" +
+      "<ul class='l-aval'>" + itens.map(function (c) {
+        return "<li class='enqp-" + c.enq + (c.confianca && c.confianca !== "confirmado" ? " c-duvida" : "") + "'>" +
+          "<b class='" + (c.canal === "digital" ? "c-digital" : "") + "'>" + c.item + "</b>" +
+          "<span>" + maiuscula(c.descricao) + (c.condicao ? " — " + c.condicao : "") + "</span></li>";
+      }).join("") + "</ul>";
+  }
+
   function selecionaGrupo(g) {
     limpaSelecao();
     rotulosGrupo[g.nome].classList.add("ativa");
     el("circle", { r: 8, "class": "halo" }, rotulosGrupo[g.nome]);
     Object.keys(zonas).forEach(function (z) { zonas[z].classList.toggle("z-on", z === "entrada"); });
+    // o que não consta de pacote (vem por indicação) entra com o enquadramento do seu fluxo
+    var itens = g.aval.concat(g.soltos.map(function (t) {
+      var f = (t.fluxos || []).filter(function (x) { return x.enq !== "beneficio"; })[0];
+      return { item: limpa(t.nome) + " · por indicação", descricao: limpa(t.entrega), enq: f ? f.enq : "aberto" };
+    }));
     escreve(leituraSis,
-      "<p class='l-coluna'>UM GRUPO DO PORTFÓLIO</p>" +
+      "<p class='l-coluna'>" + (g.familia ? g.familia.toUpperCase() + " · UM DOMÍNIO" : "UM GRUPO DO PORTFÓLIO") + "</p>" +
       "<p class='l-estagio e-entrada'>" + M_ROTULO.entrada + "</p>" +
       "<h2 class='serif'>" + maiuscula(g.nome) + "</h2>" +
       "<p class='l-entrega'>" + maiuscula(g.descricao) + "</p>" +
-      "<p class='l-sub'>O que se mede aqui · " + (g.aval.length + g.soltos.length) + " avaliações</p>" +
-      "<ul class='l-aval'>" + g.aval.map(function (c) {
-        return "<li><b class='" + (c.canal === "digital" ? "c-digital" : "") + "'>" + c.item + "</b>" +
-          "<span>" + maiuscula(c.descricao) + "</span></li>";
-      }).concat(g.soltos.map(function (t) {
-        return "<li><b>" + limpa(t.nome) + " <small>· por indicação</small></b>" +
-          "<span>" + limpa(t.entrega) + "</span></li>";
-      })).join("") + "</ul>" +
-      // o dinheiro do grupo: o que o pacote cobre e o que pode ir ao rol
-      quemPaga(fluxosDoGrupo(g), "o grupo entra no pacote de abertura — o que tem indicação " +
-        "clínica pode alcançar o reembolso") +
+      listaEnq("O que se mede aqui", itens, "avaliação", "avaliações") +
+      "<p class='l-legenda'>o domínio entra no pacote de abertura, pago no particular — o que tem código " +
+      "no rol pode alcançar o reembolso quando há indicação clínica</p>" +
       "<p class='l-proxima'>" + elo("servicos", "Ver os pacotes") + "</p>");
-    Array.prototype.forEach.call(leituraSis.querySelectorAll(".l-chip"), function (b) {
-      b.addEventListener("click", function () { selecionaItem(porId(b.dataset.id)); });
-    });
+    ligaElos(leituraSis);
+  }
+
+  /* Um eixo do M³: o que ele investiga (cada exame na cor do seu
+     enquadramento — aqui a mistura reembolsável + particular é a regra).
+     Os tratamentos do eixo têm a sua linha na camada JORNADAS. */
+  function selecionaEixo(e) {
+    itemAtual = null;
+    limpaSelecao();
+    pontos[e.id].g.classList.add("ativa");
+    el("circle", { r: 8, "class": "halo" }, pontos[e.id].g);
+    Object.keys(zonas).forEach(function (z) { zonas[z].classList.toggle("z-on", z === "saida"); });
+    escreve(leituraSis,
+      "<p class='l-coluna'>UM EIXO DE MODULAÇÃO</p>" +
+      "<p class='l-estagio e-saida'>" + M_ROTULO.saida + "</p>" +
+      "<h2 class='serif'>" + maiuscula(e.nome) + "</h2>" +
+      "<p class='l-entrega'>" + e.descricao + "</p>" +
+      (e.itens.length ? listaEnq("O que se investiga", e.itens, "exame", "exames") :
+        // eixo sem exame próprio (autonômica): diz como ele começa
+        "<p class='l-sub'>O que se investiga</p><p class='l-entrega'>Sem exame próprio — o eixo começa pelo " +
+        e.tecs.map(function (t) { return limpa(t.nome).split(" (")[0].toLowerCase(); }).join(" e ") + ".</p>") +
+      // sem "o que se faz" nem "quem paga": a cor de cada exame já diz quem
+      // paga, e os tratamentos têm a sua linha na camada JORNADAS
+      "<p class='l-legenda'>chega-se aqui pelo dossiê: o que tem indicação clínica vai ao plano, o resto é particular</p>" +
+      "<p class='l-proxima'><button class='l-elo' data-vista='jornadas' data-item='" + e.id + "'>Ver a jornada deste eixo →</button></p>");
     ligaElos(leituraSis);
   }
 
@@ -558,6 +643,8 @@
       el("circle", { r: 8, "class": "halo" }, pontos[tec.id].g);
     } else if (tec.cluster && rotulosGrupo[tec.cluster]) {
       rotulosGrupo[tec.cluster].classList.add("ativa");   // mora dentro do grupo
+    } else if (tec.eixo && pontos["eixo-" + tec.eixo]) {
+      pontos["eixo-" + tec.eixo].g.classList.add("ativa"); // mora dentro do eixo
     }
     Object.keys(zonas).forEach(function (z) { zonas[z].classList.toggle("z-on", z === tec.estagio); });
 
@@ -566,7 +653,16 @@
       "<p class='l-estagio e-" + tec.estagio + "'>" + M_ROTULO[tec.estagio] + "</p>" +
       "<h2 class='serif'>" + limpa(tec.nome) + "</h2>" +
       "<p class='l-entrega'>" + limpa(tec.entrega) + "</p>";
-    html += quemPaga(tec.fluxos || []);
+    if (tec.estagio === "pescoco") {
+      // M²: o mesmo padrão de legenda das outras escalas — o que se entrega, na cor de quem paga
+      html += listaEnq("O que se entrega", (tec.fluxos || []).filter(function (f) {
+        return f.enq !== "beneficio";
+      }).map(function (f) {
+        return { item: tec.apelido, descricao: limpa(f.oque), enq: f.enq };
+      }), "item", "itens");
+    } else {
+      html += quemPaga(tec.fluxos || []);
+    }
     // só a entrada entra em pacote; modulação vem por indicação, não por fluxo
     html += "<p class='l-proxima'>" +
       (tec.estagio === "entrada" ? elo("servicos", "Ver os pacotes") + " " : "") +
@@ -598,17 +694,38 @@
 
       var corpo;
       if (itens) {
+        // um pacote que contém outro inteiro (Frontier ⊃ Core) não repete a
+        // lista: diz "tudo do Core" e mostra só o que acrescenta — é o destaque
+        var chaves = {};
+        itens.forEach(function (c) { chaves[c.curto] = true; });
+        var base = null;
+        PROTOCOLOS.forEach(function (p) {
+          var outros = (typeof COMPONENTES !== "undefined" && COMPONENTES[p]) || null;
+          if (p === nome || !outros || outros.length >= itens.length) return;
+          if (outros.every(function (c) { return chaves[c.curto]; }) && (!base || outros.length > COMPONENTES[base].length)) base = p;
+        });
+        var total = itens, herdadas = {};
+        if (base) {
+          COMPONENTES[base].forEach(function (c) { herdadas[c.curto] = true; });
+          itens = itens.filter(function (c) { return !herdadas[c.curto]; });
+        }
         var grupos = {}, ordem = [];
         itens.forEach(function (c) {
           if (!grupos[c.cluster]) { grupos[c.cluster] = []; ordem.push(c.cluster); }
           grupos[c.cluster].push(c);
         });
+        // na ordem do funil (clusters.csv), não na ordem em que aparecem no pacote
+        var posicao = {};
+        CLUSTERS.forEach(function (c, i) { posicao[c.nome] = i; });
+        ordem.sort(function (a, b) { return posicao[a.split("|")[0]] - posicao[b.split("|")[0]]; });
         // a pergunta comercial: quanto deste pacote o plano pode cobrir?
-        var noRol = itens.filter(function (c) { return c.enq === "rol"; }).length;
-        corpo = "<p class='c-conta'>" + itens.length + " avaliações · <b class='c-rol'>" + noRol +
+        var noRol = total.filter(function (c) { return c.enq === "rol"; }).length;
+        corpo = "<p class='c-conta'>" + total.length + " avaliações · <b class='c-rol'>" + noRol +
           " podem ir ao rol</b></p>" +
+          (base ? "<p class='c-base'>Tudo do " + base + "</p><p class='c-mais'>+ " + itens.length +
+            " que só o " + nome + " entrega</p>" : "") +
           ordem.map(function (cl) {
-            return "<p class='l-cluster'>" + cl + "</p><ul class='c-lista'>" +
+            return "<p class='l-cluster'>" + cl.split("|").join(" · ") + "</p><ul class='c-lista'>" +
               grupos[cl].map(function (c) {
                 var dica = c.descricao + (c.condicao ? " — " + c.condicao : "");
                 return "<li class='enqp-" + c.enq + (c.confianca !== "confirmado" ? " c-duvida" : "") +
@@ -655,10 +772,13 @@
       "<p class='l-legenda j-nota'>o ano completo, nas duas trilhas</p>" +
       "<p class='l-sub'>Uma linha de cada vez</p>" + grupos.map(function (g) {
       // no M¹ a lista traz só as PORTAS: os exames que moram dentro de um grupo
-      // não são jornada à parte — a jornada deles é a do dia de abertura
-      var itens = TECNOLOGIAS.filter(function (t) {
-        return t.estagio === g[0] && (t.jornada || []).length && !t.cluster;
-      });
+      // não são jornada à parte — a jornada deles é a do dia de abertura.
+      // No M³, as mesmas entradas do funil: os eixos (+ Always Care)
+      var itens = g[0] === "saida" ? porEstagio.saida.map(function (t) { return t.eixo === true ? jornadaDoEixo(t) : t; })
+        .filter(function (t) { return (t.jornada || []).length; }) :
+        TECNOLOGIAS.filter(function (t) {
+          return t.estagio === g[0] && (t.jornada || []).length && !t.cluster && !t.eixo;
+        });
       if (!itens.length) return "";
       return "<p class='l-sub'>" + g[1] + "</p>" + itens.map(function (t) {
         return "<button class='j-opt' data-id='" + t.id + "'>" + t.apelido +
@@ -667,10 +787,33 @@
     }).join(""));
     Array.prototype.forEach.call(lista.querySelectorAll(".j-opt"), function (b) {
       b.addEventListener("click", function () {
-        montaJornada(b.dataset.pessoa ? "pessoa" : porId(b.dataset.id));
+        montaJornada(b.dataset.pessoa ? "pessoa" : alvoJornada(b.dataset.id));
       });
     });
   })();
+
+  /* A jornada de um eixo do M³ é a dos seus itens em sequência — primeiro o
+     que investiga, depois o que trata (a ordem de tecnologias.csv) — e o
+     dinheiro é a soma das linhas. Cada etapa leva o nome do item de origem. */
+  function jornadaDoEixo(e) {
+    var varios = e.tecs.length > 1, etapas = [], fluxos = [];
+    e.tecs.forEach(function (t) {
+      (t.jornada || []).forEach(function (j) {
+        var c = {}; Object.keys(j).forEach(function (k) { c[k] = j[k]; });
+        if (varios) c.etapa = t.apelido + " · " + j.etapa;
+        etapas.push(c);
+      });
+      fluxos = fluxos.concat(t.fluxos || []);
+    });
+    return { id: e.id, eixo: true, apelido: e.apelido, nome: "Eixo " + e.nome, entrega: e.descricao,
+             estagio: "saida", jornada: etapas, fluxos: fluxos };
+  }
+  function alvoJornada(id) {
+    var t = porId(id);
+    if (t) return t;
+    var e = EIXOS_M3.filter(function (x) { return x.id === id; })[0];
+    return e ? jornadaDoEixo(e) : null;
+  }
 
   /* ---- UM renderizador de blueprint, dois conjuntos de dados ----
      A jornada da pessoa (o ano inteiro) e a de cada item do portfólio usam
@@ -770,17 +913,21 @@
 
   /* ================= estado inicial e deep links ================= */
   var q = location.search;
-  var pedido = (q.match(/[?&]item=([a-z0-9]+)/i) || [])[1];
+  var pedido = (q.match(/[?&]item=([a-z0-9-]+)/i) || [])[1];
   var alvo = porId(pedido) || porId("abertura") || TECNOLOGIAS[0];
-  jornadaAtual = pedido && porId(pedido) ? porId(pedido) : "pessoa";
+  jornadaAtual = (pedido && alvoJornada(pedido)) || "pessoa";
   var grupoPedido = (q.match(/[?&]grupo=([^&]+)/i) || [])[1];
   var g = null;
   if (grupoPedido) {
     grupoPedido = decodeURIComponent(grupoPedido).toLowerCase();
     g = GRUPOS.filter(function (x) { return x.nome.indexOf(grupoPedido) === 0; })[0];
   }
+  var eixoPedido = (q.match(/[?&]eixo=([a-z]+)/i) || [])[1];
+  var ex = eixoPedido && pontos["eixo-" + eixoPedido.toLowerCase()] &&
+    EIXOS_M3.filter(function (x) { return x.chave === eixoPedido.toLowerCase(); })[0];
   // sem pedido explícito, o SISTEMA abre pelo primeiro grupo do M¹
-  if (g) selecionaGrupo(g);
+  if (ex) selecionaEixo(ex);
+  else if (g) selecionaGrupo(g);
   else if (pedido && pontos[alvo.id]) selecionaItem(alvo);
   else selecionaGrupo(GRUPOS[0]);
   var atorPedido = (q.match(/[?&]ator=([a-z]+)/i) || [])[1];

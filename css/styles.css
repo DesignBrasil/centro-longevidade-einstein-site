@@ -247,6 +247,7 @@ section{padding:104px 0}
 /* ---- modular: a saída reabre, par a par (640 → 780 → 920) ----
    o fio passa no vão central de cada par. */
 .par{display:grid;grid-template-columns:1fr 1fr;gap:60px;margin:0 auto 26px}
+.par-0{grid-template-columns:1fr;max-width:420px}  /* a saída do funil começa estreita: um eixo só */
 .par-1{max-width:640px}
 .par-2{max-width:780px}
 .par-3{max-width:920px}

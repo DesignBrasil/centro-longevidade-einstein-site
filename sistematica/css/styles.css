@@ -196,20 +196,24 @@ body{overflow:hidden}
    quem manda não é o font-size sozinho, é a razão entre ele e o peso fixo
    (paddings, títulos, pílulas). Por isso o texto nasce grande e as folgas
    nascem apertadas — o encaixe devolve a proporção e sobra letra. */
+/* pacote que herda outro inteiro: uma linha só pela base, e o acréscimo em destaque */
+.c-base{margin:4px 0 2px;padding:7px 12px;border:1px dashed rgba(23,116,222,.45);border-radius:10px;
+  font-size:15px;font-weight:600;color:var(--ink);background:rgba(223,236,251,.5)}
+.c-mais{margin:8px 0 0;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
 .cartao .l-cluster{margin:5px 0 1px;font-size:12px;line-height:1.25;letter-spacing:.12em}
 .cartao .l-itens{font-size:16px;line-height:1.45}
 .c-item.c-digital{color:var(--accent);font-style:italic}
 /* cada exame mostra o seu enquadramento pela barra à esquerda */
 .c-lista{list-style:none;margin:0;padding:0}
-.c-lista li{padding:0 0 0 9px;border-left:3px solid var(--hairline);margin-bottom:0;
+.c-lista li{padding:0 0 0 14px;border-left:10px solid var(--hairline);margin-bottom:0;
   font-size:17px;line-height:1.34;cursor:help;overflow-wrap:anywhere}
-.c-lista li.c-duvida{border-left-style:dashed}
+.c-lista li.c-duvida,.l-aval li.c-duvida{border-left-style:dashed}
 .c-rol{color:var(--beneficio);font-weight:600}
 .c-legendas{display:inline-flex;gap:10px;margin-right:6px}
-.c-leg{position:relative;padding-left:11px;font-size:12.5px;font-weight:600}
-.c-leg::before{content:"";position:absolute;left:0;top:3px;width:3px;height:11px;background:currentColor}
+.c-leg{position:relative;padding-left:16px;font-size:12.5px;font-weight:600}
+.c-leg::before{content:"";position:absolute;left:0;top:3px;width:10px;height:13px;background:currentColor}
 .c-leg.c-duvida{color:var(--muted);font-weight:400}
-.c-leg.c-duvida::before{background:transparent;border-left:3px dashed var(--muted)}
+.c-leg.c-duvida::before{background:repeating-linear-gradient(to bottom,var(--muted) 0 3px,transparent 3px 5px)}
 .c-adiante{margin:7px 0 0;padding-top:6px;border-top:1px solid var(--hairline);
   display:flex;flex-wrap:wrap;gap:4px;align-items:baseline;font-size:14px;color:var(--muted)}
 .c-adiante .l-sub{width:100%;margin:0 0 2px;font-size:12px}
@@ -304,6 +308,9 @@ body{overflow:hidden}
 .g-cluster.ativa .micro{fill:var(--accent);font-weight:600}
 .g-cluster.ativa .micro-p{fill:var(--accent);r:4}
 .tunel-legenda{font-family:'Fraunces',Georgia,serif;font-style:italic;font-size:11.5px;fill:var(--muted)}
+/* o nome da família no topo de cada bloco de grupos (capacidade intrínseca · estilo de vida) */
+.familia-rotulo{font-size:10.5px;font-weight:600;letter-spacing:.16em;fill:var(--muted);
+  paint-order:stroke;stroke:var(--paper);stroke-width:4px;stroke-linejoin:round}
 
 .estacao rect{fill:rgba(251,249,244,.92);stroke:rgba(12,58,111,.45);stroke-width:1.3}
 .estacao.e-fora rect{stroke-dasharray:5 4;fill:rgba(231,237,245,.55)}
