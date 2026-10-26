@@ -860,6 +860,22 @@ nav,.palco,footer{position:relative;z-index:1}
   .bpd-cel small{font-size:10.5px}
   .j-opt{font-size:13.5px}
 }
+@media(max-width:1020px){
+  /* o ano, em tela estreita (tablet e celular): a régua fica de pé e vira uma lista cronológica, com a mesma cor por passo */
+  .jt{height:auto;margin:6px 0 0;padding:2px 0 2px 24px;display:flex;flex-direction:column;gap:10px}
+  .jt::before{content:"";position:absolute;left:6px;top:8px;bottom:8px;width:3px;border-radius:2px;
+    background:linear-gradient(var(--accent),var(--beneficio) 30%,var(--dinheiro) 55%,var(--beneficio))}
+  .jt-eixo,.jt-tick,.jt-trecho,.jt-pulso,.jt-ponto{display:none}
+  .jt-rot,.jt-ini,.jt-fim{position:relative;left:auto !important;top:auto;transform:none;width:auto;max-width:none;
+    margin:0;text-align:left}
+  .jt-rot small{display:inline;margin-right:6px}
+  .jt-rot::before{content:"";position:absolute;left:-23px;top:2px;width:13px;height:13px;border-radius:50%;
+    background:var(--accent);box-shadow:0 0 0 3px var(--paper)}
+  .jt-rot.e-pescoco::before{background:var(--beneficio)}
+  .jt-rot.e-saida::before{background:var(--dinheiro)}
+  .jt-rep::before{width:9px;height:9px;left:-21px;top:3px;background:var(--paper);border:2px solid var(--dinheiro)}
+  .jt-rep.e-entrada::before{border-color:var(--accent)}
+  .jt-rep.e-pescoco::before{border-color:var(--beneficio)}
 @media(max-width:720px){
   .wrap{padding:0 18px}
   .grade{grid-template-columns:1fr}
@@ -873,4 +889,5 @@ nav,.palco,footer{position:relative;z-index:1}
   .lista-jor .l-coluna,.lista-jor .l-sub,.lista-jor .j-nota{width:100%}
   .j-opt{width:auto;border-color:var(--hairline)}
   .meta{grid-template-columns:1fr}
+}
 }

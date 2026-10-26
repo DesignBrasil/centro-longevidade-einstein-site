@@ -1023,7 +1023,7 @@ var RELATORIO = {
   "w_intro": "Antes das camadas, o básico: o que é, para quem, onde, quando, como e quanto.",
   "w_oque": "Um centro do Einstein que mede a saúde de uma vez, junta os resultados num mapa só e acompanha a pessoa ao longo do ano.",
   "w_porque": "Hoje quem se cuida faz isso sozinho: exames em vários lugares, especialistas que não conversam entre si e pouca ajuda para manter o hábito.",
-  "w_quem": "Adultos que querem envelhecer com autonomia, a partir dos 20 ou dos 40 anos, conforme o protocolo, e empresas, para os seus colaboradores. O grupo prioritário ainda está em definição. A pesquisa ouviu seis perfis:",
+  "w_quem": "Adultos que querem envelhecer com autonomia, em qualquer idade, e empresas, para os seus colaboradores. O grupo prioritário ainda está em definição. A pesquisa ouviu seis perfis:",
   "w_onde": "Nas unidades Einstein que já existem: a avaliação no Espaço Einstein, os exames no hospital e o acompanhamento a distância.",
   "w_quando": "Um dia de avaliação, a devolutiva com o mapa e um ano de acompanhamento, com nova avaliação aos 6 e aos 12 meses.",
   "w_como": "Em três passos, que se repetem a cada ano:",
@@ -1495,7 +1495,7 @@ var PROPOSTA = [
     "componente": "Cliente / usuário",
     "bloco": "Segmentos de clientes",
     "cor": "#cfe2fb",
-    "temos": "seis perfis ouvidos na pesquisa, protocolos a partir dos 20 e dos 40 anos, e empresas que contratam para os colaboradores",
+    "temos": "seis perfis ouvidos na pesquisa, adultos de qualquer idade e empresas que contratam para os colaboradores",
     "preciso": "escolher o grupo que o Centro prioriza na entrada e ouvir quem ainda não ouvimos",
     "pedido": "acesso aos clientes de hoje do Einstein e ao RH das empresas que já compram dele, para ouvir quem ainda falta"
   },
