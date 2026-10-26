@@ -59,7 +59,7 @@ var ATORES = {
 };
 
 var PROTOCOLOS = [
-  "Individualizado",
+  "Curadoria",
   "Performance 20+",
   "Core 40+",
   "Frontier 40+"
@@ -1581,7 +1581,7 @@ var TECNOLOGIAS = [
     "entrega": "Um dia no Centro: o pacote de avaliações que abre a travessia — a composição varia por fluxo.",
     "estagio": "entrada",
     "tags": [
-      "Individualizado",
+      "Curadoria",
       "Performance 20+",
       "Core 40+",
       "Frontier 40+"
@@ -2056,7 +2056,7 @@ var TECNOLOGIAS = [
     "entrega": "Uma conversa curta para quem não sabe por onde começar, e a leitura dos exames que a pessoa já tem.",
     "estagio": "entrada",
     "tags": [
-      "Individualizado"
+      "Curadoria"
     ],
     "cluster": "",
     "eixo": "",
