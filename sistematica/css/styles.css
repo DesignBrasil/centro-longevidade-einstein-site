@@ -65,6 +65,7 @@ body{overflow:hidden}
   .brand-selo{width:36px}
   .palco{height:calc(100vh - 54px);padding-top:4px;padding-bottom:4px}
   .pergunta{margin:0 0 6px;font-size:12.5px}
+  .manchete{font-size:15.5px;margin-bottom:4px}
 }
 .pergunta b{font-family:'Inter',system-ui,sans-serif;font-style:normal;font-size:12px;font-weight:600;
   letter-spacing:.2em;color:var(--ink)}
@@ -165,7 +166,7 @@ body{overflow:hidden}
 /* a linha quebra sozinha: nada é cortado quando a etiqueta é longa */
 .l-rels li{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;
   padding:4px 0;border-bottom:1px solid var(--hairline);cursor:default}
-/* a lista segue a ordem de prioridade: quem origina a relação, o paciente primeiro */
+/* a lista segue a ordem de prioridade: quem origina a relação, o cliente primeiro */
 .l-rels .r-par{font-size:13px;flex:1 1 auto;min-width:0}
 .l-rels b{color:var(--ink);font-weight:600}
 .l-rels .seta{color:var(--muted);margin:0 5px}
@@ -206,7 +207,7 @@ body{overflow:hidden}
 /* cada exame mostra o seu enquadramento pela barra à esquerda */
 .c-lista{list-style:none;margin:0;padding:0}
 .c-lista li{padding:0 0 0 14px;border-left:10px solid var(--hairline);margin-bottom:0;
-  font-size:17px;line-height:1.34;cursor:help;overflow-wrap:anywhere}
+  font-size:17px;line-height:1.34;overflow-wrap:anywhere}
 .c-lista li.c-duvida,.l-aval li.c-duvida{border-left-style:dashed}
 .c-rol{color:var(--beneficio);font-weight:600}
 .c-legendas{display:inline-flex;gap:10px;margin-right:6px}
@@ -437,12 +438,395 @@ footer .wrap{display:flex;flex-direction:column;gap:6px}
 /* conteúdo acima do fundo fixo */
 nav,.palco,footer{position:relative;z-index:1}
 
+
+/* ============================================================
+   A LEITURA DA PEÇA (25/10/2026): abertura · o que revela · direção
+   A peça vira relatório sem deixar de ser mapa: no alto, a pergunta
+   da camada e a da pessoa; embaixo, o que o desenho revela e a
+   próxima camada. A abertura conta a história antes do sistema;
+   a direção fecha com achados, pendências e próximos passos.
+   ============================================================ */
+/* as camadas numeradas: a ordem de leitura é parte do argumento */
+.f-camada small{font-size:9px;font-weight:600;color:var(--accent);margin-right:6px;letter-spacing:0;vertical-align:1px}
+.f-camada.on small{color:#9fc5f5}
+/* as pontas do relatório (abertura, direção) em itálico serifado: são livro, não mapa */
+.f-camada.f-livro{font-family:'Fraunces',Georgia,serif;font-style:italic;letter-spacing:.06em;font-size:12.5px;font-weight:560}
+.pergunta .perg-pessoa{color:var(--ink)}
+/* ===== método Goh (26/10): uma coisa primeiro · feche a seta · a rota real ·
+   pontos, não o ponto · caixas vazias · as passagens têm dono ===== */
+.manchete{flex:0 0 auto;margin:-2px 0 6px;font-family:'Fraunces',Georgia,serif;font-size:17px;font-weight:560;
+  line-height:1.3;color:var(--ink)}
+.manchete:empty{display:none}
+.sis-volta{fill:none;stroke:var(--accent);stroke-width:2.4;stroke-dasharray:7 5;opacity:1}
+.sis-volta-ponta{fill:var(--accent);opacity:1}
+.sis-volta-txt{font-family:'Fraunces',Georgia,serif;font-style:italic;font-size:14.5px;font-weight:600;fill:var(--accent);paint-order:stroke;stroke:var(--paper);stroke-width:4px}
+.bpp-espera{display:flex;align-items:center;gap:5px;margin-bottom:3px;font-size:9.5px;font-style:italic;color:var(--dinheiro)}
+.bpp-espera::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;border:1.5px solid var(--dinheiro)}
+.bpp-volta{display:flex;justify-content:space-between;align-items:baseline;gap:14px;flex-wrap:wrap;
+  margin:-6px 0 10px 138px;padding:5px 12px;border:1.5px dashed rgba(23,116,222,.45);border-top:none;
+  border-radius:0 0 12px 12px;font-size:11px;color:var(--accent)}
+.bpp-volta small{font-size:10.5px;color:var(--muted)}
+.voz .pt-media{display:inline-block;width:8px;height:8px;margin-right:6px;border-radius:50%;border:1.5px solid var(--muted);vertical-align:0}
+.pessoas{margin:0 0 12px}
+.pessoas .l-sub{margin:0 0 6px}
+.pontos{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px 14px}
+.pontos li{display:grid;grid-template-columns:10px 1fr;column-gap:6px;align-items:baseline;line-height:1.3}
+.pontos i{grid-row:1/3;width:8px;height:8px;border-radius:50%;background:var(--accent);transform:translateY(1px)}
+.pontos b{font-size:11.5px;font-weight:600;color:var(--ink)}
+.pontos span{font-size:10.5px;color:var(--muted)}
+.pontos li.foco i{box-shadow:0 0 0 3px var(--paper),0 0 0 4.5px var(--accent)}
+.pessoas .l-legenda{margin-top:6px}
+/* ===== confronto Goh (26/10): laço · régua única · alavanca · ponto na linha · condições ===== */
+.j-com-laco{display:flex;justify-content:space-between;align-items:flex-start;gap:28px}
+.laco{flex:none;width:420px;height:auto;margin-top:-6px}
+.laco .lc-no{fill:var(--paper);stroke:var(--accent);stroke-width:2}
+.laco .lc-ini{fill:var(--accent)}
+.laco .lc-rot{font-size:12px;font-weight:600;fill:var(--ink)}
+.laco .lc-infere{font-style:italic;font-weight:500}
+.laco .lc-seta{stroke:var(--accent);stroke-width:1.4;fill:none}
+.laco .lc-volta{stroke:var(--accent);stroke-width:1.4;fill:none;stroke-dasharray:5 4;opacity:.75}
+.laco .lc-ponta{fill:var(--accent)}
+.laco .lc-nota{font-family:'Fraunces',Georgia,serif;font-style:italic;font-size:12.5px;fill:var(--accent)}
+.bpp-volta small.bpv-infere{font-style:italic}
+.regua{margin:6px 0 8px;padding:8px 10px;border:1px solid var(--hairline);border-radius:8px;background:rgba(255,255,255,.5)}
+.regua .rg-tit{margin:0 0 6px !important;font-size:10px !important;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted) !important}
+.rg-barra{display:flex;height:12px;border-radius:6px;overflow:hidden;background:var(--hairline)}
+.rg-barra em{display:block;height:100%;border-right:1.5px solid var(--paper)}
+.rg-leg{display:flex;flex-wrap:wrap;gap:2px 12px;margin:6px 0 0 !important;font-size:10.5px !important;color:var(--text) !important}
+.rg-leg span{white-space:nowrap}
+.rg-leg i{display:inline-block;width:8px;height:8px;margin-right:4px;border-radius:2px;vertical-align:0}
+.rg-leg b{font-weight:600;color:var(--ink)}
+/* o contato ativo na cor de destaque; o resto, do mais escuro ao mais claro */
+.rg-0{background:var(--dinheiro)}
+.rg-1{background:#0C3A6F}.rg-2{background:#2f5f94}.rg-3{background:#5b84b4}.rg-4{background:#8eaacd}.rg-5{background:#bccde2}
+.regua .rg-fonte{margin:6px 0 0 !important;font-size:10.5px !important;font-style:italic;color:var(--muted) !important}
+.d-verdade{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 16px;margin:-6px 0 16px;font-size:12.5px;color:var(--text)}
+.d-verdade b{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.d-verdade span{border-bottom:1px dotted rgba(12,58,111,.35)}
+.d-verdade i{display:inline-block;width:16px;height:16px;margin-right:5px;border-radius:50%;background:var(--ink);color:var(--paper);
+  font-style:normal;font-size:10px;font-weight:600;line-height:16px;text-align:center}
+.direcao .d-prox{margin-left:5px;border-left:2px solid var(--hairline)}
+.direcao .d-prox li{padding:3px 0 4px 16px;border-bottom:0;counter-increment:none}
+.direcao .d-prox li::before{content:"";left:-6px;top:8px;width:8px;height:8px;border-radius:50%;
+  background:var(--paper);border:2px solid var(--beneficio)}
+.direcao .d-prox li.d-aqui::before{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 3px rgba(23,116,222,.18)}
+.direcao .d-prox li.d-aqui b{color:var(--accent);font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+.direcao .d-prox li.d-alvo::before{border-color:var(--ink);box-shadow:0 0 0 3px var(--paper),0 0 0 4.5px var(--ink)}
+.d-vazias ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.d-vazias li{padding:5px 10px 6px;border:1.5px dashed rgba(12,58,111,.35);border-radius:8px}
+.d-vazias b{display:block;font-size:12.5px;font-weight:600;color:var(--ink);line-height:1.3}
+.d-vazias span{display:block;font-size:11px;font-style:italic;line-height:1.35;color:var(--muted)}
+/* a faixa de baixo é coadjuvante: até duas linhas, cinza, sem cor de destaque.
+   O texto inteiro fica no title (passar o mouse). */
+.revela{flex:0 0 auto;margin:6px 0 0;padding:5px 0 0;border-top:1px solid var(--hairline);
+  display:flex;gap:12px;align-items:baseline;font-size:11.5px;line-height:1.45;color:var(--muted)}
+.revela .rv-rot{flex:none;font-size:9px;font-weight:600;letter-spacing:.16em;color:var(--muted);opacity:.8}
+.revela .rv-txt{flex:1 1 auto;min-width:0;overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2}
+
+/* 0 · abertura: o portal (a travessia animada, como no site) e a capa */
+#v-abertura.on{grid-template-columns:340px minmax(0,1fr)}
+.abre-portal{position:relative;width:100%;align-self:stretch;height:auto;min-height:300px;border-radius:14px;overflow:hidden;background:#071A30;
+  display:flex;align-items:center;justify-content:center}
+.abre-portal canvas{position:absolute;inset:0;width:100%;height:100%}
+.abre-portal .pi-selo{position:relative;z-index:2;text-align:center;opacity:0;animation:piIn 1.6s ease .4s forwards}
+@keyframes piIn{to{opacity:1}}
+.abre-portal .pi-mapa{position:relative;display:block;width:140px;margin:0 auto 14px;transform:translateX(-34px)}
+.abre-portal .pi-mapa img{width:140px;height:auto;display:block;
+  filter:drop-shadow(0 0 26px rgba(23,116,222,.45));animation:piPulse 3s ease-in-out infinite;transform-origin:50% 22%}
+@keyframes piPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
+.abre-portal .pi-m{position:absolute;left:100%;margin-left:8px;font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:14px;
+  letter-spacing:.05em;white-space:nowrap;background:none;border:0;padding:2px 4px;cursor:pointer}
+.abre-portal .pi-m:hover{text-decoration:underline;text-underline-offset:4px}
+.abre-portal .pi-m1{top:2%;color:#8FC2FF}
+.abre-portal .pi-m2{top:44%;color:#7FD6BD}
+.abre-portal .pi-m3{bottom:2%;color:#EBB876}
+.abre-portal .pi-nome{margin:0;padding:0 14px;font-family:'Fraunces',Georgia,serif;font-size:17px;color:rgba(245,243,236,.95);letter-spacing:.03em}
+.abre-portal .pi-nome strong{font-weight:600}
+@media(prefers-reduced-motion:reduce){.abre-portal .pi-selo{animation:none;opacity:1}.abre-portal .pi-mapa img{animation:none}}
+.l-estagio.e-livro{color:var(--muted)}
+.voz{margin:10px 0 12px;padding:6px 0 6px 14px;border-left:3px solid var(--accent);
+  font-family:'Fraunces',Georgia,serif;font-style:italic;font-size:15.5px;line-height:1.5;color:var(--ink)}
+.voz footer{margin-top:6px;padding:0;border:0;background:none;font-family:'Inter',system-ui,sans-serif;font-style:normal;font-size:10.5px;color:var(--muted)}
+/* abertura em sete perguntas (5W2H): rótulo à esquerda, resposta à direita */
+.w5h{margin:10px 0 10px;padding:0}
+.w5{display:grid;grid-template-columns:86px 1fr;gap:12px;padding:6px 0;border-bottom:1px solid var(--hairline)}
+.w5 dt{font-size:10.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);padding-top:2px}
+.w5 dd{margin:0;font-size:13px;line-height:1.45;color:var(--text)}
+.w5-voz{display:block;margin-top:3px;font-family:'Fraunces',Georgia,serif;font-style:italic;color:var(--ink)}
+.w5-pes{display:flex;flex-wrap:wrap;gap:3px 12px;margin-top:4px}
+.w5-pes i{font-style:normal;font-size:11.5px;color:var(--muted)}
+.w5-pes i::before{content:"";display:inline-block;width:7px;height:7px;margin-right:5px;border-radius:50%;background:var(--accent);vertical-align:1px}
+.w5-pes i.foco::before{box-shadow:0 0 0 2px var(--paper),0 0 0 3.5px var(--accent)}
+.w5-passos{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:5px}
+.w5-passo{text-align:left;font:inherit;font-size:11.5px;line-height:1.35;color:var(--text);background:none;
+  border:1px solid var(--hairline);border-radius:8px;padding:5px 8px;cursor:pointer}
+.w5-passo b{display:block;font-size:11.5px;font-weight:600;margin-bottom:1px}
+.w5-passo:hover{border-color:var(--accent)}
+.w5-passo.re-entrada b{color:var(--accent)}
+.w5-passo.re-pescoco b{color:var(--beneficio)}
+.w5-passo.re-saida b{color:var(--dinheiro)}
+.w5-camadas .l-elo{font-size:inherit}
+/* (26/10) com o portal estreito, a capa ganha largura: as sete perguntas em
+   duas colunas e letra maior; o "como" atravessa as duas, por último */
+#v-abertura .w5h{display:grid;grid-template-columns:1fr 1fr;column-gap:30px}
+#v-abertura .w5{grid-template-columns:92px 1fr}
+#v-abertura .w5 dt{font-size:11.5px}
+#v-abertura .w5 dd{font-size:14.5px;line-height:1.45}
+#v-abertura .w5:nth-child(6){grid-column:1/-1;order:2}
+#v-abertura .w5-passo,#v-abertura .w5-passo b{font-size:13px}
+#v-abertura .w5-pes i{font-size:12.5px}
+.como-ler{list-style:none;margin:0 0 12px;padding:0}
+.como-ler li{display:flex;flex-wrap:wrap;gap:2px 10px;align-items:baseline;padding:5px 0;border-bottom:1px solid var(--hairline)}
+.como-ler .l-elo{text-decoration:none;font-weight:500;color:var(--text);text-align:left}
+.como-ler .l-elo b{color:var(--accent);font-weight:600;margin-right:6px;letter-spacing:.06em;font-size:11.5px}
+.como-ler .l-elo:hover{color:var(--accent)}
+.como-ler em{font-size:11.5px;color:var(--muted)}
+.meta{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px 16px;margin:0}
+.meta div{min-width:0}
+.meta dt{margin:0;font-size:9.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.meta dd{margin:1px 0 0;font-size:12px;color:var(--text);line-height:1.4}
+.meta a{color:var(--accent);text-decoration:underline;text-underline-offset:3px;font-weight:600}
+
+/* o nivelamento: macro (o ecossistema) · meso (o Centro) · micro (a pessoa) */
+.nivel{display:inline-block;margin:0 0 0 8px;padding:0 8px;border-radius:999px;font-family:'Inter',system-ui,sans-serif;
+  font-style:normal;font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;vertical-align:2px;
+  border:1px solid currentColor}
+.nv-macro{color:var(--ink)}
+.nv-meso{color:var(--beneficio)}
+.nv-micro{color:var(--accent);background:#dfecfb}
+.d-nivel{display:flex;align-items:baseline;gap:8px;margin:10px 0 2px}
+.d-nivel .nivel{margin:0}
+.d-meta .nivel{margin:0 6px 0 0}
+.d-ela{margin-top:3px !important;padding-left:10px;border-left:2px solid var(--accent);
+  font-family:'Fraunces',Georgia,serif;font-style:italic;font-size:13px !important;color:var(--ink) !important}
+.d-ela b{font-family:'Inter',system-ui,sans-serif;font-style:normal;font-weight:600;font-size:9.5px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--accent);margin-right:7px}
+/* a coluna da pessoa: o mesmo papel, com a borda azul da voz */
+.d-col-micro{padding-left:18px;border-left:3px solid rgba(23,116,222,.35)}
+.d-seguir{margin-top:16px}
+
+/* 5 · direção em duas camadas: uma linha por item; o detalhe abre no toque */
+.d-conclusao{margin:2px 0 14px;font-size:24px;line-height:1.25;color:var(--ink)}
+.d-titulo{margin-bottom:4px}
+.d-grade .d-nivel{display:flex;align-items:center;gap:8px;margin:0 0 6px}
+.d-grade .d-nivel .nivel{margin:0}
+.d-baixo{grid-template-columns:1fr 1fr 1fr !important;margin-top:20px;padding-top:14px;border-top:1px solid var(--hairline)}
+.d-baixo .d-prox span{margin-left:8px}
+/* sem numeração nos achados e nas definições: a ordem não diz nada ali */
+.direcao .d-achados li,.direcao .d-pend li{padding-left:0;counter-increment:none}
+.direcao .d-achados li::before,.direcao .d-pend li::before{content:none}
+.d-guia{margin:0 0 14px;font-size:12px;color:var(--muted);font-style:italic}
+.d-achados details,.d-pend details{margin:0}
+.d-achados summary,.d-pend summary{list-style:none;cursor:pointer;font-size:14px;line-height:1.4;color:var(--ink);
+  padding-right:18px;position:relative}
+.d-achados summary::-webkit-details-marker,.d-pend summary::-webkit-details-marker,.d-mais summary::-webkit-details-marker{display:none}
+.d-achados summary::after,.d-pend summary::after{content:"+";position:absolute;right:0;top:0;color:var(--accent);font-weight:600}
+.d-achados details[open] summary::after,.d-pend details[open] summary::after{content:"\2212"}
+.d-achados summary:hover,.d-pend summary:hover{color:var(--accent)}
+.d-abre{padding:6px 0 4px}
+.d-abre p{font-size:12.5px !important;color:var(--text)}
+.d-pend .d-abre p{display:block}
+.d-mais{margin-top:10px}
+.d-mais>summary{list-style:none;cursor:pointer;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.d-mais>summary::before{content:"+ "}
+.d-mais[open]>summary::before{content:"\2212  "}
+.d-mais>.d-fontes:first-of-type{margin-top:6px}
+
+/* 5 · direção: três colunas — encontramos · aberto · a seguir */
+#v-direcao.on{display:block;overflow:hidden}
+.direcao{height:100%;overflow:hidden}
+.d-grade{display:grid;grid-template-columns:1fr 1fr 1fr;gap:28px;align-items:start}
+.d-col .l-coluna{margin-bottom:8px}
+.d-achados,.d-pend,.d-prox{list-style:none;margin:0;padding:0;counter-reset:d}
+.d-achados li,.d-pend li,.d-prox li{position:relative;padding:6px 0 7px 26px;border-bottom:1px solid var(--hairline);counter-increment:d}
+.d-achados li::before,.d-pend li::before,.d-prox li::before{content:counter(d);position:absolute;left:0;top:7px;
+  font-size:11px;font-weight:600;color:var(--accent)}
+.d-pend li::before{color:var(--confirmar)}
+.d-prox li::before{color:var(--beneficio)}
+.d-achados p,.d-pend p{margin:0;font-size:13.5px;line-height:1.45;color:var(--text)}
+.d-fonte,.d-meta{margin-top:3px !important;font-size:11px !important;line-height:1.4 !important;color:var(--muted) !important;font-style:italic}
+.d-fonte .l-elo{font-size:11px;font-style:normal}
+.d-meta b{font-style:normal;font-weight:600;letter-spacing:.08em;font-size:9.5px;text-transform:uppercase;color:var(--muted);margin:0 3px 0 8px}
+.st{display:inline-block;font-style:normal;font-size:9.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;border-radius:999px;padding:1px 9px;vertical-align:1px}
+.st-aberta{background:#fdf0dc;color:var(--dinheiro)}
+.st-parcial{background:#def2ec;color:var(--beneficio)}
+.d-prox li{display:flex;flex-direction:column;gap:1px}
+.d-prox b{font-size:13.5px;color:var(--ink);font-weight:600;line-height:1.4}
+.d-prox span{font-size:11.5px;color:var(--muted)}
+.d-fontes{margin:0 0 8px;font-size:12px;line-height:1.5;color:var(--text)}
+.d-col-fim .l-sub{margin-top:12px}
+/* compacto: a decisão e o seu dono/prazo correm na mesma linha — onze pendências
+   cabem numa tela sem levar a letra ao piso do encaixe */
+.d-pend li{padding:4px 0 5px 26px}
+.d-pend li p{display:inline;font-size:13px}
+.d-pend .d-meta{display:inline;margin-left:6px}
+.d-prox li{display:block;padding:4px 0 5px 26px}
+.d-prox b{font-size:13px}
+.d-prox span{margin-left:6px}
+
 /* ---- celular e tablet: "uma tela só" é uma promessa do desktop ----
    Abaixo de 1020px as duas colunas viram uma, a página volta a rolar e
    cada painel recupera a altura natural (nada de zoom: o conteúdo é
    inteiro, na letra cheia). O cabeçalho passa a duas linhas, com as
    quatro camadas numa faixa que desliza. */
+/* ==== 26/10 · jornadas: a travessia inteira é a MÃE (M¹ → M² → M³) ==== */
+.j-arvore .j-opt{padding-left:18px}
+.j-arvore .l-sub{margin-top:8px}
+.j-ac{font-style:italic;color:var(--dinheiro);border-top:1px dashed rgba(156,85,24,.35);border-radius:0 0 7px 7px}
+  background:rgba(255,255,255,.7);display:flex;flex-direction:column;gap:7px}
+.jm-filhas{display:flex;flex-wrap:wrap;gap:5px}
+.jm-filha{font:inherit;font-size:12px;color:var(--ink);background:#fff;border:1px solid rgba(12,58,111,.22);border-radius:999px;
+  padding:3px 11px;cursor:pointer}
+.jm-filha:hover{border-color:var(--accent);color:var(--accent)}
+  background:rgba(252,241,226,.75);border:1px dashed rgba(156,85,24,.5)}
+  border-top:2px solid var(--accent)}
+  background:var(--paper);border:2px solid var(--accent)}
+.e-pescoco .e-saida .jm-rot{margin:0;padding-top:6px;font-size:9.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  background:var(--paper);border:2px solid var(--accent)}
+.j-topo-filha{display:flex;align-items:baseline;gap:6px 18px;flex-wrap:wrap;margin-bottom:8px}
+.j-topo-filha h2{margin:0;flex:none}
+.j-topo-filha .l-entrega{flex:1 1 320px;max-width:none !important;margin:0}
+/* ==== a travessia inteira: três camadas (os passos · o ano · sempre) ==== */
+.jm-cap{display:flex;align-items:baseline;gap:10px;margin:8px 0 5px;font-size:10.5px;font-weight:600;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink)}
+.jm-cap span{font-weight:500;letter-spacing:.02em;text-transform:none;font-style:italic;color:var(--muted)}
+.jm{display:grid;grid-template-columns:minmax(0,1fr) 104px minmax(0,1fr) 104px minmax(0,1.35fr);align-items:stretch}
+.jm-bloco{display:flex;flex-direction:column;gap:5px;padding:10px 14px 11px;border-radius:10px;background:#fff;
+  border:1px solid var(--hairline);border-top:4px solid var(--accent)}
+.jm-bloco.e-pescoco{border-top-color:var(--beneficio)}
+.jm-bloco.e-saida{border-top-color:var(--dinheiro)}
+.jm-m{display:flex;align-items:baseline;gap:8px;margin:0;font-family:'Fraunces',Georgia,serif;font-size:19px;color:var(--ink)}
+.jm-m b{font-family:'Inter',system-ui,sans-serif;font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--accent)}
+.e-pescoco .jm-m b{color:var(--beneficio)}
+.e-saida .jm-m b{color:var(--dinheiro)}
+.jm-desc{margin:0;font-size:13px;line-height:1.4;color:var(--text)}
+.jm-nota{margin:0;font-size:11.5px;line-height:1.35;color:var(--muted);font-style:italic}
+.jm-filhas{display:flex;flex-wrap:wrap;gap:5px;margin-top:auto;padding-top:4px}
+.jm-seta{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:0 8px;text-align:center}
+.jm-seta span{font-size:24px;line-height:1;color:var(--ink);opacity:.5}
+.jm-seta small{font-size:10.5px;line-height:1.3;color:var(--muted)}
+.jm-seta small.bpv-infere{font-style:italic}
+/* o ano: eixo, marcas de mês, encontros alternando acima e abaixo */
+.jt{position:relative;height:96px;margin:4px 8px 0}
+.jt-eixo{position:absolute;left:0;right:0;top:46px;height:2px;background:rgba(12,58,111,.25)}
+.jt-tick{position:absolute;top:42px;width:1px;height:10px;background:rgba(12,58,111,.25)}
+.jt-ponto{position:absolute;top:40px;width:14px;height:14px;margin-left:-7px;border-radius:50%;background:#fff;
+  border:3px solid var(--accent);z-index:1}
+.jt-ponto.e-pescoco{border-color:var(--beneficio)}
+.jt-ponto.e-saida{border-color:var(--dinheiro)}
+.jt-trecho{position:absolute;top:45px;height:4px;border-radius:2px;background:var(--accent)}
+.jt-trecho.e-pescoco{background:var(--beneficio)}
+.jt-trecho.e-saida{background:var(--dinheiro)}
+.jt-ponto{background:var(--accent) !important;box-shadow:0 0 0 3px var(--paper)}
+.jt-ponto.e-pescoco{background:var(--beneficio) !important}
+.jt-ponto.e-saida{background:var(--dinheiro) !important}
+.jt-pulso{position:absolute;top:43px;width:8px;height:8px;margin-left:-4px;border-radius:50%;background:var(--paper);
+  border:2px solid var(--dinheiro)}
+.jt-pulso.e-entrada{border-color:var(--accent)}
+.jt-pulso.e-pescoco{border-color:var(--beneficio)}
+.jt-rep span{color:var(--muted);font-style:italic}
+.jt-rot{position:absolute;transform:translateX(-50%);width:max-content;max-width:150px;text-align:center;
+  font-size:12px;line-height:1.25;color:var(--ink)}
+.jt-rot small{display:block;font-size:10.5px;font-weight:700;color:var(--accent)}
+.jt-rot.e-pescoco small{color:var(--beneficio)}
+.jt-rot.e-saida small{color:var(--dinheiro)}
+.jt-rot.bpp-infere{font-style:italic;color:var(--muted);border:0}
+.jt-cima{top:6px}
+.jt-baixo{top:58px}
+.jt-ini{transform:none;text-align:left;margin-left:-7px}
+.jt-fim{transform:translateX(-100%);text-align:right;margin-left:7px}
+/* sempre: o Always Care atravessa a largura toda */
+.jm-ac{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) 300px;gap:18px;align-items:center;width:100%;
+  text-align:left;font:inherit;cursor:pointer;padding:10px 14px;border-radius:10px;
+  background:rgba(252,241,226,.7);border:1px dashed rgba(156,85,24,.55)}
+.jm-ac:hover{border-style:solid}
+.jm-ac-txt{font-size:12.5px;line-height:1.4;color:var(--text)}
+.jm-ac-txt b,.jm-ac-volta b{display:block;margin-bottom:2px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--dinheiro)}
+.jm-ac-volta b{color:var(--beneficio)}
+.jm-ac-volta{font-size:12px;line-height:1.4;color:var(--text)}
+.jm-ac-volta .bpv-infere{font-style:italic;color:var(--muted)}
+.jm-ac .laco{width:100%;max-width:300px;margin:0}
+.jm-trilha{margin:0 0 6px;font-size:11.5px;color:var(--muted)}
+.jm-trilha b{color:var(--ink);font-weight:600}
+.jm-mae{font:inherit;font-weight:600;color:var(--accent);background:none;border:0;padding:0;cursor:pointer}
+.jm-mae:hover{text-decoration:underline}
+
+/* ==== 26/10 · direção: o modelo de negócio (BMC) à esquerda, o card do bloco à direita ==== */
+.pv-tit{margin-top:2px}
+.bmc-dir{display:grid;grid-template-columns:440px minmax(0,1fr);gap:24px;align-items:stretch}
+.bmc{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));grid-template-rows:78px 78px 52px;gap:5px}
+.bmc-b{min-width:0;overflow:hidden;position:relative;display:flex;flex-direction:column;gap:3px;text-align:left;font:inherit;cursor:pointer;
+  padding:5px 6px;border-radius:6px;border:1px solid rgba(12,58,111,.12);border-top:3px solid var(--pv);
+  background:color-mix(in srgb,var(--pv) 38%,#fff);color:var(--ink)}
+.bmc-b:hover{border-color:rgba(12,58,111,.35);border-top-color:var(--pv)}
+.bmc-b.on{background:var(--pv);border-color:var(--ink);border-top-color:var(--ink);box-shadow:0 0 0 2px rgba(12,58,111,.18)}
+.bmc-tit{font-size:12.5px;font-weight:600;line-height:1.2;hyphens:manual;min-width:0}
+.bmc-tit i{display:flex !important;align-items:center;justify-content:center;margin:0 0 4px !important;vertical-align:0 !important;line-height:1 !important}
+.bmc-tit i{display:inline-block;width:16px;height:16px;margin-right:5px;border-radius:50%;background:var(--ink);color:var(--paper);
+  font-style:normal;font-size:9.5px;line-height:16px;text-align:center;vertical-align:1px}
+/* "a seguir" mora sob o quadro: uma linha do tempo vertical, discreta */
+.bmc-col{display:flex;flex-direction:column;gap:14px}
+.pv-seguir{margin:0}
+.pv-seguir .l-coluna{margin:0 0 6px}
+.direcao .pv-seguir .d-prox{display:flex;flex-direction:column;gap:5px;margin:0 0 0 4px;border-left:2px solid var(--hairline)}
+.direcao .pv-seguir .d-prox li{padding:0 0 0 14px}
+.direcao .pv-seguir .d-prox li::before{left:-6px;top:4px}
+.pv-seguir .d-prox b{display:block;font-size:12px;line-height:1.3;font-weight:500}
+.pv-seguir .d-prox span{display:block;margin:0 !important;font-size:11px;color:var(--muted)}
+.pv-seguir .d-mais{margin-top:6px}
+.pc-ul li.pc-mais{font-size:11.5px;color:var(--accent)}
+.pc-ul li.pc-mais::before{background:transparent;border:1.5px solid var(--accent);width:4px;height:4px}
+.dc-conc{padding:0 0 4px}
+.dc-conc .l-coluna{margin:0 0 4px}
+.dc-frase{margin:0 0 8px;font-size:19px;line-height:1.3;color:var(--ink)}
+.dc-cond{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:3px;counter-reset:c}
+.dc-cond li{position:relative;padding-left:24px;font-size:13px;line-height:1.35;color:var(--text);counter-increment:c}
+.dc-cond li::before{content:counter(c);position:absolute;left:0;top:1px;width:17px;height:17px;border-radius:50%;
+  background:var(--ink);color:var(--paper);font-size:10px;font-weight:600;line-height:17px;text-align:center}
+.bmc-col .pv-tit{margin:4px 0 0}
+/* o card: uma hierarquia só para os nove blocos —
+   1 rótulo e título · 2 o pedido à instituição (o destaque, na cor do bloco)
+   3 o que temos | o que definir · 4 o que já sabemos | o que falta */
+.pv-cards{display:grid}
+.pv-cards>.pv-card{grid-area:1/1;visibility:hidden}
+.pv-cards>.pv-card.on{visibility:visible}
+.pv-card{display:flex;flex-direction:column;gap:14px;padding:16px 20px 18px;border-radius:12px;
+  background:#fff;border:1px solid var(--hairline);border-top:6px solid var(--pv)}
+.pc-cab{display:flex;flex-direction:column;gap:2px}
+.pc-eyebrow{margin:0;font-size:10.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.pc-tit{margin:0;font-size:23px;line-height:1.15;font-weight:500;color:var(--ink)}
+.pc-rot{display:flex;align-items:center;gap:7px;margin:0 0 5px;font-size:10.5px;font-weight:600;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted)}
+.pc-rot span{display:inline-block;min-width:18px;padding:0 6px;border-radius:999px;background:var(--paper-deep);
+  font-size:10px;letter-spacing:0;text-align:center;color:var(--ink)}
+.pc-pede{padding:12px 16px 13px;border-radius:9px;background:color-mix(in srgb,var(--pv) 55%,#fff);
+  border-left:4px solid color-mix(in srgb,var(--pv) 50%,var(--ink))}
+.pc-pede .pc-rot{color:var(--ink);opacity:.75}
+.pc-pede p.serif{margin:0;font-size:18px;line-height:1.38;color:var(--ink)}
+.pc-dupla{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.pc-txt{margin:0;font-size:13.5px;line-height:1.5;color:var(--text)}
+.pc-listas{display:grid;grid-template-columns:1fr 1fr;gap:24px;padding-top:12px;border-top:1px solid var(--hairline)}
+.pc-ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.pc-ul li{position:relative;padding-left:15px;font-size:13px;line-height:1.4;color:var(--text)}
+.pc-ul li::before{content:"";position:absolute;left:0;top:7px;width:6px;height:6px;border-radius:50%;
+  background:color-mix(in srgb,var(--pv) 45%,var(--ink))}
+.pc-ul li b{font-weight:500;color:var(--ink)}
+.pc-ul li small{display:block;margin-top:2px;font-size:11px;color:var(--muted)}
+.pc-ul li small .st{margin-right:6px}
+.pc-ver{display:block;margin-top:2px;font-size:11.5px !important}
+.pc-ul li.pc-vazio{font-style:italic;color:var(--muted)}
+.pc-ul li.pc-vazio::before{background:var(--hairline)}
+.direcao .direcao 
 @media(max-width:1020px){
+  .jm{grid-template-columns:1fr}
+  .jm-seta{flex-direction:row;padding:6px 0}
+  .jm-seta span{transform:rotate(90deg)}
+  .jm-ac{grid-template-columns:1fr}
+    .bmc-dir{grid-template-columns:1fr}
+  .pc-dupla,.pc-listas{grid-template-columns:1fr}
+  .bmc{grid-template-columns:1fr 1fr;grid-template-rows:none}
+  .bmc-b{grid-area:auto !important}
+  .bmc-dir{grid-template-columns:1fr}
   html,body{height:auto}
   body{overflow:auto}
   .palco{height:auto;padding-bottom:44px}
@@ -454,6 +838,20 @@ nav,.palco,footer{position:relative;z-index:1}
   .cartoes,.lista-jor,.jor-palco,.leitura{height:auto;overflow:visible}
   .ajusta{zoom:1 !important}
   .grade{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #v-abertura.on{grid-template-columns:1fr}
+  #v-abertura .w5h{grid-template-columns:1fr}
+  #v-abertura .w5:nth-child(6){order:0}
+  .abre-portal{min-height:340px}
+    .direcao{height:auto}
+  .d-grade{grid-template-columns:1fr;gap:22px}
+  .d-col-micro{padding-left:12px}
+  .d-baixo{grid-template-columns:1fr !important}
+  .pontos{grid-template-columns:1fr 1fr}
+  .bpp-volta{margin-left:0}
+  .j-com-laco{flex-wrap:wrap}
+  .laco{width:100%;max-width:400px}
+  .manchete{font-size:17px}
+  .revela{gap:8px 12px}
   .nav-inner{flex-wrap:wrap;height:auto;padding-top:9px;padding-bottom:9px;gap:9px}
   #camadas{order:3;width:100%;gap:3px;overflow-x:auto;-webkit-overflow-scrolling:touch;
     scrollbar-width:none;padding-bottom:1px}
@@ -480,4 +878,5 @@ nav,.palco,footer{position:relative;z-index:1}
   .lista-jor .ajusta{display:flex;flex-wrap:wrap;gap:4px;align-items:baseline}
   .lista-jor .l-coluna,.lista-jor .l-sub,.lista-jor .j-nota{width:100%}
   .j-opt{width:auto;border-color:var(--hairline)}
+  .meta{grid-template-columns:1fr}
 }

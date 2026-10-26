@@ -254,7 +254,7 @@
           el.style.maxWidth = Math.max(240, Math.min(+el.dataset.mw, alvo)) + "px";
         });
       };
-      clampa(".portal,.curadoria,.garganta-inner,.sec-head.centrada,.par,.marco,.voz-inner,.faq,.prot.p-3", false);
+      clampa(".portal,.curadoria,.garganta-inner,.sec-head.centrada,.par,.marco,.voz-inner,.faq,.prot.p-3,#ano > .wrap > .ponte-rel,#ano > .wrap > .ciclo-volta", false);
       clampa(".prot.p-1,.prot.p-2", true);
     };
     desenhaMalha();

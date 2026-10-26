@@ -294,6 +294,18 @@ section{padding:104px 0}
 .sm-2{top:45%;right:8%;color:var(--entender)}
 .sm-3{bottom:2%;right:-13%;color:var(--modular)}
 
+/* ---- a ponte para o relatório: a mesma travessia, vista por dentro ---- */
+.ponte-rel{position:relative;max-width:520px;margin:34px auto 0;text-align:center;background:var(--paper);
+  padding:0 16px;font-size:14.5px;color:var(--muted);line-height:1.55}
+.ponte-rel a{display:inline-block;margin-top:4px;color:var(--accent);font-weight:600;text-decoration:none;
+  border-bottom:1px solid rgba(23,116,222,.35)}
+.ponte-rel a:hover{border-bottom-color:var(--accent)}
+.voz-inner .ponte-rel{margin-top:22px;padding:0}
+/* o ano fecha e recomeça: a seta de volta, dita em uma linha */
+.ciclo-volta{position:relative;max-width:520px;margin:36px auto 0;text-align:center;background:var(--paper);
+  padding:0 16px;font-family:'Fraunces',Georgia,serif;font-style:italic;font-size:18px;line-height:1.45;color:var(--accent)}
+.ciclo-volta span{font-style:normal;margin-right:4px}
+
 /* ---- a chegada ---- */
 .contato{text-align:center}
 .contato h2{font-size:clamp(32px,5vw,56px);margin:0 0 18px}

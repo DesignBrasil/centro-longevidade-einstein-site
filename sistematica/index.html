@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sistemática Longevidade — as quatro camadas · Centro de Longevidade Einstein</title>
-<meta name="description" content="A travessia em quatro camadas: o ecossistema (quem paga), o sistema (o funil do Centro), os serviços (os pacotes) e as jornadas (o que a pessoa vive).">
+<title>Sistemática Longevidade — relatório do Centro de Longevidade Einstein</title>
+<meta name="description" content="Uma pessoa atravessa o sistema e o relatório anda com ela: a abertura, as quatro camadas (quem paga, o que o Centro mede e modula, o que entra em cada pacote, o que a pessoa vive) e a direção.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,560;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -23,8 +23,30 @@
 
 <main class="wrap palco">
   <p class="pergunta" id="pergunta"></p>
+  <!-- a frase-título da camada: a conclusão dela, antes do desenho -->
+  <p class="manchete" id="manchete"></p>
 
   <div class="vistas">
+    <!-- 0 · ABERTURA: à esquerda, o portal do site (a travessia animada:
+         M¹ medir, M² mapear, M³ modular); à direita, a capa em sete perguntas -->
+    <section class="vista v-dupla v-abertura" id="v-abertura" role="tabpanel" aria-label="Abertura">
+      <div class="cena-rolo">
+        <div class="abre-portal" id="abre-portal" role="img" aria-label="A travessia: medir, mapear, modular">
+          <canvas id="abre-warp"></canvas>
+          <div class="pi-selo">
+            <div class="pi-mapa">
+              <img src="../img/buraco_minhoca_claro.png" alt="">
+              <button class="pi-m pi-m1" data-passo="0">M¹ medir</button>
+              <button class="pi-m pi-m2" data-passo="1">M² mapear</button>
+              <button class="pi-m pi-m3" data-passo="2">M³ modular</button>
+            </div>
+            <p class="pi-nome">Centro de Longevidade <strong>Einstein</strong></p>
+          </div>
+        </div>
+      </div>
+      <aside class="leitura" id="leitura-abre" aria-live="polite" data-cresce="1.45"></aside>
+    </section>
+
     <section class="vista v-dupla" id="v-ecossistema" role="tabpanel" aria-label="Ecossistema">
       <div class="cena-rolo">
         <svg id="eco" viewBox="0 44 945 546" role="img" aria-label="O ecossistema: os atores internos e externos, e as relações de dinheiro entre eles"></svg>
@@ -49,7 +71,15 @@
       <aside class="lista-jor" id="lista-jor"></aside>
       <div class="jor-palco" id="jor-palco" data-cresce="1.4"></div>
     </section>
+
+    <!-- 5 · DIREÇÃO: o que encontramos, o que está aberto, o que vem a seguir -->
+    <section class="vista v-direcao" id="v-direcao" role="tabpanel" aria-label="Direção">
+      <div class="direcao" id="direcao" data-cresce="1.25" data-piso="0.54"></div>
+    </section>
   </div>
+  <!-- a faixa de baixo: o que a camada revela (e onde se mexe) + a próxima camada.
+       Em cima, a pergunta; no meio, o desenho; embaixo, o que ele revela. -->
+  <p class="revela" id="revela"></p>
 </main>
 
 <script src="js/data.js"></script>

@@ -7,16 +7,16 @@
    ===================================================================== */
 
 var ATORES = {
-  "paciente": {
-    "nome": "PACIENTE",
+  "cliente": {
+    "nome": "CLIENTE",
     "papel": "pagador principal",
     "lado": "dentro",
     "x": 720,
     "y": 160
   },
   "medico": {
-    "nome": "MÉDICO",
-    "papel": "indica e autoriza · porta de entrada e saída",
+    "nome": "MÉDICO TITULAR",
+    "papel": "protagonista · assina as métricas",
     "lado": "dentro",
     "x": 720,
     "y": 200
@@ -112,7 +112,7 @@ var ENQUADRAMENTOS = {
 
 var RELACOES = [
   {
-    "de": "paciente",
+    "de": "cliente",
     "para": "operadora",
     "tipo": "pagamento",
     "enquadramento": "contrato",
@@ -120,7 +120,7 @@ var RELACOES = [
   },
   {
     "de": "parceiro",
-    "para": "paciente",
+    "para": "cliente",
     "tipo": "beneficio",
     "enquadramento": "beneficio",
     "oque": "o wearable e o app ficam com a pessoa — ela usa sem pagar ao parceiro"
@@ -141,7 +141,7 @@ var RELACOES = [
   },
   {
     "de": "medico",
-    "para": "paciente",
+    "para": "cliente",
     "tipo": "indicacao",
     "enquadramento": "indicacao",
     "oque": "porta de entrada — indica o pacote certo para cada perfil"
@@ -162,7 +162,7 @@ var RELACOES = [
   },
   {
     "de": "empresa",
-    "para": "paciente",
+    "para": "cliente",
     "tipo": "beneficio",
     "enquadramento": "beneficio",
     "oque": "o colaborador usa o Centro como benefício — sem pagar do bolso"
@@ -395,7 +395,10 @@ var JORNADA_PESSOA = [
     "profissional": "Equipe multidisciplinar",
     "espaco": "fisico",
     "bastidor": "Agendamento e enquadramento de cada exame, item a item",
-    "fonte": "primaria"
+    "fonte": "primaria",
+    "espera": "",
+    "passo": "entrada",
+    "mes": "0"
   },
   {
     "trilha": "presencial",
@@ -406,7 +409,10 @@ var JORNADA_PESSOA = [
     "profissional": "Médico — guardião da jornada",
     "espaco": "misto",
     "bastidor": "Laudo processado, prontuário atualizado",
-    "fonte": "primaria"
+    "fonte": "primaria",
+    "espera": "2 semanas sem o resultado",
+    "passo": "pescoco",
+    "mes": "0.5"
   },
   {
     "trilha": "presencial",
@@ -417,7 +423,10 @@ var JORNADA_PESSOA = [
     "profissional": "Nutricionista",
     "espaco": "misto",
     "bastidor": "Agenda e registro do plano",
-    "fonte": "primaria"
+    "fonte": "primaria",
+    "espera": "",
+    "passo": "saida",
+    "mes": "1"
   },
   {
     "trilha": "presencial",
@@ -428,7 +437,10 @@ var JORNADA_PESSOA = [
     "profissional": "Educador físico",
     "espaco": "misto",
     "bastidor": "Agenda do educador físico",
-    "fonte": "primaria"
+    "fonte": "primaria",
+    "espera": "",
+    "passo": "saida",
+    "mes": "1-12"
   },
   {
     "trilha": "presencial",
@@ -439,7 +451,10 @@ var JORNADA_PESSOA = [
     "profissional": "Nutricionista",
     "espaco": "misto",
     "bastidor": "Lembrete de reavaliação",
-    "fonte": "inferencia"
+    "fonte": "inferencia",
+    "espera": "",
+    "passo": "saida",
+    "mes": "3"
   },
   {
     "trilha": "presencial",
@@ -450,7 +465,10 @@ var JORNADA_PESSOA = [
     "profissional": "Médico",
     "espaco": "fisico",
     "bastidor": "Processamento e faturamento, item a item",
-    "fonte": "primaria"
+    "fonte": "primaria",
+    "espera": "",
+    "passo": "pescoco",
+    "mes": "6"
   },
   {
     "trilha": "presencial",
@@ -461,7 +479,10 @@ var JORNADA_PESSOA = [
     "profissional": "Nutricionista",
     "espaco": "misto",
     "bastidor": "Lembrete de reavaliação",
-    "fonte": "inferencia"
+    "fonte": "inferencia",
+    "espera": "",
+    "passo": "saida",
+    "mes": "8"
   },
   {
     "trilha": "presencial",
@@ -472,62 +493,10 @@ var JORNADA_PESSOA = [
     "profissional": "Médico",
     "espaco": "fisico",
     "bastidor": "Fechamento do ciclo: renovação e faturamento",
-    "fonte": "primaria"
-  },
-  {
-    "trilha": "digital",
-    "ordem": "1",
-    "etapa": "Onboarding",
-    "quando": "primeiros 30 dias",
-    "pessoa": "Conecta wearable e CGM",
-    "profissional": "Equipe de onboarding",
-    "espaco": "digital",
-    "bastidor": "Integração dos dados na plataforma",
-    "fonte": "primaria"
-  },
-  {
-    "trilha": "digital",
-    "ordem": "2",
-    "etapa": "Acompanhamento por IA",
-    "quando": "contínuo",
-    "pessoa": "Recebe correção alimentar, estímulo de atividade e leitura do sono",
-    "profissional": "IA com supervisão humana",
-    "espaco": "digital",
-    "bastidor": "Processamento e regras de correção",
-    "fonte": "primaria"
-  },
-  {
-    "trilha": "digital",
-    "ordem": "3",
-    "etapa": "Silêncio da pessoa",
-    "quando": "contínuo",
-    "pessoa": "Deixa de interagir",
-    "profissional": "Equipe de contato ativo, 1x por semana",
-    "espaco": "digital",
-    "bastidor": "Alerta de baixo engajamento",
-    "fonte": "primaria"
-  },
-  {
-    "trilha": "digital",
-    "ordem": "4",
-    "etapa": "A pessoa alimenta a plataforma",
-    "quando": "contínuo",
-    "pessoa": "Sobe exames feitos fora",
-    "profissional": "— autosserviço",
-    "espaco": "digital",
-    "bastidor": "Ingestão do dado externo no prontuário",
-    "fonte": "primaria"
-  },
-  {
-    "trilha": "digital",
-    "ordem": "5",
-    "etapa": "Alerta à equipe clínica",
-    "quando": "quando desvia",
-    "pessoa": "Recebe contato se o desvio for relevante",
-    "profissional": "Profissional de saúde, a definir qual",
-    "espaco": "digital",
-    "bastidor": "Triagem do alerta: quem decide escalar",
-    "fonte": "inferencia"
+    "fonte": "primaria",
+    "espera": "",
+    "passo": "pescoco",
+    "mes": "12"
   }
 ];
 
@@ -548,7 +517,7 @@ var COMPONENTES = {
       "item": "Avaliação física e funcional",
       "cluster": "mobilidade",
       "canal": "presencial",
-      "descricao": "testes de força, marcha e mobilidade — o retrato funcional de hoje",
+      "descricao": "marcha, mobilidade e funcionalidade — o retrato funcional de hoje",
       "enq": "particular",
       "condicao": "",
       "confianca": "confirmado"
@@ -564,13 +533,13 @@ var COMPONENTES = {
       "confianca": "confirmado"
     },
     {
-      "curto": "Emocional",
-      "item": "Avaliação emocional (GDS)",
+      "curto": "Saúde emocional",
+      "item": "Avaliação de saúde emocional",
       "cluster": "emocional",
       "canal": "digital",
-      "descricao": "rastreio de sintomas depressivos — humor também é longevidade",
+      "descricao": "humor e bem-estar — o rastreio de sintomas depressivos e a linha de base de como a pessoa se sente",
       "enq": "particular",
-      "condicao": "",
+      "condicao": "GDS no Core e no Frontier (40+) · no Performance 20+, instrumento a definir",
       "confianca": "confirmado"
     },
     {
@@ -595,7 +564,7 @@ var COMPONENTES = {
     },
     {
       "curto": "Densitometria",
-      "item": "Densitometria de corpo total",
+      "item": "Composição corporal e osso (densitometria de corpo total)",
       "cluster": "mobilidade",
       "canal": "presencial",
       "descricao": "composição corporal e densidade óssea de corpo inteiro",
@@ -630,7 +599,7 @@ var COMPONENTES = {
       "canal": "presencial",
       "descricao": "duas carências comuns e corrigíveis — osso, músculo e nervo",
       "enq": "rol",
-      "condicao": "",
+      "condicao": "no Performance 20+, só a vitamina D",
       "confianca": "confirmado"
     },
     {
@@ -680,7 +649,7 @@ var COMPONENTES = {
       "item": "Avaliação física e funcional",
       "cluster": "mobilidade",
       "canal": "presencial",
-      "descricao": "testes de força, marcha e mobilidade — o retrato funcional de hoje",
+      "descricao": "marcha, mobilidade e funcionalidade — o retrato funcional de hoje",
       "enq": "particular",
       "condicao": "",
       "confianca": "confirmado"
@@ -696,13 +665,13 @@ var COMPONENTES = {
       "confianca": "confirmado"
     },
     {
-      "curto": "Emocional",
-      "item": "Avaliação emocional (GDS)",
+      "curto": "Saúde emocional",
+      "item": "Avaliação de saúde emocional",
       "cluster": "emocional",
       "canal": "digital",
-      "descricao": "rastreio de sintomas depressivos — humor também é longevidade",
+      "descricao": "humor e bem-estar — o rastreio de sintomas depressivos e a linha de base de como a pessoa se sente",
       "enq": "particular",
-      "condicao": "",
+      "condicao": "GDS no Core e no Frontier (40+) · no Performance 20+, instrumento a definir",
       "confianca": "confirmado"
     },
     {
@@ -727,7 +696,7 @@ var COMPONENTES = {
     },
     {
       "curto": "Densitometria",
-      "item": "Densitometria de corpo total",
+      "item": "Composição corporal e osso (densitometria de corpo total)",
       "cluster": "mobilidade",
       "canal": "presencial",
       "descricao": "composição corporal e densidade óssea de corpo inteiro",
@@ -762,7 +731,7 @@ var COMPONENTES = {
       "canal": "presencial",
       "descricao": "duas carências comuns e corrigíveis — osso, músculo e nervo",
       "enq": "rol",
-      "condicao": "",
+      "condicao": "no Performance 20+, só a vitamina D",
       "confianca": "confirmado"
     },
     {
@@ -889,7 +858,7 @@ var COMPONENTES = {
     },
     {
       "curto": "Bioimpedância",
-      "item": "Bioimpedância",
+      "item": "Composição corporal (bioimpedância)",
       "cluster": "mobilidade",
       "canal": "presencial",
       "descricao": "massa magra, gordura e água — acompanha a evolução entre exames",
@@ -958,14 +927,14 @@ var COMPONENTES = {
       "confianca": "confirmado"
     },
     {
-      "curto": "Saúde mental",
-      "item": "Saúde mental",
+      "curto": "Saúde emocional",
+      "item": "Avaliação de saúde emocional",
       "cluster": "emocional",
       "canal": "digital",
-      "descricao": "como a pessoa avalia o próprio bem-estar — a linha de base",
-      "enq": "aberto",
-      "condicao": "instrumento a definir",
-      "confianca": "aberto"
+      "descricao": "humor e bem-estar — o rastreio de sintomas depressivos e a linha de base de como a pessoa se sente",
+      "enq": "particular",
+      "condicao": "GDS no Core e no Frontier (40+) · no Performance 20+, instrumento a definir",
+      "confianca": "confirmado"
     },
     {
       "curto": "Estilo de vida",
@@ -979,6 +948,630 @@ var COMPONENTES = {
     }
   ]
 };
+
+var CAMADAS = {
+  "ecossistema": {
+    "nivel": "macro",
+    "manchete": "O dinheiro entra pelas pontas. O reembolso acontece no meio, por indicação.",
+    "pergunta": "quem paga, quem autoriza e quem se beneficia?",
+    "pergunta_pessoa": "quem paga por mim, e quem autoriza o que eu faço?",
+    "revela": "O dinheiro entra pelas pontas e o reembolso acontece no meio. O laço que sustenta o sistema é a pessoa pagando ao Centro, e o que o alivia é o Centro encaminhando ao hospital, por indicação. Quem paga mais é quem menos aparece nos laços de reembolso.",
+    "alavanca": "a regra — o enquadramento regulatório da assinatura define se este desenho se sustenta, e ainda não tem dono",
+    "alavanca_alvo": "ator:centro"
+  },
+  "sistema": {
+    "nivel": "meso",
+    "manchete": "Tudo o que se mede passa pelo mapa, com o médico, antes de virar cuidado.",
+    "pergunta": "o que o Centro mede e modula — e o que puxa o quê?",
+    "pergunta_pessoa": "o que o Centro faz com o que eu trago?",
+    "revela": "O M² é a garganta e o atraso do sistema: tudo o que se mede espera o dossiê para virar cuidado. A travessia é particular nas pontas e reembolsável no meio — não por escolha comercial, mas porque medir sem sintoma está fora da cobertura e modular com indicação está dentro.",
+    "alavanca": "a informação — o dossiê é o ponto onde um dado vira decisão clínica: melhorar o que chega até ele muda tudo o que vem depois",
+    "alavanca_alvo": "ponto:dossie"
+  },
+  "servicos": {
+    "nivel": "meso",
+    "manchete": "O mesmo exame é particular na entrada e pode ir ao plano dentro de um eixo, com indicação.",
+    "pergunta": "o que entra em cada pacote?",
+    "pergunta_pessoa": "o que entra no meu pacote — e o que eu já tenho?",
+    "revela": "O mesmo exame muda de cor conforme o motivo: na entrada é particular por natureza, porque é rastreio sem sintoma. Dentro de um eixo, com indicação, pode ir ao rol. A cor não é do exame, é do momento da travessia.",
+    "alavanca": "a composição — cada item a mais na entrada é hora clínica da estrutura que já existe, e a entrada precisa continuar leve para que a saída tenha gente",
+    "alavanca_alvo": "cartao:Core 40+"
+  },
+  "jornadas": {
+    "nivel": "micro",
+    "manchete": "Entre as consultas, uma equipe acompanha. Quando ela para de responder, é a equipe que procura.",
+    "pergunta": "o que a pessoa vive — no Centro e à distância?",
+    "pergunta_pessoa": "o que eu vivo neste ano — e quem está comigo quando eu sumo?",
+    "revela": "A trilha digital roda por trás o ano inteiro e é ela que alimenta cada reavaliação. O estoque que cresce não é de exames, é de confiança — e ele se esvazia no silêncio da pessoa, o sinal mais importante do blueprint.",
+    "alavanca": "o contato humano contínuo — o guardião da jornada é onde a recorrência se ganha ou se perde. É o recurso mais escasso e o mais decisivo",
+    "alavanca_alvo": "laco:1"
+  }
+};
+
+var RELATORIO = {
+  "titulo": "Sistemática Longevidade",
+  "subtitulo": "o Centro de Longevidade, visto por quem passa por ele",
+  "versao": "v8",
+  "data": "25/10/2026",
+  "para_quem": "os executivos do Einstein",
+  "pergunta_abertura": "o que é o Centro, e como ler este relatório?",
+  "pergunta_direcao": "o que temos, e o que preciso para o modelo de negócio fechar?",
+  "manchete": "O Centro de Longevidade, em sete perguntas.",
+  "tese": "Medir, mapear e modular, vistos de quatro lados: quem paga, o que o Centro faz, o que entra no pacote e o que a pessoa vive. No fim, o que encontramos.",
+  "voz": "Faço exames todo ano, em três lugares, e ninguém olha para eles juntos. Não quero só viver mais: quero continuar inteira.",
+  "voz_fonte": "52 anos · uma voz composta, a média das seis proto-personas da pesquisa qualitativa (12 entrevistas, jul/2026) — não é uma pessoa real",
+  "hoje_titulo": "hoje",
+  "hoje_1": "já se cuida, mas sozinha",
+  "hoje_2": "exames espalhados, sem leitura conjunta",
+  "hoje_3": "dorme mal e acha normal",
+  "travessia_titulo": "a travessia",
+  "futuro_titulo": "os próximos anos",
+  "futuro_1": "um mapa só, com o que vem primeiro",
+  "futuro_2": "reavaliação aos 6 e aos 12 meses",
+  "futuro_3": "autonomia e memória acompanhadas",
+  "legenda": "a avaliação é particular — o que o médico indicar a partir do mapa pode ir ao plano",
+  "como_ler": "Cada camada responde a uma pergunta, escrita no alto. Embaixo, o que o desenho mostra. Comece por quem paga e termine no que encontramos.",
+  "legenda_fontes": "clique num bloco do modelo de negócio para ver o que temos e o que preciso · os números 1 a 6 seguem a cadeia do cliente à receita · passe o mouse num item para ler o texto inteiro e a fonte",
+  "fontes": "devolutiva da owner em 15/10/2026 (portfólio e travessia) · pág. 30 do deck ComexV2 (jornada do ano) · Anexo I do Rol ANS, busca direta (enquadramentos) · pesquisa qualitativa, 12 entrevistas, jul/2026 (a pessoa) · laudo-exemplo da Avaliação de Longevidade Funcional (o dossiê)",
+  "pergunta_pessoa_abertura": "por onde eu começo?",
+  "pergunta_pessoa_direcao": "o que muda para mim?",
+  "conclusao": "A avaliação já existe. O acompanhamento do ano é o que falta desenhar — e ele depende de três definições: o parecer jurídico, o número de eixos e o que ela recebe na espera.",
+  "ciclo": "reavaliação aos 6 e aos 12 meses — e o ciclo recomeça",
+  "laco_titulo": "o laço que segura o ano",
+  "laco_nota": "esvazia no silêncio dela — o contato ativo religa",
+  "verdade_titulo": "Só se sustenta se",
+  "w_intro": "Antes das camadas, o básico: o que é, para quem, onde, quando, como e quanto.",
+  "w_oque": "Um centro do Einstein que mede a saúde de uma vez, junta os resultados num mapa só e acompanha a pessoa ao longo do ano.",
+  "w_porque": "Hoje quem se cuida faz isso sozinho: exames em vários lugares, especialistas que não conversam entre si e pouca ajuda para manter o hábito.",
+  "w_quem": "Adultos que querem envelhecer com autonomia, a partir dos 20 ou dos 40 anos, conforme o protocolo, e empresas, para os seus colaboradores. O grupo prioritário ainda está em definição. A pesquisa ouviu seis perfis:",
+  "w_onde": "Nas unidades Einstein que já existem: a avaliação no Espaço Einstein, os exames no hospital e o acompanhamento a distância.",
+  "w_quando": "Um dia de avaliação, a devolutiva com o mapa e um ano de acompanhamento, com nova avaliação aos 6 e aos 12 meses.",
+  "w_como": "Em três passos, que se repetem a cada ano:",
+  "w_como_1": "avaliar tudo num dia",
+  "w_como_2": "o médico lê tudo junto e diz o que vem primeiro",
+  "w_como_3": "o plano do ano, com alguém que acompanha",
+  "w_quanto": "A avaliação é particular. O que o médico indicar a partir do mapa pode ir ao plano de saúde. Os preços ainda estão em definição.",
+  "jor_mae": "A travessia inteira: uma só, para todo cliente",
+  "jor_mae_sub": "Três passos com regra fixa, iguais para todos. Clique numa linha para abrir a jornada dela.",
+  "jor_nota_m1": "a avaliação é particular · quem não sabe por onde começar passa antes pela pré-triagem",
+  "jor_nota_m2": "o médico titular recebe um resumo do mapa e assina os exames de métrica",
+  "jor_nota_m3": "a modulação pode ser indicada pelo médico do Centro",
+  "jor_padrao": "Parte IA, parte atuação clínica pontual: o que é específico de cada cliente se resolve aqui, e a travessia segue a mesma regra para todos.",
+  "proposta_titulo": "O MODELO DE NEGÓCIO · CLIQUE NUM BLOCO PARA VER O QUE TEMOS E O QUE PRECISO",
+  "conclusao_curta": "A avaliação já existe. Falta desenhar o acompanhamento do ano — e cada bloco do quadro diz o que precisamos para isso."
+};
+
+var ACHADOS = [
+  {
+    "nivel": "macro",
+    "curto": "Hoje se vende só a avaliação. O acompanhamento do ano ainda não é oferta.",
+    "achado": "O que o Centro vende hoje é a entrada. A recorrência mora na saída — e a saída ainda não existe como oferta.",
+    "para_ela": "hoje ela consegue comprar a avaliação. O acompanhamento ao longo do ano ainda não está à venda.",
+    "camada": "servicos",
+    "link": "?vista=servicos",
+    "fonte": "devolutiva de 15/10 · análise de receita",
+    "grafico": "",
+    "componente": "receita"
+  },
+  {
+    "nivel": "macro",
+    "curto": "A assinatura depende de um parecer jurídico que ainda não tem responsável.",
+    "achado": "O enquadramento regulatório da assinatura é o risco que governa o desenho inteiro — e segue sem dono e sem prazo.",
+    "para_ela": "ainda não se sabe se o acompanhamento poderá ser contratado como serviço ou se terá de seguir as regras de um plano de saúde.",
+    "camada": "ecossistema",
+    "link": "?vista=ecossistema&ator=operadora",
+    "fonte": "nota de viabilização, pendência 1 · mapeamento regulatório",
+    "grafico": "",
+    "componente": "receita"
+  },
+  {
+    "nivel": "meso",
+    "curto": "A avaliação é particular. O que o médico indica depois pode ir ao plano.",
+    "achado": "A travessia é particular nas pontas e reembolsável no meio — e isso é desenho, não fraqueza. Medir sem sintoma está fora da cobertura por natureza. O que o dossiê indica entra no rol com indicação clínica. Modular é cuidado eletivo e contínuo.",
+    "para_ela": "a avaliação inicial é paga por ela. Os exames que o médico indicar depois podem ir ao plano.",
+    "camada": "sistema",
+    "link": "?vista=sistema&item=dossie",
+    "fonte": "devolutiva de 15/10 · Anexo I do Rol ANS",
+    "grafico": "",
+    "componente": "receita"
+  },
+  {
+    "nivel": "meso",
+    "curto": "Os exames indicados no mapa dependem da agenda do hospital.",
+    "achado": "O M² é a garganta: o único trecho que só acontece por indicação, e por isso onde o reembolso de fato acontece — numa agenda que é do hospital, não do Centro. Uma entrada volumosa exporta fila para uma estrutura que o Centro não controla.",
+    "para_ela": "entre a conversa com o médico e o exame indicado, ela pode esperar pela agenda do hospital.",
+    "camada": "sistema",
+    "link": "?vista=sistema&item=dossie",
+    "fonte": "devolutiva de 15/10 · nota de arquitetura",
+    "grafico": "",
+    "componente": "recursos"
+  },
+  {
+    "nivel": "meso",
+    "curto": "O sono é triado em casa. A noite no laboratório, só se a triagem pedir.",
+    "achado": "A triagem do sono em casa, nos três protocolos, transforma a elegibilidade do sono em taxa de encaminhamento: o exame caro só acontece quando a triagem altera.",
+    "para_ela": "o sono é triado em casa, dormindo como sempre. A noite no laboratório só acontece se for preciso.",
+    "camada": "sistema",
+    "link": "?vista=sistema&grupo=sono",
+    "fonte": "imagem do portfólio, 15/10 · releitura da conta",
+    "grafico": "",
+    "componente": "atividades"
+  },
+  {
+    "nivel": "meso",
+    "curto": "O que mantém a pessoa no ano é alguém que conhece o caso e a procura.",
+    "achado": "O recurso crítico não é a hora de médico nem a de treino: é o contato humano contínuo. O guardião da jornada concentra quase metade das horas por pessoa — e é onde a recorrência se ganha ou se perde.",
+    "para_ela": "a diferença que ela sente é alguém que conhece o caso e a procura quando ela some.",
+    "camada": "jornadas",
+    "link": "?vista=jornadas&item=alwayscare",
+    "fonte": "dimensionamento a partir de protocolos publicados — ainda sem validação interna",
+    "grafico": "horas",
+    "componente": "relacionamento"
+  },
+  {
+    "nivel": "micro",
+    "curto": "Ela quer manter autonomia, memória e disposição — não só viver mais.",
+    "achado": "A pessoa não quer viver mais: quer viver inteira. Autonomia, cognição e propósito pesam tanto quanto saúde física nos depoimentos.",
+    "para_ela": "",
+    "camada": "jornadas",
+    "link": "?vista=jornadas",
+    "fonte": "pesquisa qualitativa, 12 entrevistas, jul/2026",
+    "grafico": "",
+    "componente": "segmentos"
+  },
+  {
+    "nivel": "micro",
+    "curto": "Ela espera duas semanas entre a avaliação e o resultado.",
+    "achado": "A espera mais sensível do ano são as duas semanas entre o dia da avaliação e a conversa sobre os resultados: ela já fez tudo e ainda não sabe nada. Hoje a jornada não diz o que ela recebe nesse intervalo.",
+    "para_ela": "",
+    "camada": "jornadas",
+    "link": "?vista=jornadas&item=abertura",
+    "fonte": "pág. 30 do deck ComexV2 (jornada do ano)",
+    "grafico": "",
+    "componente": "proposta"
+  },
+  {
+    "nivel": "micro",
+    "curto": "Quem já tem exames não quer repeti-los.",
+    "achado": "Quem chega com exames de fora quer, antes de tudo, não repetir nada — é o primeiro valor que ela percebe. A jornada da curadoria ainda é leitura nossa, sem fonte primária.",
+    "para_ela": "",
+    "camada": "jornadas",
+    "link": "?vista=jornadas&item=curadoria",
+    "fonte": "jornada da curadoria — inferência",
+    "grafico": "",
+    "componente": "proposta"
+  },
+  {
+    "nivel": "micro",
+    "curto": "Do teste de sono em casa ao tratamento: seis semanas e três profissionais.",
+    "achado": "Da triagem do sono em casa ao plano de tratamento passam cerca de seis semanas, e ela muda de profissional três vezes. É onde ela mais precisa saber quem a acompanha.",
+    "para_ela": "",
+    "camada": "jornadas",
+    "link": "?vista=jornadas&item=polissono",
+    "fonte": "jornadas do Biologix e da polissonografia",
+    "grafico": "",
+    "componente": "atividades"
+  },
+  {
+    "nivel": "micro",
+    "curto": "Quando ela para de responder, é o sinal mais importante do ano.",
+    "achado": "O silêncio dela é o sinal mais importante do ano. Ele dispara o contato semanal, mas ainda não está definido quem é responsável por levar um desvio à equipe clínica.",
+    "para_ela": "",
+    "camada": "jornadas",
+    "link": "?vista=jornadas",
+    "fonte": "pág. 30 do deck (contato semanal) · leitura nossa (quem escala)",
+    "grafico": "",
+    "componente": "relacionamento"
+  },
+  {
+    "nivel": "micro",
+    "curto": "O rastreamento de câncer é escolha dela, com o médico.",
+    "achado": "No rastreamento de câncer, a decisão de fazer é dela, com o médico, sabendo o que o exame pode e não pode dizer. O consentimento é uma etapa da jornada, não um formulário.",
+    "para_ela": "",
+    "camada": "jornadas",
+    "link": "?vista=jornadas&item=galleri",
+    "fonte": "jornada do eixo oncológico — inferência",
+    "grafico": "",
+    "componente": "proposta"
+  }
+];
+
+var PENDENCIAS = [
+  {
+    "nivel": "macro",
+    "curto": "Parecer jurídico sobre a assinatura (ANS)",
+    "destaque": "sim",
+    "decisao": "Parecer jurídico sobre o enquadramento da assinatura (ANS) — a condição de tudo o que está aqui",
+    "dono": "sem dono",
+    "prazo": "sem prazo",
+    "status": "aberta",
+    "componente": "receita"
+  },
+  {
+    "nivel": "macro",
+    "curto": "Preço da entrada e preço da saída, separados",
+    "destaque": "",
+    "decisao": "Preço da entrada por protocolo e preço da saída (assinatura) — hoje fundidos numa conta só",
+    "dono": "owner + comercial",
+    "prazo": "a definir",
+    "status": "aberta",
+    "componente": "receita"
+  },
+  {
+    "nivel": "meso",
+    "curto": "Quantas pessoas passam da entrada para a saída",
+    "destaque": "",
+    "decisao": "Taxa de passagem da entrada para a saída — a medida mais sensível da conta na arquitetura da travessia",
+    "dono": "economia em saúde",
+    "prazo": "a definir",
+    "status": "aberta",
+    "componente": "receita"
+  },
+  {
+    "nivel": "meso",
+    "curto": "Composição do eixo autonômico",
+    "destaque": "",
+    "decisao": "Composição do eixo autonômico (biofeedback, mindfulness, medicação) e sua elegibilidade — a sala já existe",
+    "dono": "owner (clínico)",
+    "prazo": "a definir",
+    "status": "parcial",
+    "componente": "proposta"
+  },
+  {
+    "nivel": "meso",
+    "curto": "Experiências com terceiros: dentro, fora ou por indicação",
+    "destaque": "",
+    "decisao": "Camada de experiências com terceiros (sauna, crio, meditação guiada): dentro do pacote, fora, ou por indicação",
+    "dono": "owner",
+    "prazo": "a definir",
+    "status": "aberta",
+    "componente": "parcerias"
+  },
+  {
+    "nivel": "meso",
+    "curto": "Equipamentos e pessoas: quem levanta, até quando",
+    "destaque": "",
+    "decisao": "Equipamentos e dimensionamento de pessoas: quem levanta internamente e até quando",
+    "dono": "owner + economia em saúde",
+    "prazo": "a definir",
+    "status": "aberta",
+    "componente": "custos"
+  },
+  {
+    "nivel": "meso",
+    "curto": "Sete eixos ou seis: confirmar com a owner",
+    "destaque": "sim",
+    "decisao": "Os sete eixos do M³ contra os seis da devolutiva: cognitiva, cardiometabólica e oncológica entram, nutrição e exercício de precisão viram pilares do M¹ — confirmar com a owner",
+    "dono": "produtização → owner",
+    "prazo": "próxima conversa",
+    "status": "parcial",
+    "componente": "proposta"
+  },
+  {
+    "nivel": "micro",
+    "curto": "O que ela recebe nas duas semanas de espera",
+    "destaque": "sim",
+    "decisao": "O que a pessoa recebe nas duas semanas entre a avaliação e a conversa sobre os resultados",
+    "dono": "produtização → owner",
+    "prazo": "a definir",
+    "status": "aberta",
+    "componente": "proposta"
+  },
+  {
+    "nivel": "micro",
+    "curto": "Quem leva um desvio à equipe clínica, e em quanto tempo",
+    "destaque": "",
+    "decisao": "Quem é responsável por levar um desvio da pessoa à equipe clínica, e em quanto tempo ela tem resposta",
+    "dono": "owner (clínico)",
+    "prazo": "a definir",
+    "status": "aberta",
+    "componente": "relacionamento"
+  },
+  {
+    "nivel": "micro",
+    "curto": "Validar as jornadas da curadoria e do câncer",
+    "destaque": "",
+    "decisao": "Validar com a owner a jornada da curadoria e a do rastreamento de câncer — hoje leituras nossas",
+    "dono": "produtização → owner",
+    "prazo": "próxima conversa",
+    "status": "aberta",
+    "componente": "atividades"
+  },
+  {
+    "nivel": "meso",
+    "curto": "Sessão a quatro mãos do BMC e do Lean",
+    "destaque": "",
+    "decisao": "Sessão a quatro mãos do BMC e do Lean — construídos a partir de hipóteses nossas, para ela validar, corrigir ou substituir",
+    "dono": "produtização + owner",
+    "prazo": "a marcar",
+    "status": "aberta",
+    "componente": ""
+  },
+  {
+    "nivel": "micro",
+    "curto": "Pré-triagem: quem conduz, por qual canal, e quanto custa",
+    "destaque": "",
+    "decisao": "A pré-triagem para quem não sabe qual protocolo escolher é cobrada: falta definir quem conduz a conversa, por qual canal, o preço e se o valor é abatido quando ela segue para a avaliação",
+    "dono": "produtização → owner",
+    "prazo": "próxima conversa",
+    "status": "aberta",
+    "componente": "canais"
+  },
+  {
+    "nivel": "meso",
+    "curto": "Qual grupo de pessoas o Centro prioriza na entrada",
+    "destaque": "",
+    "decisao": "Qual das seis proto-personas o Centro prioriza na entrada — hoje há uma hipótese de trabalho (40 a 65 anos, alta liderança) ainda não validada com a owner",
+    "dono": "owner",
+    "prazo": "próxima conversa",
+    "status": "aberta",
+    "componente": "segmentos"
+  },
+  {
+    "nivel": "meso",
+    "curto": "Dois ajustes no portfólio: densitometria e retina",
+    "destaque": "",
+    "decisao": "A densitometria do M³ aparece em dois eixos (cardiometabólico e osteometabólico) e o retina scan está no domínio sensorial, mas a descrição é vascular. Confirmar onde cada um mora",
+    "dono": "owner (clínico)",
+    "prazo": "próxima conversa",
+    "status": "aberta",
+    "componente": "proposta"
+  }
+];
+
+var PROXIMOS = [
+  {
+    "passo": "Levar este relatório à owner e fechar as três definições em destaque",
+    "quando": "próxima conversa",
+    "dono": "produtização"
+  },
+  {
+    "passo": "Revisar com a owner o BMC e o Lean, hipótese por hipótese",
+    "quando": "a marcar",
+    "dono": "produtização + owner"
+  },
+  {
+    "passo": "Refazer a conta do Centro com os preços e a adesão ao acompanhamento",
+    "quando": "depois dessas definições",
+    "dono": "economia em saúde"
+  },
+  {
+    "passo": "Relatório final",
+    "quando": "30/11/2026",
+    "dono": "produtização"
+  }
+];
+
+var PERSONAS = [
+  {
+    "nome": "Early adopter",
+    "motivacao": "inovação e prevenção precoce",
+    "foco": "",
+    "fonte": "pesquisa qualitativa, 12 entrevistas, jul/2026"
+  },
+  {
+    "nome": "Otimizador de performance",
+    "motivacao": "energia e funcionalidade",
+    "foco": "",
+    "fonte": "pesquisa qualitativa, 12 entrevistas, jul/2026"
+  },
+  {
+    "nome": "Preventivo cognitivo",
+    "motivacao": "planejamento e risco",
+    "foco": "",
+    "fonte": "pesquisa qualitativa, 12 entrevistas, jul/2026"
+  },
+  {
+    "nome": "Interessado não estruturado",
+    "motivacao": "organização e apoio",
+    "foco": "",
+    "fonte": "pesquisa qualitativa, 12 entrevistas, jul/2026"
+  },
+  {
+    "nome": "Cético",
+    "motivacao": "evidência e benefício concreto",
+    "foco": "",
+    "fonte": "pesquisa qualitativa, 12 entrevistas, jul/2026"
+  },
+  {
+    "nome": "Planejador da velhice",
+    "motivacao": "autonomia e transição",
+    "foco": "",
+    "fonte": "pesquisa qualitativa, 12 entrevistas, jul/2026"
+  }
+];
+
+var NAO_OUVIDOS = [
+  {
+    "grupo": "Quem não sabe por onde começar e não marca",
+    "por_que": "é quem a pré-triagem quer receber",
+    "como_ouvir": "registrar quem procura o Centro e não agenda"
+  },
+  {
+    "grupo": "Quem faz a avaliação e não segue",
+    "por_que": "é onde o acompanhamento do ano se perde",
+    "como_ouvir": "conversar com quem não voltou depois dos resultados"
+  },
+  {
+    "grupo": "Quem para de responder no ano",
+    "por_que": "o silêncio é o sinal mais importante do ano",
+    "como_ouvir": "ouvir os casos em que o contato ativo não teve retorno"
+  },
+  {
+    "grupo": "A empresa que paga pelo colaborador",
+    "por_que": "é quem define se o benefício continua",
+    "como_ouvir": "entrevistar o RH de empresas que já compram do Einstein"
+  }
+];
+
+var PASSAGENS = {
+  "m1-m2": {
+    "de": "entrada",
+    "para": "pescoco",
+    "rotulo": "M¹ → M²",
+    "quem": "o médico, guardião da jornada",
+    "fonte": "primaria"
+  },
+  "m2-m3": {
+    "de": "pescoco",
+    "para": "saida",
+    "rotulo": "M² → M³",
+    "quem": "com o dossiê em mãos, o médico titular ou o do Centro encaminha aos eixos",
+    "fonte": "primaria"
+  },
+  "m3-m2": {
+    "de": "saida",
+    "para": "pescoco",
+    "rotulo": "M³ → M²",
+    "quem": "o Always Care leva às reavaliações de 6 e 12 meses · quem leva um desvio à clínica: a definir",
+    "fonte": "inferencia"
+  }
+};
+
+var LACO = [
+  {
+    "rotulo": "contato",
+    "fonte": "primaria"
+  },
+  {
+    "rotulo": "confiança",
+    "fonte": "inferencia"
+  },
+  {
+    "rotulo": "adesão",
+    "fonte": "inferencia"
+  },
+  {
+    "rotulo": "resultado",
+    "fonte": "inferencia"
+  }
+];
+
+var HORAS = [
+  {
+    "quem": "contato ativo (navegador)",
+    "horas": 10.92
+  },
+  {
+    "quem": "avaliação física",
+    "horas": 4.75
+  },
+  {
+    "quem": "treino em grupo",
+    "horas": 3.0
+  },
+  {
+    "quem": "médico guardião",
+    "horas": 2.25
+  },
+  {
+    "quem": "nutrição",
+    "horas": 2.25
+  },
+  {
+    "quem": "especialistas (endócrino e sono)",
+    "horas": 0.88
+  }
+];
+
+var CONDICOES = [
+  {
+    "condicao": "a assinatura puder ser vendida como serviço",
+    "se_nao": "o acompanhamento teria de seguir as regras de um plano de saúde"
+  },
+  {
+    "condicao": "quem faz a avaliação seguir para o ano",
+    "se_nao": "o Centro vende só a entrada, e o desenho do ano perde a base"
+  },
+  {
+    "condicao": "o contato semanal segurar a pessoa",
+    "se_nao": "o laço esvazia e a reavaliação dos 12 meses encontra menos gente"
+  }
+];
+
+var PROPOSTA = [
+  {
+    "id": "segmentos",
+    "componente": "Cliente / usuário",
+    "bloco": "Segmentos de clientes",
+    "cor": "#cfe2fb",
+    "temos": "seis perfis ouvidos na pesquisa, protocolos a partir dos 20 e dos 40 anos, e empresas que contratam para os colaboradores",
+    "preciso": "escolher o grupo que o Centro prioriza na entrada e ouvir quem ainda não ouvimos",
+    "pedido": "acesso aos clientes de hoje do Einstein e ao RH das empresas que já compram dele, para ouvir quem ainda falta"
+  },
+  {
+    "id": "proposta",
+    "componente": "Portfólio",
+    "bloco": "Proposta de valor",
+    "cor": "#e2d8f8",
+    "temos": "medir num dia, mapear num dossiê só e modular ao longo do ano, com o médico titular no centro da decisão",
+    "preciso": "fechar sete ou seis eixos e o que a pessoa recebe nas duas semanas de espera",
+    "pedido": "aval clínico para os protocolos de cada eixo, com a evidência que o Einstein exige"
+  },
+  {
+    "id": "atividades",
+    "componente": "Atividades diferenciadoras",
+    "bloco": "Atividades-chave",
+    "cor": "#fde0c4",
+    "temos": "a avaliação num dia, a leitura integrada do médico e a prescrição pela medida",
+    "preciso": "validar com a owner as jornadas da curadoria e do rastreamento de câncer",
+    "pedido": "uma agenda compartilhada entre as unidades, para a avaliação inteira caber num dia"
+  },
+  {
+    "id": "recursos",
+    "componente": "Recursos diferenciadores",
+    "bloco": "Recursos-chave",
+    "cor": "#cdeef0",
+    "temos": "a infraestrutura e a marca Einstein, e o médico titular de cada cliente como aliado",
+    "preciso": "formar o médico de gerociência e dimensionar quem faz o contato ativo",
+    "pedido": "sincronia no uso do que já existe (Espaço Einstein, salas, diagnóstico) e a liberação de equipamentos e equipe"
+  },
+  {
+    "id": "custos",
+    "componente": "Estrutura de custo",
+    "bloco": "Estrutura de custos",
+    "cor": "#fdf3c0",
+    "temos": "um dimensionamento por horas, a partir de protocolos publicados",
+    "preciso": "validar as horas por pessoa e saber quem levanta equipamentos e equipe",
+    "pedido": "um responsável e um prazo para o levantamento de equipamentos e de equipe"
+  },
+  {
+    "id": "receita",
+    "componente": "Fontes de receita",
+    "bloco": "Fontes de receita",
+    "cor": "#d4efcf",
+    "temos": "a avaliação é particular, e o que o médico indica pode ir ao plano",
+    "preciso": "o parecer jurídico da assinatura e os preços da entrada e do ano, separados",
+    "pedido": "o parecer jurídico da assinatura, com dono e prazo"
+  },
+  {
+    "id": "parcerias",
+    "componente": "Quem faz junto",
+    "bloco": "Parcerias-chave",
+    "cor": "#e4e7ec",
+    "temos": "Einstein Diagnóstico para os exames indicados, parceiros de tecnologia (wearable e IA) e o médico titular de cada cliente",
+    "preciso": "fechar a plataforma de IA e o relógio biológico, e decidir o que fica com terceiros",
+    "pedido": "apoio institucional para fechar a plataforma de IA e o relógio biológico"
+  },
+  {
+    "id": "relacionamento",
+    "componente": "Como acompanha",
+    "bloco": "Relacionamento",
+    "cor": "#f8dde4",
+    "temos": "um guardião da jornada: contato ativo semanal, Always Care e reavaliações ao longo do ano",
+    "preciso": "definir quem leva um desvio à equipe clínica, e em quanto tempo",
+    "pedido": "uma equipe de contato ativo, com um protocolo clínico para levar os desvios adiante"
+  },
+  {
+    "id": "canais",
+    "componente": "Por onde chega",
+    "bloco": "Canais",
+    "cor": "#dbe4f3",
+    "temos": "as unidades Einstein, o app Meu Einstein, a indicação médica e o RH das empresas",
+    "preciso": "definir a pré-triagem (quem conduz e por qual canal) e testar a porta das empresas",
+    "pedido": "a porta das empresas pelo RH e a indicação do corpo clínico do Einstein"
+  }
+];
 
 var TECNOLOGIAS = [
   {
@@ -1001,7 +1594,7 @@ var TECNOLOGIAS = [
     ],
     "fluxos": [
       {
-        "de": "paciente",
+        "de": "cliente",
         "para": "centro",
         "oque": "compra do dia de abertura — o pacote inteiro de metrificação, num dia",
         "tipo": "pagamento",
@@ -1017,7 +1610,8 @@ var TECNOLOGIAS = [
         "profissional": "Recepção e equipe de avaliação",
         "espaco": "fisico",
         "bastidor": "Agenda do dia e enquadramento de cada exame",
-        "fonte": "primaria"
+        "fonte": "primaria",
+        "espera": ""
       },
       {
         "ordem": 2,
@@ -1027,7 +1621,8 @@ var TECNOLOGIAS = [
         "profissional": "Equipe multidisciplinar",
         "espaco": "fisico",
         "bastidor": "Coleta, processamento e laudos",
-        "fonte": "primaria"
+        "fonte": "primaria",
+        "espera": ""
       },
       {
         "ordem": 3,
@@ -1037,7 +1632,8 @@ var TECNOLOGIAS = [
         "profissional": "Equipe clínica",
         "espaco": "fisico",
         "bastidor": "Os resultados viram um Mapa só",
-        "fonte": "primaria"
+        "fonte": "primaria",
+        "espera": ""
       },
       {
         "ordem": 4,
@@ -1047,7 +1643,8 @@ var TECNOLOGIAS = [
         "profissional": "Médico — guardião da jornada",
         "espaco": "misto",
         "bastidor": "Prontuário atualizado",
-        "fonte": "primaria"
+        "fonte": "primaria",
+        "espera": "2 semanas sem o resultado"
       },
       {
         "ordem": 5,
@@ -1057,7 +1654,8 @@ var TECNOLOGIAS = [
         "profissional": "Médico",
         "espaco": "misto",
         "bastidor": "Encaminhamento para os eixos",
-        "fonte": "primaria"
+        "fonte": "primaria",
+        "espera": ""
       }
     ]
   },
@@ -1080,7 +1678,7 @@ var TECNOLOGIAS = [
     ],
     "fluxos": [
       {
-        "de": "paciente",
+        "de": "cliente",
         "para": "centro",
         "oque": "item do protocolo de entrada",
         "tipo": "confirmar",
@@ -1103,7 +1701,8 @@ var TECNOLOGIAS = [
         "profissional": "— autosserviço",
         "espaco": "digital",
         "bastidor": "Logística do kit",
-        "fonte": "primaria"
+        "fonte": "primaria",
+        "espera": ""
       },
       {
         "ordem": 2,
@@ -1113,7 +1712,8 @@ var TECNOLOGIAS = [
         "profissional": "—",
         "espaco": "digital",
         "bastidor": "Registro automático dos dados",
-        "fonte": "primaria"
+        "fonte": "primaria",
+        "espera": ""
       },
       {
         "ordem": 3,
@@ -1123,7 +1723,8 @@ var TECNOLOGIAS = [
         "profissional": "Equipe clínica",
         "espaco": "fisico",
         "bastidor": "Análise do traçado",
-        "fonte": "primaria"
+        "fonte": "primaria",
+        "espera": ""
       },
       {
         "ordem": 4,
@@ -1133,7 +1734,8 @@ var TECNOLOGIAS = [
         "profissional": "Médico",
         "espaco": "misto",
         "bastidor": "Resultado anexado ao Mapa",
-        "fonte": "primaria"
+        "fonte": "primaria",
+        "espera": "≈ 1 semana até o resultado"
       },
       {
         "ordem": 5,
@@ -1143,7 +1745,8 @@ var TECNOLOGIAS = [
         "profissional": "Médico do sono",
         "espaco": "fisico",
         "bastidor": "Encaminhamento ao Einstein Diagnóstico",
-        "fonte": "primaria"
+        "fonte": "primaria",
+        "espera": ""
       }
     ]
   },
@@ -1165,7 +1768,7 @@ var TECNOLOGIAS = [
     ],
     "fluxos": [
       {
-        "de": "paciente",
+        "de": "cliente",
         "para": "centro",
         "oque": "item particular da avaliação — rastreio assintomático",
         "tipo": "pagamento",
@@ -1181,7 +1784,8 @@ var TECNOLOGIAS = [
         "profissional": "Equipe de agendamento",
         "espaco": "fisico",
         "bastidor": "Encaixe no dia de abertura",
-        "fonte": "inferencia"
+        "fonte": "inferencia",
+        "espera": ""
       },
       {
         "ordem": 2,
@@ -1191,7 +1795,8 @@ var TECNOLOGIAS = [
         "profissional": "Técnico em densitometria",
         "espaco": "fisico",
         "bastidor": "Aquisição e laudo",
-        "fonte": "primaria"
+        "fonte": "primaria",
+        "espera": ""
       },
       {
         "ordem": 3,
@@ -1201,7 +1806,8 @@ var TECNOLOGIAS = [
         "profissional": "Médico",
         "espaco": "fisico",
         "bastidor": "Massa, osso e gordura entram no Mapa",
-        "fonte": "primaria"
+        "fonte": "primaria",
+        "espera": ""
       },
       {
         "ordem": 4,
@@ -1211,7 +1817,8 @@ var TECNOLOGIAS = [
         "profissional": "Médico e educador físico",
         "espaco": "misto",
         "bastidor": "Alvos registrados no plano",
-        "fonte": "inferencia"
+        "fonte": "inferencia",
+        "espera": ""
       }
     ]
   },
@@ -1233,7 +1840,7 @@ var TECNOLOGIAS = [
     ],
     "fluxos": [
       {
-        "de": "paciente",
+        "de": "cliente",
         "para": "centro",
         "oque": "no rastreio da entrada: particular por desenho",
         "tipo": "pagamento",
@@ -1256,7 +1863,8 @@ var TECNOLOGIAS = [
         "profissional": "Educador físico e médico",
         "espaco": "fisico",
         "bastidor": "Aquisição dos gases",
-        "fonte": "primaria"
+        "fonte": "primaria",
+        "espera": ""
       },
       {
         "ordem": 2,
@@ -1266,7 +1874,8 @@ var TECNOLOGIAS = [
         "profissional": "Educador físico",
         "espaco": "fisico",
         "bastidor": "Cálculo das zonas de treino",
-        "fonte": "primaria"
+        "fonte": "primaria",
+        "espera": ""
       },
       {
         "ordem": 3,
@@ -1276,7 +1885,8 @@ var TECNOLOGIAS = [
         "profissional": "Educador físico",
         "espaco": "misto",
         "bastidor": "Zonas registradas no plano",
-        "fonte": "primaria"
+        "fonte": "primaria",
+        "espera": ""
       }
     ]
   },
@@ -1301,7 +1911,7 @@ var TECNOLOGIAS = [
         "enq": "rol"
       },
       {
-        "de": "paciente",
+        "de": "cliente",
         "para": "centro",
         "oque": "fora dos critérios da DUT: particular",
         "tipo": "pagamento",
@@ -1324,7 +1934,8 @@ var TECNOLOGIAS = [
         "profissional": "Médico",
         "espaco": "misto",
         "bastidor": "Critérios da diretriz verificados",
-        "fonte": "primaria"
+        "fonte": "primaria",
+        "espera": ""
       },
       {
         "ordem": 2,
@@ -1334,7 +1945,8 @@ var TECNOLOGIAS = [
         "profissional": "Equipe de imagem",
         "espaco": "fisico",
         "bastidor": "Agendamento e laudo",
-        "fonte": "primaria"
+        "fonte": "primaria",
+        "espera": ""
       },
       {
         "ordem": 3,
@@ -1344,7 +1956,8 @@ var TECNOLOGIAS = [
         "profissional": "Médico",
         "espaco": "misto",
         "bastidor": "Laudo integrado ao Mapa",
-        "fonte": "primaria"
+        "fonte": "primaria",
+        "espera": ""
       },
       {
         "ordem": 4,
@@ -1354,7 +1967,8 @@ var TECNOLOGIAS = [
         "profissional": "Cardiologista",
         "espaco": "fisico",
         "bastidor": "Investigação dirigida no Einstein",
-        "fonte": "primaria"
+        "fonte": "primaria",
+        "espera": ""
       }
     ]
   },
@@ -1374,7 +1988,7 @@ var TECNOLOGIAS = [
     ],
     "fluxos": [
       {
-        "de": "paciente",
+        "de": "cliente",
         "para": "centro",
         "oque": "item particular",
         "tipo": "pagamento",
@@ -1397,7 +2011,8 @@ var TECNOLOGIAS = [
         "profissional": "Equipe de coleta",
         "espaco": "fisico",
         "bastidor": "Amostra enviada ao parceiro",
-        "fonte": "primaria"
+        "fonte": "primaria",
+        "espera": ""
       },
       {
         "ordem": 2,
@@ -1407,7 +2022,8 @@ var TECNOLOGIAS = [
         "profissional": "Parceiro externo",
         "espaco": "digital",
         "bastidor": "Metilação processada fora",
-        "fonte": "primaria"
+        "fonte": "primaria",
+        "espera": ""
       },
       {
         "ordem": 3,
@@ -1417,7 +2033,8 @@ var TECNOLOGIAS = [
         "profissional": "Médico",
         "espaco": "misto",
         "bastidor": "Resultado anexado ao Mapa",
-        "fonte": "primaria"
+        "fonte": "primaria",
+        "espera": ""
       },
       {
         "ordem": 4,
@@ -1427,15 +2044,16 @@ var TECNOLOGIAS = [
         "profissional": "Médico",
         "espaco": "fisico",
         "bastidor": "Série histórica no prontuário",
-        "fonte": "inferencia"
+        "fonte": "inferencia",
+        "espera": ""
       }
     ]
   },
   {
     "id": "curadoria",
-    "nome": "Entrada de curadoria (exames de fora)",
+    "nome": "Curadoria e pré-triagem (indecisos e exames de fora)",
     "apelido": "Curadoria",
-    "entrega": "Leitura dos exames que o cliente já tem: completa só o que falta e canaliza para os eixos.",
+    "entrega": "Uma conversa curta para quem não sabe por onde começar, e a leitura dos exames que a pessoa já tem.",
     "estagio": "entrada",
     "tags": [
       "Individualizado"
@@ -1453,7 +2071,7 @@ var TECNOLOGIAS = [
     ],
     "fluxos": [
       {
-        "de": "paciente",
+        "de": "cliente",
         "para": "centro",
         "oque": "serviço de curadoria e canalização",
         "tipo": "confirmar",
@@ -1463,43 +2081,58 @@ var TECNOLOGIAS = [
     "jornada": [
       {
         "ordem": 1,
-        "etapa": "Envia o que já tem",
+        "etapa": "Pré-triagem",
         "quando": "antes do dia 0",
-        "pessoa": "Manda os exames que já fez",
-        "profissional": "— autosserviço",
-        "espaco": "digital",
-        "bastidor": "Ingestão dos arquivos",
-        "fonte": "inferencia"
+        "pessoa": "Conta o que busca e como está, sem precisar saber qual protocolo escolher",
+        "profissional": "Equipe de orientação — a definir quem",
+        "espaco": "misto",
+        "bastidor": "Conversa cobrada, particular: questionário breve e conversa curta que indicam o protocolo (Performance, Core, Frontier) ou a curadoria dos exames que ela já tem",
+        "fonte": "inferencia",
+        "espera": ""
       },
       {
         "ordem": 2,
+        "etapa": "Envia o que já tem",
+        "quando": "antes do dia 0",
+        "pessoa": "Se já tem exames recentes, manda os que fez",
+        "profissional": "— autosserviço",
+        "espaco": "digital",
+        "bastidor": "Ingestão dos arquivos",
+        "fonte": "inferencia",
+        "espera": ""
+      },
+      {
+        "ordem": 3,
         "etapa": "Leitura e validação",
         "quando": "antes do dia 0",
         "pessoa": "",
         "profissional": "Equipe clínica",
         "espaco": "fisico",
         "bastidor": "Lê, valida e identifica as lacunas",
-        "fonte": "inferencia"
+        "fonte": "inferencia",
+        "espera": ""
       },
       {
-        "ordem": 3,
+        "ordem": 4,
         "etapa": "Só o que falta",
         "quando": "dia 0",
         "pessoa": "Faz apenas os exames que faltam",
         "profissional": "Equipe de avaliação",
         "espaco": "fisico",
         "bastidor": "Pedido reduzido ao necessário",
-        "fonte": "inferencia"
+        "fonte": "inferencia",
+        "espera": ""
       },
       {
-        "ordem": 4,
+        "ordem": 5,
         "etapa": "Mapa montado",
         "quando": "2 semanas",
         "pessoa": "Recebe o Mapa sem ter repetido nada",
         "profissional": "Médico",
         "espaco": "misto",
         "bastidor": "Prontuário com dado externo integrado",
-        "fonte": "inferencia"
+        "fonte": "inferencia",
+        "espera": ""
       }
     ]
   },
@@ -1507,7 +2140,7 @@ var TECNOLOGIAS = [
     "id": "dossie",
     "nome": "Dossiê de Longevidade Funcional",
     "apelido": "Dossiê",
-    "entrega": "Tudo o que foi medido integrado num mapa só: cada domínio classificado em favorável, aprimorar ou priorizar — e o cuidado direcionado aos eixos.",
+    "entrega": "Tudo o que foi medido num mapa só, com o que vem primeiro — e um resumo para o médico titular.",
     "estagio": "pescoco",
     "tags": [],
     "cluster": "",
@@ -1515,7 +2148,7 @@ var TECNOLOGIAS = [
     "alimenta": [],
     "fluxos": [
       {
-        "de": "paciente",
+        "de": "cliente",
         "para": "centro",
         "oque": "o dossiê vem dentro do pacote de entrada",
         "tipo": "pagamento",
@@ -1531,7 +2164,8 @@ var TECNOLOGIAS = [
         "profissional": "Médico especializado em gerociência",
         "espaco": "fisico",
         "bastidor": "Testes físicos, cognitivos, biomarcadores e estilo de vida lidos juntos",
-        "fonte": "primaria"
+        "fonte": "primaria",
+        "espera": ""
       },
       {
         "ordem": 2,
@@ -1541,7 +2175,8 @@ var TECNOLOGIAS = [
         "profissional": "Médico responsável",
         "espaco": "misto",
         "bastidor": "Laudo completo no app Meu Einstein",
-        "fonte": "primaria"
+        "fonte": "primaria",
+        "espera": ""
       },
       {
         "ordem": 3,
@@ -1551,17 +2186,30 @@ var TECNOLOGIAS = [
         "profissional": "Médico responsável",
         "espaco": "misto",
         "bastidor": "Encaminhamento para os eixos de modulação",
-        "fonte": "primaria"
+        "fonte": "primaria",
+        "espera": ""
       },
       {
         "ordem": 4,
+        "etapa": "Para o seu médico",
+        "quando": "2 semanas",
+        "pessoa": "Leva ao seu médico um resumo de uma página",
+        "profissional": "Médico titular",
+        "espaco": "misto",
+        "bastidor": "Carta ao médico sobre o seu paciente: os exames de métrica que o mapa sugere valem com a assinatura dele",
+        "fonte": "primaria",
+        "espera": ""
+      },
+      {
+        "ordem": 5,
         "etapa": "Reavaliação",
         "quando": "6 meses",
         "pessoa": "Refaz as medidas e compara",
         "profissional": "Equipe de avaliação",
         "espaco": "fisico",
         "bastidor": "O dossiê é reescrito com a evolução",
-        "fonte": "primaria"
+        "fonte": "primaria",
+        "espera": ""
       }
     ]
   },
@@ -1586,7 +2234,7 @@ var TECNOLOGIAS = [
         "enq": "rol"
       },
       {
-        "de": "paciente",
+        "de": "cliente",
         "para": "diagnostico",
         "oque": "se o plano não cobrir a variante: particular",
         "tipo": "confirmar",
@@ -1602,7 +2250,8 @@ var TECNOLOGIAS = [
         "profissional": "Médico do sono",
         "espaco": "misto",
         "bastidor": "Indicação documentada para o plano",
-        "fonte": "primaria"
+        "fonte": "primaria",
+        "espera": ""
       },
       {
         "ordem": 2,
@@ -1612,7 +2261,8 @@ var TECNOLOGIAS = [
         "profissional": "Equipe do laboratório do sono",
         "espaco": "fisico",
         "bastidor": "Aquisição e laudo",
-        "fonte": "primaria"
+        "fonte": "primaria",
+        "espera": "≈ 2 semanas até a noite de exame"
       },
       {
         "ordem": 3,
@@ -1622,7 +2272,8 @@ var TECNOLOGIAS = [
         "profissional": "Equipe administrativa",
         "espaco": "fisico",
         "bastidor": "Autorização junto à operadora",
-        "fonte": "primaria"
+        "fonte": "primaria",
+        "espera": ""
       },
       {
         "ordem": 4,
@@ -1632,7 +2283,8 @@ var TECNOLOGIAS = [
         "profissional": "Médico do sono",
         "espaco": "misto",
         "bastidor": "Laudo volta ao Centro",
-        "fonte": "primaria"
+        "fonte": "primaria",
+        "espera": "≈ 2 semanas até o plano"
       }
     ]
   },
@@ -1655,7 +2307,7 @@ var TECNOLOGIAS = [
         "enq": "rol"
       },
       {
-        "de": "paciente",
+        "de": "cliente",
         "para": "centro",
         "oque": "ApoE e aconselhamento",
         "tipo": "pagamento",
@@ -1671,7 +2323,8 @@ var TECNOLOGIAS = [
         "profissional": "Médico responsável",
         "espaco": "misto",
         "bastidor": "Indicação a partir do dossiê (cognição)",
-        "fonte": "inferencia"
+        "fonte": "inferencia",
+        "espera": ""
       },
       {
         "ordem": 2,
@@ -1681,7 +2334,8 @@ var TECNOLOGIAS = [
         "profissional": "Equipe de imagem e laboratório",
         "espaco": "fisico",
         "bastidor": "RM pelo plano com indicação; ApoE particular",
-        "fonte": "inferencia"
+        "fonte": "inferencia",
+        "espera": ""
       },
       {
         "ordem": 3,
@@ -1691,7 +2345,8 @@ var TECNOLOGIAS = [
         "profissional": "Aconselhamento genético",
         "espaco": "misto",
         "bastidor": "Laudo integrado ao dossiê",
-        "fonte": "inferencia"
+        "fonte": "inferencia",
+        "espera": ""
       },
       {
         "ordem": 4,
@@ -1701,7 +2356,8 @@ var TECNOLOGIAS = [
         "profissional": "Médico responsável",
         "espaco": "misto",
         "bastidor": "Reavaliação no próximo ciclo",
-        "fonte": "inferencia"
+        "fonte": "inferencia",
+        "espera": ""
       }
     ]
   },
@@ -1717,7 +2373,7 @@ var TECNOLOGIAS = [
     "alimenta": [],
     "fluxos": [
       {
-        "de": "paciente",
+        "de": "cliente",
         "para": "centro",
         "oque": "exame de detecção multicâncer",
         "tipo": "pagamento",
@@ -1733,7 +2389,8 @@ var TECNOLOGIAS = [
         "profissional": "Médico responsável",
         "espaco": "misto",
         "bastidor": "Consentimento informado",
-        "fonte": "inferencia"
+        "fonte": "inferencia",
+        "espera": ""
       },
       {
         "ordem": 2,
@@ -1743,7 +2400,8 @@ var TECNOLOGIAS = [
         "profissional": "Laboratório",
         "espaco": "fisico",
         "bastidor": "Amostra enviada ao parceiro",
-        "fonte": "inferencia"
+        "fonte": "inferencia",
+        "espera": ""
       },
       {
         "ordem": 3,
@@ -1753,7 +2411,8 @@ var TECNOLOGIAS = [
         "profissional": "Médico responsável",
         "espaco": "misto",
         "bastidor": "Sinal detectado abre investigação dirigida no Einstein",
-        "fonte": "inferencia"
+        "fonte": "inferencia",
+        "espera": ""
       }
     ]
   },
@@ -1769,7 +2428,7 @@ var TECNOLOGIAS = [
     "alimenta": [],
     "fluxos": [
       {
-        "de": "paciente",
+        "de": "cliente",
         "para": "centro",
         "oque": "assinatura da saída — consultas e acompanhamento",
         "tipo": "pagamento",
@@ -1792,7 +2451,8 @@ var TECNOLOGIAS = [
         "profissional": "Médico",
         "espaco": "misto",
         "bastidor": "Critérios clínicos verificados",
-        "fonte": "primaria"
+        "fonte": "primaria",
+        "espera": ""
       },
       {
         "ordem": 2,
@@ -1802,7 +2462,8 @@ var TECNOLOGIAS = [
         "profissional": "Médico",
         "espaco": "misto",
         "bastidor": "Receita emitida",
-        "fonte": "primaria"
+        "fonte": "primaria",
+        "espera": ""
       },
       {
         "ordem": 3,
@@ -1812,7 +2473,8 @@ var TECNOLOGIAS = [
         "profissional": "Farmacêutico",
         "espaco": "fisico",
         "bastidor": "Fora do Centro",
-        "fonte": "primaria"
+        "fonte": "primaria",
+        "espera": ""
       },
       {
         "ordem": 4,
@@ -1822,7 +2484,8 @@ var TECNOLOGIAS = [
         "profissional": "Médico e nutricionista",
         "espaco": "digital",
         "bastidor": "Dose ajustada pela resposta",
-        "fonte": "primaria"
+        "fonte": "primaria",
+        "espera": ""
       }
     ]
   },
@@ -1838,7 +2501,7 @@ var TECNOLOGIAS = [
     "alimenta": [],
     "fluxos": [
       {
-        "de": "paciente",
+        "de": "cliente",
         "para": "centro",
         "oque": "assinatura da saída — acompanhamento longitudinal",
         "tipo": "pagamento",
@@ -1861,7 +2524,8 @@ var TECNOLOGIAS = [
         "profissional": "Equipe de coleta",
         "espaco": "fisico",
         "bastidor": "Hormônios no sangue da abertura",
-        "fonte": "primaria"
+        "fonte": "primaria",
+        "espera": ""
       },
       {
         "ordem": 2,
@@ -1871,7 +2535,8 @@ var TECNOLOGIAS = [
         "profissional": "Médico",
         "espaco": "misto",
         "bastidor": "Decisão clínica registrada",
-        "fonte": "primaria"
+        "fonte": "primaria",
+        "espera": ""
       },
       {
         "ordem": 3,
@@ -1881,7 +2546,8 @@ var TECNOLOGIAS = [
         "profissional": "Farmacêutico",
         "espaco": "fisico",
         "bastidor": "Receita e acompanhamento",
-        "fonte": "primaria"
+        "fonte": "primaria",
+        "espera": ""
       },
       {
         "ordem": 4,
@@ -1891,7 +2557,8 @@ var TECNOLOGIAS = [
         "profissional": "Médico",
         "espaco": "fisico",
         "bastidor": "Dosagens reavaliadas no tempo",
-        "fonte": "primaria"
+        "fonte": "primaria",
+        "espera": ""
       }
     ]
   },
@@ -1907,14 +2574,14 @@ var TECNOLOGIAS = [
     "alimenta": [],
     "fluxos": [
       {
-        "de": "paciente",
+        "de": "cliente",
         "para": "centro",
         "oque": "assinatura da saída — treino em pequeno grupo",
         "tipo": "pagamento",
         "enq": "particular"
       },
       {
-        "de": "paciente",
+        "de": "cliente",
         "para": "centro",
         "oque": "treino 1-1 como módulo avulso",
         "tipo": "confirmar",
@@ -1930,7 +2597,8 @@ var TECNOLOGIAS = [
         "profissional": "Educador físico",
         "espaco": "misto",
         "bastidor": "Avaliação física vira prescrição",
-        "fonte": "primaria"
+        "fonte": "primaria",
+        "espera": ""
       },
       {
         "ordem": 2,
@@ -1940,7 +2608,8 @@ var TECNOLOGIAS = [
         "profissional": "Educador físico",
         "espaco": "misto",
         "bastidor": "Agenda e sala",
-        "fonte": "primaria"
+        "fonte": "primaria",
+        "espera": ""
       },
       {
         "ordem": 3,
@@ -1950,7 +2619,8 @@ var TECNOLOGIAS = [
         "profissional": "Educador físico",
         "espaco": "digital",
         "bastidor": "Cargas ajustadas pela resposta",
-        "fonte": "primaria"
+        "fonte": "primaria",
+        "espera": ""
       },
       {
         "ordem": 4,
@@ -1960,7 +2630,8 @@ var TECNOLOGIAS = [
         "profissional": "Educador físico e médico",
         "espaco": "fisico",
         "bastidor": "Novas medidas no Mapa",
-        "fonte": "primaria"
+        "fonte": "primaria",
+        "espera": ""
       }
     ]
   },
@@ -1976,7 +2647,7 @@ var TECNOLOGIAS = [
     "alimenta": [],
     "fluxos": [
       {
-        "de": "paciente",
+        "de": "cliente",
         "para": "centro",
         "oque": "assinatura da saída — ou biofeedback avulso",
         "tipo": "confirmar",
@@ -1992,7 +2663,8 @@ var TECNOLOGIAS = [
         "profissional": "Equipe clínica",
         "espaco": "fisico",
         "bastidor": "Estresse e variabilidade no Mapa",
-        "fonte": "inferencia"
+        "fonte": "inferencia",
+        "espera": ""
       },
       {
         "ordem": 2,
@@ -2002,7 +2674,8 @@ var TECNOLOGIAS = [
         "profissional": "Equipe de saúde mental",
         "espaco": "fisico",
         "bastidor": "Protocolo e sala",
-        "fonte": "inferencia"
+        "fonte": "inferencia",
+        "espera": ""
       },
       {
         "ordem": 3,
@@ -2012,7 +2685,8 @@ var TECNOLOGIAS = [
         "profissional": "— autosserviço",
         "espaco": "digital",
         "bastidor": "Acompanhamento da adesão",
-        "fonte": "inferencia"
+        "fonte": "inferencia",
+        "espera": ""
       }
     ]
   },
@@ -2020,7 +2694,7 @@ var TECNOLOGIAS = [
     "id": "cpap",
     "nome": "Modulação circadiana (CPAP · medicações)",
     "apelido": "CPAP",
-    "entrega": "Tratamento do sono (CPAP e medicação) com acompanhamento do Centro.",
+    "entrega": "Cuidado do sono (CPAP e medicação) com acompanhamento do Centro.",
     "estagio": "saida",
     "tags": [],
     "cluster": "",
@@ -2028,7 +2702,7 @@ var TECNOLOGIAS = [
     "alimenta": [],
     "fluxos": [
       {
-        "de": "paciente",
+        "de": "cliente",
         "para": "centro",
         "oque": "assinatura da saída — medicina do sono e acompanhamento",
         "tipo": "pagamento",
@@ -2051,7 +2725,8 @@ var TECNOLOGIAS = [
         "profissional": "Médico do sono",
         "espaco": "fisico",
         "bastidor": "Confirmado pela polissonografia",
-        "fonte": "primaria"
+        "fonte": "primaria",
+        "espera": ""
       },
       {
         "ordem": 2,
@@ -2061,7 +2736,8 @@ var TECNOLOGIAS = [
         "profissional": "Equipe de medicina do sono",
         "espaco": "fisico",
         "bastidor": "Titulação registrada",
-        "fonte": "primaria"
+        "fonte": "primaria",
+        "espera": "≈ 2 semanas até a titulação"
       },
       {
         "ordem": 3,
@@ -2071,7 +2747,8 @@ var TECNOLOGIAS = [
         "profissional": "Fornecedor",
         "espaco": "fisico",
         "bastidor": "Fora do Centro",
-        "fonte": "primaria"
+        "fonte": "primaria",
+        "espera": ""
       },
       {
         "ordem": 4,
@@ -2081,7 +2758,8 @@ var TECNOLOGIAS = [
         "profissional": "Equipe de medicina do sono",
         "espaco": "digital",
         "bastidor": "Adesão acompanhada à distância",
-        "fonte": "primaria"
+        "fonte": "primaria",
+        "espera": ""
       }
     ]
   },
@@ -2097,7 +2775,7 @@ var TECNOLOGIAS = [
     "alimenta": [],
     "fluxos": [
       {
-        "de": "paciente",
+        "de": "cliente",
         "para": "centro",
         "oque": "dentro da assinatura — contato ativo do navegador",
         "tipo": "pagamento",
@@ -2121,43 +2799,69 @@ var TECNOLOGIAS = [
     "jornada": [
       {
         "ordem": 1,
-        "etapa": "Os dados fluem",
-        "quando": "contínuo",
-        "pessoa": "",
-        "profissional": "Parceiro de tecnologia",
+        "etapa": "Onboarding",
+        "quando": "primeiros 30 dias",
+        "pessoa": "Conecta wearable e CGM",
+        "profissional": "Equipe de onboarding",
         "espaco": "digital",
-        "bastidor": "Wearable alimenta a plataforma",
-        "fonte": "primaria"
+        "bastidor": "Integração dos dados na plataforma",
+        "fonte": "primaria",
+        "espera": ""
       },
       {
         "ordem": 2,
-        "etapa": "A leitura",
+        "etapa": "Os dados fluem",
         "quando": "contínuo",
-        "pessoa": "",
-        "profissional": "Navegador e IA",
+        "pessoa": "Sobe os exames feitos fora, e o wearable alimenta sozinho",
+        "profissional": "Parceiro de tecnologia",
         "espaco": "digital",
-        "bastidor": "Lê e aciona quando importa",
-        "fonte": "primaria"
+        "bastidor": "O dado externo entra no prontuário",
+        "fonte": "primaria",
+        "espera": ""
       },
       {
         "ordem": 3,
+        "etapa": "A leitura",
+        "quando": "contínuo",
+        "pessoa": "Recebe correção alimentar, estímulo de atividade e leitura do sono",
+        "profissional": "IA com supervisão humana",
+        "espaco": "digital",
+        "bastidor": "Lê e aciona quando importa",
+        "fonte": "primaria",
+        "espera": ""
+      },
+      {
+        "ordem": 4,
         "etapa": "O toque",
         "quando": "semanal",
         "pessoa": "Recebe um contato por semana",
         "profissional": "Navegador",
         "espaco": "digital",
         "bastidor": "Contato ativo registrado",
-        "fonte": "primaria"
+        "fonte": "primaria",
+        "espera": ""
       },
       {
-        "ordem": 4,
+        "ordem": 5,
+        "etapa": "O silêncio",
+        "quando": "contínuo",
+        "pessoa": "Deixa de interagir — e é procurado",
+        "profissional": "Equipe de contato ativo",
+        "espaco": "digital",
+        "bastidor": "Alerta de baixo engajamento",
+        "fonte": "primaria",
+        "espera": ""
+      },
+      {
+        "ordem": 6,
         "etapa": "Sinal fora da curva",
         "quando": "quando desvia",
-        "pessoa": "",
-        "profissional": "Equipe clínica",
-        "espaco": "digital",
-        "bastidor": "Antecipa a reavaliação",
-        "fonte": "primaria"
+        "pessoa": "Recebe contato se o desvio for relevante",
+        "profissional": "Equipe clínica, a definir quem escala",
+        "espaco": "misto",
+        "bastidor": "Triagem do alerta, que antecipa a reavaliação",
+        "fonte": "inferencia",
+        "espera": ""
       }
     ]
   }
