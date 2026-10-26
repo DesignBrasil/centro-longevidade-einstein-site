@@ -1254,14 +1254,6 @@
         return "<li title='" + aspas(x.por_que + " — como ouvir: " + x.como_ouvir) + "'><b>Ouvir: " +
           x.grupo.charAt(0).toLowerCase() + x.grupo.slice(1) + "</b></li>";
       }));
-      // no máximo três linhas por lista: o resto vira "+N", com os nomes no title —
-      // todo card cabe na mesma altura, sem a aba encolher a letra
-      function corta(l) {
-        if (l.length <= 3) return l.join("");
-        var resto = l.slice(2).map(function (h) { return h.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim(); });
-        return l.slice(0, 2).join("") + "<li class='pc-mais' title='" + aspas(resto.join(" · ")) + "'>+ " + resto.length +
-          (resto.length === 1 ? " item" : " itens") + " (passe o mouse)</li>";
-      }
       return "<header class='pc-cab'><p class='pc-eyebrow'>" + (n ? "elo " + n + " da cadeia · " : "") + c.componente + "</p>" +
         "<h3 class='pc-tit serif'>" + c.bloco + "</h3></header>" +
         "<div class='pc-pede'>" + rot("O que precisamos da instituição") +
@@ -1270,8 +1262,8 @@
         "<div>" + rot("O que já temos") + "<p class='pc-txt'>" + maiuscula(c.temos) + "</p></div>" +
         "<div>" + rot("O que nós precisamos definir") + "<p class='pc-txt'>" + maiuscula(c.preciso) + "</p></div></div>" +
         "<div class='pc-listas'>" +
-        "<section>" + rot("O que já sabemos", ach.length) + "<ul class='pc-ul'>" + (corta(sabe) || vazio) + "</ul></section>" +
-        "<section>" + rot("O que falta definir", falta.length) + "<ul class='pc-ul'>" + (corta(falta) || vazio) + "</ul></section>" +
+        "<section>" + rot("O que já sabemos", ach.length) + "<ul class='pc-ul'>" + (sabe.join("") || vazio) + "</ul></section>" +
+        "<section>" + rot("O que falta definir", falta.length) + "<ul class='pc-ul'>" + (falta.join("") || vazio) + "</ul></section>" +
         "</div>";
     }
     escreve(direcao,

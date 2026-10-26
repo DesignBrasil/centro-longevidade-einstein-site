@@ -1011,7 +1011,7 @@ var RELATORIO = {
   "futuro_3": "autonomia e memória acompanhadas",
   "legenda": "a avaliação é particular — o que o médico indicar a partir do mapa pode ir ao plano",
   "como_ler": "Cada camada responde a uma pergunta, escrita no alto. Embaixo, o que o desenho mostra. Comece por quem paga e termine no que encontramos.",
-  "legenda_fontes": "clique num bloco do modelo de negócio para ver o que temos e o que preciso · os números 1 a 6 seguem a cadeia do cliente à receita · passe o mouse num item para ler o texto inteiro e a fonte",
+  "legenda_fontes": "clique num bloco do modelo de negócio para ver o que temos e o que preciso · os números 1 a 6 seguem a cadeia do cliente à receita",
   "fontes": "devolutiva da owner em 15/10/2026 (portfólio e travessia) · pág. 30 do deck ComexV2 (jornada do ano) · Anexo I do Rol ANS, busca direta (enquadramentos) · pesquisa qualitativa, 12 entrevistas, jul/2026 (a pessoa) · laudo-exemplo da Avaliação de Longevidade Funcional (o dossiê)",
   "pergunta_pessoa_abertura": "por onde eu começo?",
   "pergunta_pessoa_direcao": "o que muda para mim?",
