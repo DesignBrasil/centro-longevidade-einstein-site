@@ -410,7 +410,7 @@ var JORNADA_PESSOA = [
     "espaco": "misto",
     "bastidor": "Laudo processado, prontuário atualizado",
     "fonte": "primaria",
-    "espera": "2 semanas sem o resultado",
+    "espera": "",
     "passo": "pescoco",
     "mes": "0.5"
   },
@@ -1015,7 +1015,7 @@ var RELATORIO = {
   "fontes": "devolutiva da owner em 15/10/2026 (portfólio e travessia) · pág. 30 do deck ComexV2 (jornada do ano) · Anexo I do Rol ANS, busca direta (enquadramentos) · pesquisa qualitativa, 12 entrevistas, jul/2026 (a pessoa) · laudo-exemplo da Avaliação de Longevidade Funcional (o dossiê)",
   "pergunta_pessoa_abertura": "por onde eu começo?",
   "pergunta_pessoa_direcao": "o que muda para mim?",
-  "conclusao": "A avaliação já existe. O acompanhamento do ano é o que falta desenhar — e ele depende de três definições: o parecer jurídico, o número de eixos e o que ela recebe na espera.",
+  "conclusao": "A avaliação já existe. O acompanhamento do ano é o que falta desenhar.",
   "ciclo": "reavaliação aos 6 e aos 12 meses — e o ciclo recomeça",
   "laco_titulo": "o laço que segura o ano",
   "laco_nota": "esvazia no silêncio dela — o contato ativo religa",
@@ -1236,26 +1236,6 @@ var PENDENCIAS = [
     "prazo": "a definir",
     "status": "aberta",
     "componente": "custos"
-  },
-  {
-    "nivel": "meso",
-    "curto": "Sete eixos ou seis: confirmar com a owner",
-    "destaque": "sim",
-    "decisao": "Os sete eixos do M³ contra os seis da devolutiva: cognitiva, cardiometabólica e oncológica entram, nutrição e exercício de precisão viram pilares do M¹ — confirmar com a owner",
-    "dono": "produtização → owner",
-    "prazo": "próxima conversa",
-    "status": "parcial",
-    "componente": "proposta"
-  },
-  {
-    "nivel": "micro",
-    "curto": "O que ela recebe nas duas semanas de espera",
-    "destaque": "sim",
-    "decisao": "O que a pessoa recebe nas duas semanas entre a avaliação e a conversa sobre os resultados",
-    "dono": "produtização → owner",
-    "prazo": "a definir",
-    "status": "aberta",
-    "componente": "proposta"
   },
   {
     "nivel": "micro",
@@ -1505,7 +1485,7 @@ var PROPOSTA = [
     "bloco": "Proposta de valor",
     "cor": "#e2d8f8",
     "temos": "medir num dia, mapear num dossiê só e modular ao longo do ano, com o médico titular no centro da decisão",
-    "preciso": "fechar sete ou seis eixos e o que a pessoa recebe nas duas semanas de espera",
+    "preciso": "definir o protocolo de cada eixo do M³",
     "pedido": "aval clínico para os protocolos de cada eixo, com a evidência que o Einstein exige"
   },
   {
@@ -1644,7 +1624,7 @@ var TECNOLOGIAS = [
         "espaco": "misto",
         "bastidor": "Prontuário atualizado",
         "fonte": "primaria",
-        "espera": "2 semanas sem o resultado"
+        "espera": ""
       },
       {
         "ordem": 5,
