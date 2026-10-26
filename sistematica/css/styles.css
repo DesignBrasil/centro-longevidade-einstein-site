@@ -673,16 +673,10 @@ nav,.palco,footer{position:relative;z-index:1}
 .j-arvore .j-opt{padding-left:18px}
 .j-arvore .l-sub{margin-top:8px}
 .j-ac{font-style:italic;color:var(--dinheiro);border-top:1px dashed rgba(156,85,24,.35);border-radius:0 0 7px 7px}
-  background:rgba(255,255,255,.7);display:flex;flex-direction:column;gap:7px}
 .jm-filhas{display:flex;flex-wrap:wrap;gap:5px}
 .jm-filha{font:inherit;font-size:12px;color:var(--ink);background:#fff;border:1px solid rgba(12,58,111,.22);border-radius:999px;
   padding:3px 11px;cursor:pointer}
 .jm-filha:hover{border-color:var(--accent);color:var(--accent)}
-  background:rgba(252,241,226,.75);border:1px dashed rgba(156,85,24,.5)}
-  border-top:2px solid var(--accent)}
-  background:var(--paper);border:2px solid var(--accent)}
-.e-pescoco .e-saida .jm-rot{margin:0;padding-top:6px;font-size:9.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-  background:var(--paper);border:2px solid var(--accent)}
 .j-topo-filha{display:flex;align-items:baseline;gap:6px 18px;flex-wrap:wrap;margin-bottom:8px}
 .j-topo-filha h2{margin:0;flex:none}
 .j-topo-filha .l-entrega{flex:1 1 320px;max-width:none !important;margin:0}
@@ -816,13 +810,12 @@ nav,.palco,footer{position:relative;z-index:1}
 .pc-ver{display:block;margin-top:2px;font-size:11.5px !important}
 .pc-ul li.pc-vazio{font-style:italic;color:var(--muted)}
 .pc-ul li.pc-vazio::before{background:var(--hairline)}
-.direcao .direcao 
 @media(max-width:1020px){
   .jm{grid-template-columns:1fr}
   .jm-seta{flex-direction:row;padding:6px 0}
   .jm-seta span{transform:rotate(90deg)}
   .jm-ac{grid-template-columns:1fr}
-    .bmc-dir{grid-template-columns:1fr}
+  .bmc-dir{grid-template-columns:1fr}
   .pc-dupla,.pc-listas{grid-template-columns:1fr}
   .bmc{grid-template-columns:1fr 1fr;grid-template-rows:none}
   .bmc-b{grid-area:auto !important}
@@ -841,7 +834,8 @@ nav,.palco,footer{position:relative;z-index:1}
   #v-abertura.on{grid-template-columns:1fr}
   #v-abertura .w5h{grid-template-columns:1fr}
   #v-abertura .w5:nth-child(6){order:0}
-  .abre-portal{min-height:340px}
+  .abre-portal{min-height:340px;max-width:100%}
+  #v-abertura .cena-rolo,#v-abertura>*{min-width:0}
     .direcao{height:auto}
   .d-grade{grid-template-columns:1fr;gap:22px}
   .d-col-micro{padding-left:12px}
